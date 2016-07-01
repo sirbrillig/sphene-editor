@@ -76,6 +76,7 @@ class SpheneEditor {
 			'pages' => $this->getSphenePosts(),
 			'blocks' => $this->getSpheneBlocks(),
 		) );
+		wp_enqueue_style( 'sphene-editor', plugins_url( 'css/sphene-editor.css', __FILE__ ) );
 	}
 
 	public function getCurrentPageId() {

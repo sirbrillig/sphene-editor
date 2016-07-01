@@ -1,0 +1,12 @@
+.sphene-editor {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	position: absolute;
+	background: #fff;
+	z-index: 100000;
+	padding: 1em;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
