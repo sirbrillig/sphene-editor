@@ -72,6 +72,9 @@ class SpheneEditor {
 	}
 
 	public function enqueue_scripts() {
+		if ( ! is_single() || get_post_type() !== 'sphene_page' ) {
+			return;
+		}
 		wp_enqueue_script( 'sphene-editor', plugins_url( 'js/sphene-editor.js', __FILE__ ), array(), true );
 		wp_localize_script( 'sphene-editor', 'spheneData', array(
 			'currentPageId' => $this->getCurrentPageId(),
@@ -79,6 +82,16 @@ class SpheneEditor {
 			'blocks' => $this->getSpheneBlocks(),
 		) );
 		wp_enqueue_style( 'sphene-editor', plugins_url( 'css/sphene-editor.css', __FILE__ ) );
+	}
+
+	// Copy post_content to post_content_filtered
+	// This is just temporary until the editor can do it
+	public function update_page_content() {
+		global $post;
+		if ( empty( $post->post_content_filtered ) ) {
+			$post->post_content_filtered = $post->post_content;
+			wp_update_post( $post, false );
+		}
 	}
 
 	public function getCurrentPageId() {
