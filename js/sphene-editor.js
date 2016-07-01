@@ -9,6 +9,10 @@
 		} );
 	}
 
+	function getContentFromPost( post ) {
+		return post.post_content_filtered.length ? post.post_content_filtered : post.post_content;
+	}
+
 	function getCurrentPageData() {
 		return findPostById( window.spheneData.pages, window.spheneData.currentPageId );
 	}
@@ -27,14 +31,13 @@
 	}
 
 	function getPageDataFromPost( post ) {
-		return JSON.parse( post.post_content );
+		return JSON.parse( getContentFromPost( post ) );
 	}
 
 	function getRenderedPage() {
 		const post = getCurrentPageData();
 		const pageData = getPageDataFromPost( post );
 		const markup = pageData.rows.map( getRenderedRow ).join( ' ' );
-		console.log( markup );
 		return getNodeFromString( markup );
 	}
 
@@ -89,7 +92,6 @@
 
 	// ---
 	window.onload = function() {
-		console.log('loading');
 		addActivationButton();
 	};
 } )();

@@ -21,7 +21,9 @@ class SpheneEditor {
 
 	public function add_hooks() {
 		$this->create_post_types();
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		if ( current_user_can( 'edit_pages' ) ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		}
 		// add_action( 'template_include', array( $this, 'template_include' ) );
 	}
 
