@@ -67,7 +67,7 @@
 		return button;
 	}
 
-	function addActivationButton() {
+	function addAdminBarActivationButton() {
 		const adminBar = window.document.querySelector( '#wp-admin-bar-root-default' );
 		if ( ! adminBar ) {
 			console.error( 'Sphene error: could not find admin bar' );
@@ -75,6 +75,17 @@
 		}
 		const button = createAdminBarButton();
 		adminBar.appendChild( button );
+		button.addEventListener( 'click', function() {
+			toggleEditor();
+		} );
+	}
+
+	function addSphenePageActivationButton() {
+		const button = window.document.querySelector( '.sphene-edit-button' );
+		if ( ! button ) {
+			console.error( 'Sphene error: could not find activation button' );
+			return;
+		}
 		button.addEventListener( 'click', function() {
 			toggleEditor();
 		} );
@@ -92,6 +103,7 @@
 
 	// ---
 	window.onload = function() {
-		addActivationButton();
+		//addAdminBarActivationButton();
+		addSphenePageActivationButton();
 	};
 } )();

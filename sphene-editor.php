@@ -24,7 +24,7 @@ class SpheneEditor {
 		if ( current_user_can( 'edit_pages' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
-		// add_action( 'template_include', array( $this, 'template_include' ) );
+		add_action( 'template_include', array( $this, 'template_include' ) );
 	}
 
 	public function create_post_types() {
