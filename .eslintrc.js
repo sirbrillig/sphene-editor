@@ -3,6 +3,9 @@ module.exports = {
     "es6": true,
     "browser": true,
   },
+  "parserOptions": {
+    "sourceType": 'module',
+  },
   "plugins": [ "wpcalypso" ],
   "rules": {
     'array-bracket-spacing': [ 1, 'always' ],
