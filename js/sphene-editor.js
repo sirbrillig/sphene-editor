@@ -1,5 +1,4 @@
 ( function() {
-
 	function findPostById( posts, id ) {
 		return posts.reduce( ( found, post ) => {
 			if ( post.ID === id ) {
@@ -14,11 +13,13 @@
 	}
 
 	function getCurrentPageData() {
-		return findPostById( window.spheneData.pages, window.spheneData.currentPageId );
+		// TODO: use API to get the page data
+		getPageFromApi( getSpheneData().currentPageId ).then( data => console.log( data ) );
+		return findPostById( getSpheneData().pages, getSpheneData().currentPageId );
 	}
 
 	function getBlockById( id ) {
-		return findPostById( window.spheneData.blocks, id );
+		return findPostById( getSpheneData().blocks, id );
 	}
 
 	function getRenderedBlock( blockData ) {
@@ -42,7 +43,11 @@
 	}
 
 	function getNodeFromString( str ) {
-		return jQuery( str )[0];
+		return window.jQuery( str )[ 0 ];
+	}
+
+	function getSpheneData() {
+		return window.spheneData;
 	}
 
 	function createEditor() {
@@ -54,30 +59,6 @@
 		editorDiv.appendChild( editorTitle );
 		editorDiv.appendChild( getRenderedPage() );
 		return editorDiv;
-	}
-
-	function createAdminBarButton() {
-		const button = window.document.createElement( 'li' );
-		button.className = 'wp-admin-bar-sphene';
-		const buttonLink = window.document.createElement( 'a' );
-		buttonLink.className = 'ab-item';
-		buttonLink.href = '#';
-		buttonLink.appendChild( window.document.createTextNode( 'Sphene' ) );
-		button.appendChild( buttonLink );
-		return button;
-	}
-
-	function addAdminBarActivationButton() {
-		const adminBar = window.document.querySelector( '#wp-admin-bar-root-default' );
-		if ( ! adminBar ) {
-			console.error( 'Sphene error: could not find admin bar' );
-			return;
-		}
-		const button = createAdminBarButton();
-		adminBar.appendChild( button );
-		button.addEventListener( 'click', function() {
-			toggleEditor();
-		} );
 	}
 
 	function addSphenePageActivationButton() {
@@ -101,22 +82,27 @@
 		body.insertBefore( editor, body.firstChild );
 	}
 
-	function getPagesFromApi() {
-		jQuery.ajax( {
-			url: spheneData.wpApiSettings.root + 'wp/v2/sphene_page',
+	function ajax( options ) {
+		const ajaxOptions = Object.assign( {}, options, {
+			beforeSend: ( xhr ) => {
+				xhr.setRequestHeader( 'X-WP-Nonce', getSpheneData().wpApiSettings.nonce );
+			}
+		} );
+		return new Promise( ( resolve, reject ) => {
+			window.jQuery.ajax( ajaxOptions ).done( resolve ).fail( reject );
+		} );
+	}
+
+	function getPageFromApi( id ) {
+		return ajax( {
+			url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_page/' + id,
 			method: 'GET',
-			beforeSend: function ( xhr ) {
-				xhr.setRequestHeader( 'X-WP-Nonce', spheneData.wpApiSettings.nonce );
-			},
-		} ).done( function ( response ) {
-			console.log( response );
+			data: { context: 'edit' },
 		} );
 	}
 
 	// ---
 	window.onload = function() {
-		//addAdminBarActivationButton();
 		addSphenePageActivationButton();
-		getPagesFromApi();
 	};
 } )();
