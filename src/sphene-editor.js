@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import activateEditor from './load-editor';
 
 function findPostById( posts, id ) {
 	return posts.reduce( ( found, post ) => {
@@ -54,33 +55,38 @@ function getSpheneData() {
 function createEditor() {
 	const editorDiv = window.document.createElement( 'div' );
 	editorDiv.className = 'sphene-editor';
-	const editorTitle = window.document.createElement( 'h1' );
-	editorTitle.className = 'sphene-editor__title';
-	editorTitle.appendChild( window.document.createTextNode( 'Sphene Editor' ) );
-	editorDiv.appendChild( editorTitle );
-	editorDiv.appendChild( getRenderedPage() );
+	//const editorTitle = window.document.createElement( 'h1' );
+	//editorTitle.className = 'sphene-editor__title';
+	//editorTitle.appendChild( window.document.createTextNode( 'Sphene Editor' ) );
+	//editorDiv.appendChild( editorTitle );
+	//editorDiv.appendChild( getRenderedPage() );
 	return editorDiv;
 }
 
 function addSphenePageActivationButton() {
-	const button = window.document.querySelector( '.sphene-edit-button' );
+	const button = findElement( '.sphene-edit-button' );
 	if ( ! button ) {
 		console.error( 'Sphene error: could not find activation button' );
 		return;
 	}
 	button.addEventListener( 'click', function() {
-		toggleEditor();
+		showEditor();
 	} );
 }
 
-function toggleEditor() {
-	const body = window.document.querySelector( 'body' );
+function findElement( selector ) {
+	return window.document.querySelector( selector );
+}
+
+function showEditor() {
+	const body = findElement( 'body' );
 	if ( ! body ) {
 		console.error( 'Sphene error: could not find page body' );
 		return;
 	}
 	const editor = createEditor();
 	body.insertBefore( editor, body.firstChild );
+	activateEditor();
 }
 
 function ajax( options ) {

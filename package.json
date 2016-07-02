@@ -11,15 +11,18 @@
   ],
   "babel": {
     "presets": [
-      "es2015"
+      "es2015",
+      "react"
     ]
   },
   "author": "Payton Swick",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.10.1",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "eslint": "^2.13.1",
@@ -31,7 +34,9 @@
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-copytotheplace": "^0.1.0",
-    "load-grunt-tasks": "^3.5.0"
+    "load-grunt-tasks": "^3.5.0",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0"
   },
   "dependencies": {},
   "repository": {
