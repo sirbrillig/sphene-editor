@@ -1,4 +1,8 @@
 module.exports = {
+  "env": {
+    "es6": true,
+    "browser": true,
+  },
   "plugins": [ "wpcalypso" ],
   "rules": {
     'array-bracket-spacing': [ 1, 'always' ],
@@ -24,7 +28,7 @@ module.exports = {
     'new-cap': [ 1, { 'capIsNew': false, 'newIsCap': true } ],
     'no-cond-assign': 2,
     'no-const-assign': 2,
-    'no-console': 1,
+    //'no-console': 1,
     'no-debugger': 2,
     'no-dupe-args': 2,
     'no-dupe-keys': 2,
