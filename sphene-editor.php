@@ -25,6 +25,24 @@ class SpheneEditor {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
 		add_action( 'template_include', array( $this, 'template_include' ) );
+		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
+	}
+
+	public function rest_api_init() {
+		register_rest_field( 'sphene_page', 'sphene_data', array(
+			'get_callback' => array( $this, 'get_post_content_filtered' ),
+		) );
+	}
+
+	function get_post_content_filtered( $object ) {
+		$post = get_post( $object['id'] );
+		if ( ! $post ) {
+			return '';
+		}
+		if ( ! $post->post_content_filtered ) {
+			return $post->post_content;
+		}
+		return $post->post_content_filtered;
 	}
 
 	public function create_post_types() {
@@ -54,6 +72,7 @@ class SpheneEditor {
 				'public' => true,
 				'has_archive' => true,
 				'show_in_rest' => true,
+				// 'supports' => array( 'author', 'thumbnail' ),
 			)
 		);
 	}
@@ -77,6 +96,7 @@ class SpheneEditor {
 		}
 		wp_enqueue_script( 'sphene-editor', plugins_url( 'js/sphene-editor.js', __FILE__ ), array(), true );
 		wp_localize_script( 'sphene-editor', 'spheneData', array(
+			'wpApiSettings' => array( 'root' => esc_url_raw( rest_url() ), 'nonce' => wp_create_nonce( 'wp_rest' ) ),
 			'currentPageId' => $this->getCurrentPageId(),
 			'pages' => $this->getSphenePosts(),
 			'blocks' => $this->getSpheneBlocks(),

@@ -101,9 +101,22 @@
 		body.insertBefore( editor, body.firstChild );
 	}
 
+	function getPagesFromApi() {
+		jQuery.ajax( {
+			url: spheneData.wpApiSettings.root + 'wp/v2/sphene_page',
+			method: 'GET',
+			beforeSend: function ( xhr ) {
+				xhr.setRequestHeader( 'X-WP-Nonce', spheneData.wpApiSettings.nonce );
+			},
+		} ).done( function ( response ) {
+			console.log( response );
+		} );
+	}
+
 	// ---
 	window.onload = function() {
 		//addAdminBarActivationButton();
 		addSphenePageActivationButton();
+		getPagesFromApi();
 	};
 } )();
