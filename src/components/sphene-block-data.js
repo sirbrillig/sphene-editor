@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect, bindActionCreators } from 'react-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { getBlock } from '../selectors';
 import { fetchBlockAsync } from '../actions';
 import SpheneBlock from './sphene-block';
@@ -34,5 +35,4 @@ const SpheneBlockData = React.createClass( {
 		return <SpheneBlock postId={ this.props.postId } content={ this.props.content } />;
 	},
 } );
-// FIXME: connect doesn't work for some reason. Maybe we need to do this differently?
 export default connect( mapStateToProps, mapDispatchToProps )( SpheneBlockData );
