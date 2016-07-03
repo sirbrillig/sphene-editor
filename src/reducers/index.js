@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import pages from './pages';
+import blocks from './blocks';
 
 function currentPageId( state = 0, action ) {
 	switch ( action.type ) {
@@ -12,6 +13,7 @@ function currentPageId( state = 0, action ) {
 const rootReducer = combineReducers( {
 	currentPageId,
 	pages,
+	blocks,
 } );
 
 export default rootReducer;

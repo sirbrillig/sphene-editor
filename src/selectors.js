@@ -5,3 +5,4 @@ export const getCurrentPage = state => {
 	return pages[ currentPageId ];
 };
 
+export const getBlock = ( id, state ) => state.blocks[ id ];

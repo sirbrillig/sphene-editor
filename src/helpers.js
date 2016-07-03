@@ -15,6 +15,14 @@ export function getPageFromApi( id ) {
 	} );
 }
 
+export function getBlockFromApi( id ) {
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_block/' + id,
+		method: 'GET',
+		data: { context: 'edit' },
+	} );
+}
+
 export function ajax( options ) {
 	const ajaxOptions = Object.assign( {}, options, {
 		beforeSend: ( xhr ) => {

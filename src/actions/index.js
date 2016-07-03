@@ -1,4 +1,4 @@
-import { getPageFromApi } from '../helpers';
+import { getPageFromApi, getBlockFromApi } from '../helpers';
 
 export function fetchPage( id ) {
 	return {
@@ -28,3 +28,25 @@ export function setCurrentPageId( id ) {
 		id
 	};
 }
+
+export function fetchBlock( id ) {
+	return {
+		type: 'BLOCK_FETCH',
+		id
+	};
+}
+
+export function blockReceived( page ) {
+	return {
+		type: 'BLOCK_RECEIVED',
+		page
+	};
+}
+
+export function fetchBlockAsync( id ) {
+	return dispatch => {
+		dispatch( fetchBlock( id ) );
+		getBlockFromApi( id ).then( page => dispatch( blockReceived( page ) ) );
+	};
+}
+
