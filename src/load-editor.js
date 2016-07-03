@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SpheneEditor from './components/sphene-editor';
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import spheneEditorStore from './reducers';
+import thunk from 'redux-thunk';
+
+function configureStore() {
+	const middleware = compose( applyMiddleware( thunk ), window.devToolsExtension ? window.devToolsExtension() : f => f );
+	return createStore( spheneEditorStore, middleware );
+}
 
 export default function activateEditor() {
-	const store = createStore( spheneEditorStore, window.devToolsExtension && window.devToolsExtension() );
+	const store = configureStore();
 	ReactDOM.render( <SpheneEditor store={ store } />, window.document.querySelector( '.sphene-editor' ) );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ( { postId } ) => {
+const SpheneBlock = ( { postId } ) => {
 	return (
 		<div className="sphene-editor__block">
 			{ postId }
@@ -8,3 +8,4 @@ export default ( { postId } ) => {
 	);
 };
 
+export default SpheneBlock;
