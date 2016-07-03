@@ -14,7 +14,7 @@ module.exports = function( grunt ) {
 			},
 			dist: {
 				files: {
-					'js/sphene-editor.js': 'src/sphene-editor.js'
+					'js/sphene-editor.js': 'src/index.js'
 				}
 			}
 		},
