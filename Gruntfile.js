@@ -18,6 +18,13 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
+
+		watch: {
+			scripts: {
+				files: [ 'src/**/*.js', '**/*.php', 'css/*.css' ],
+				tasks: [ 'browserify', 'copytotheplace' ],
+			}
+		},
 	} );
 
 	grunt.registerTask( 'default', [ 'browserify', 'copytotheplace' ] );
