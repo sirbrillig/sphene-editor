@@ -24,6 +24,7 @@ class SpheneEditor {
 		if ( current_user_can( 'edit_pages' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'template_include', array( $this, 'template_include' ) );
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 	}
@@ -99,6 +100,12 @@ class SpheneEditor {
 			'wpApiSettings' => array( 'root' => esc_url_raw( rest_url() ), 'nonce' => wp_create_nonce( 'wp_rest' ) ),
 			'currentPageId' => $this->getCurrentPageId(),
 		) );
+	}
+
+	public function enqueue_styles() {
+		if ( ! is_single() || get_post_type() !== 'sphene_page' ) {
+			return;
+		}
 		wp_enqueue_style( 'sphene-editor', plugins_url( 'css/sphene-editor.css', __FILE__ ) );
 	}
 
