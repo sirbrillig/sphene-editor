@@ -29,147 +29,154 @@
 
 .sphene-edit-button[disabled],
 .sphene-editor button[disabled] {
-	opacity: 0.5;
-	cursor: default;
+  background: #1a1a1a;
+  opacity: 0.5;
+  cursor: default;
 }
 
 .sphene-edit-button {
-	box-sizing: border-box;
-	width: auto;
-	height: 2em;
-	top: 0;
-	right: 0;
-	position: absolute;
-	background: #000;
-	color: #fff;
-	line-height: 1em;
+  box-sizing: border-box;
+  width: auto;
+  height: 2em;
+  top: 0;
+  right: 0;
+  position: absolute;
+  background: #000;
+  color: #fff;
+  line-height: 1em;
 }
 
 .sphene-editor {
-	width: 100%;
-	height: 100%;
-	top: 0;
-	position: absolute;
-	background: #fff;
-	z-index: 100000;
-	padding: 1em;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin-top: 32px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  position: absolute;
+  background: #fff;
+  z-index: 100000;
+  padding: 1em;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin-top: 32px;
 }
 
 .sphene-editor,
 .sphene-editor * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .sphene-page-body {
-	background: #fff;
-	padding: 1em;
+  background: #fff;
+  padding: 1em;
 }
 
 body.sphene-page-body:not(.custom-background-image):before,
 body.sphene-page-body:not(.custom-background-image):after {
-	height: auto;
+  height: auto;
 }
 
 .sphene-editor__block {
-	outline: 2px solid #eee;
-	overflow: hidden;
-	min-height: 120px;
+  outline: 2px solid #eee;
+  overflow: hidden;
+  min-height: 120px;
 }
 
 .sphene-editor__block.is-loading {
-	outline: 2px solid;
-	outline-color: rgba(0, 255, 255, 1);
-	animation: outline-pulse 3s infinite;
-	color: #ccc;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  outline: 2px solid;
+  outline-color: rgba(0, 255, 255, 1);
+  animation: outline-pulse 3s infinite;
+  color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sphene-editor__block.is-selected {
-	outline: 2px dotted #15a01f;
+  outline: 2px dotted #15a01f;
 }
 
 .sphene-editor__block.is-empty {
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .sphene-editor__block.is-empty button {
-	max-width: 50%;
-	min-width: 10em;
+  max-width: 50%;
+  min-width: 10em;
 }
 
 @keyframes outline-pulse {
-	0%   { outline-color: rgba(0, 255, 255, 1); }
-	50% { outline-color: rgba(0, 255, 255, 0); }
-	100%   { outline-color: rgba(0, 255, 255, 1); }
+  0%   { outline-color: rgba(0, 255, 255, 1); }
+  50% { outline-color: rgba(0, 255, 255, 0); }
+  100%   { outline-color: rgba(0, 255, 255, 1); }
 }
 
 .sphene-editor__block-add,
 .sphene-editor__block-options {
-	border: 1px solid #000;
-	background: #eee;
-	position: fixed;
-	width: 100%;
-	height: 300px;
-	bottom: -500px;
-	left: 0;
-	transition: all 0.5s ease-in-out;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	z-index: 100002;
+  border: 1px solid #000;
+  background: #eee;
+  position: fixed;
+  width: 100%;
+  height: 300px;
+  bottom: -500px;
+  left: 0;
+  transition: all 0.5s ease-in-out;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100002;
 }
 
 .sphene-editor__block-add.is-active,
 .sphene-editor__block-options.is-active {
-	bottom: 0;
+  bottom: 0;
 }
 
 .sphene-editor__block-add button,
 .sphene-editor__block-options button {
-	min-width: 10em;
+  min-width: 10em;
 }
 
 .sphene-editor__overlay {
-	position: absolute;
-	top: -200vh;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 100001;
-	background: rgba(255, 255, 255, 0.28);
+  position: absolute;
+  top: -200vh;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100001;
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .sphene-editor__overlay.is-active {
-	top: 0;
+  top: 0;
 }
 
 .sphene-editor__block-editor {
-	border: 1px solid #000;
-	background: #eee;
-	position: fixed;
-	width: 100%;
-	height: 300px;
-	bottom: -500px;
-	left: 0;
-	transition: all 0.5s ease-in-out;
-	z-index: 100002;
+  border: 1px solid #000;
+  background: #eee;
+  position: fixed;
+  width: 100%;
+  height: 300px;
+  bottom: -500px;
+  left: 0;
+  transition: all 0.5s ease-in-out;
+  z-index: 100002;
 }
 
 .sphene-editor__block-editor.is-active {
-	bottom: 0;
+  bottom: 0;
 }
 
 .sphene-editor__block-editor textarea {
-	height: 80%;
-	width: 100%;
+  height: 80%;
+  width: 100%;
+}
+
+.sphene-editor__save {
+  top: -32px;
+  left: 0;
+  position: absolute;
 }
