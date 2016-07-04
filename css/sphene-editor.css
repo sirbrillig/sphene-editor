@@ -1,3 +1,15 @@
+.sphene-edit-button {
+	width: auto;
+	height: 2em;
+	top: 0;
+	right: 0;
+	position: absolute;
+	background: #000;
+	color: #fff;
+	line-height: 1em;
+	padding-top: 0.5em;
+}
+
 .sphene-editor {
 	width: 100%;
 	height: 100%;
@@ -11,19 +23,33 @@
 	right: 0;
 }
 
+.sphene-editor * {
+	box-sizing: border-box;
+	margin-top: 32px;
+}
+
 .sphene-page-body {
 	background: #fff;
 	padding: 1em;
 }
 
-.sphene-editor__block.is-loading {
-	border: 2px solid;
-	border-color: rgba(0, 255, 255, 1);
-	animation: border-pulse 3s infinite;
+body.sphene-page-body:not(.custom-background-image):before,
+body.sphene-page-body:not(.custom-background-image):after {
+	height: auto;
 }
 
-@keyframes border-pulse {
-	0%   { border-color: rgba(0, 255, 255, 1); }
-	50% { border-color: rgba(0, 255, 255, 0); }
-	100%   { border-color: rgba(0, 255, 255, 1); }
+.sphene-editor__block {
+	outline: 2px solid #eee;
+}
+
+.sphene-editor__block.is-loading {
+	outline: 2px solid;
+	outline-color: rgba(0, 255, 255, 1);
+	animation: outline-pulse 3s infinite;
+}
+
+@keyframes outline-pulse {
+	0%   { outline-color: rgba(0, 255, 255, 1); }
+	50% { outline-color: rgba(0, 255, 255, 0); }
+	100%   { outline-color: rgba(0, 255, 255, 1); }
 }

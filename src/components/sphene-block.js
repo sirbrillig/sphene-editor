@@ -8,11 +8,11 @@ const SpheneBlock = React.createClass( {
 	},
 
 	render() {
-		const { postId, content } = this.props;
+		const { content } = this.props;
 		const classNames = classnames( 'sphene-editor__block', { 'is-loading': ! content } );
 		return (
 			<div className={ classNames }>
-			{ content ? content : postId }
+			{ content ? content : 'loading...' }
 			</div>
 		);
 	},
