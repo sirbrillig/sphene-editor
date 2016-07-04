@@ -41,6 +41,7 @@ body.sphene-page-body:not(.custom-background-image):after {
 
 .sphene-editor__block {
 	outline: 2px solid #eee;
+	overflow: hidden;
 }
 
 .sphene-editor__block.is-loading {
@@ -48,6 +49,10 @@ body.sphene-page-body:not(.custom-background-image):after {
 	outline-color: rgba(0, 255, 255, 1);
 	animation: outline-pulse 3s infinite;
 	min-height: 120px;
+	color: #ccc;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .sphene-editor__block.is-empty {
