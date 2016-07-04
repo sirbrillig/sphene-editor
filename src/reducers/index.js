@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import pages from './pages';
 import blocks from './blocks';
+import ui from './ui';
 
 function currentPageId( state = 0, action ) {
 	switch ( action.type ) {
@@ -19,6 +20,7 @@ function currentBlockId( state = 0, action ) {
 }
 
 const rootReducer = combineReducers( {
+	ui,
 	currentPageId,
 	currentBlockId,
 	pages,

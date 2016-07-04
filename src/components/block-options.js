@@ -1,11 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const BlockOptions = ( { blockId } ) => {
+const BlockOptions = ( { blockId, onEdit } ) => {
 	const classNames = classnames( 'sphene-editor__block-options', { 'is-active': !! blockId } );
 	return (
 		<div className={ classNames }>
-			<button>Edit</button>
+			<button onClick={ onEdit }>Edit</button>
 			<button>Delete</button>
 			<button>Add Column</button>
 		</div>
@@ -14,6 +14,7 @@ const BlockOptions = ( { blockId } ) => {
 
 BlockOptions.propTypes = {
 	blockId: React.PropTypes.number,
+	onEdit: React.PropTypes.func.isRequired,
 };
 
 export default BlockOptions;

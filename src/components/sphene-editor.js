@@ -3,9 +3,10 @@ import SpheneRow from './sphene-row';
 import EmptyEditor from './empty-editor';
 import BlockOptions from './block-options';
 import Overlay from './overlay';
+import BlockEditor from './block-editor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchPageAsync, setCurrentPageId, selectBlock } from '../actions';
+import { fetchPageAsync, setCurrentPageId, selectBlock, editBlock } from '../actions';
 import { getSpheneData } from '../helpers';
 import { getCurrentPage, getCurrentPageId } from '../selectors';
 
@@ -16,6 +17,7 @@ const SpheneEditor = React.createClass( {
 		currentBlockId: React.PropTypes.number,
 		fetchPage: React.PropTypes.func.isRequired,
 		selectBlock: React.PropTypes.func.isRequired,
+		isBlockEditorActive: React.PropTypes.bool,
 	},
 
 	componentWillMount() {
@@ -34,18 +36,27 @@ const SpheneEditor = React.createClass( {
 		}
 	},
 
+	onClickEdit() {
+		this.props.editBlock( this.props.currentBlockId );
+	},
+
 	render() {
 		const { rows } = this.props;
 		const content = ! rows || rows.length < 1
 			? null
 			: rows.map( ( row, index ) => <SpheneRow key={ `row-${index}` } columns={ row.columns } /> );
 		const isOverlayActive = !! this.props.currentBlockId;
+		const isBlockEditorActive = this.props.isBlockEditorActive;
 		return (
 			<div className="sphene-editor__page">
 				{ content }
 				<EmptyEditor />
-				<BlockOptions blockId={ this.props.currentBlockId }/>
+				<BlockOptions
+					blockId={ this.props.currentBlockId }
+					onEdit={ this.onClickEdit }
+				/>
 				<Overlay isActive={ isOverlayActive } onClick={ this.onClickOverlay } />
+				<BlockEditor isActive={ isBlockEditorActive } blockId={ this.props.currentBlockId } />
 			</div>
 		);
 	}
@@ -54,9 +65,11 @@ const SpheneEditor = React.createClass( {
 const mapStateToProps = state => {
 	const currentPageId = getCurrentPageId( state );
 	const currentBlockId = state.currentBlockId;
+	const isBlockEditorActive = state.ui.showingBlockEditor;
 	const page = getCurrentPage( state );
 	const rows = page ? page.sphene_data_parsed.rows : [];
 	return {
+		isBlockEditorActive,
 		currentBlockId,
 		currentPageId,
 		rows,
@@ -64,7 +77,12 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-	return bindActionCreators( { fetchPage: fetchPageAsync, setCurrentPageId, selectBlock }, dispatch );
+	return bindActionCreators( {
+		fetchPage: fetchPageAsync,
+		setCurrentPageId,
+		selectBlock,
+		editBlock
+	}, dispatch );
 };
 
 export default connect( mapStateToProps, mapDispatchToProps )( SpheneEditor );

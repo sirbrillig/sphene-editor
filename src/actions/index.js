@@ -56,3 +56,10 @@ export function selectBlock( id ) {
 		id
 	};
 }
+
+export function editBlock( id ) {
+	return {
+		type: 'BLOCK_EDIT',
+		id
+	};
+}
