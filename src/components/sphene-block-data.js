@@ -10,7 +10,7 @@ const mapStateToProps = ( state, props ) => {
 	if ( ! block ) {
 		return {};
 	}
-	const content = block.content.rendered;
+	const content = block.content;
 	const isSelected = state.currentBlockId === props.postId;
 	return { content, isSelected };
 };
@@ -21,15 +21,21 @@ const mapDispatchToProps = dispatch => {
 
 const SpheneBlockData = React.createClass( {
 	propTypes: {
-		postId: React.PropTypes.number.isRequired,
+		postId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ).isRequired,
 		fetchBlock: React.PropTypes.func.isRequired,
 		selectBlock: React.PropTypes.func.isRequired,
 		content: React.PropTypes.string,
 		isSelected: React.PropTypes.bool,
 	},
 
+	getDefaultProps() {
+		return {
+			content: null,
+		};
+	},
+
 	componentWillMount() {
-		if ( ! this.props.content ) {
+		if ( this.props.content === null ) {
 			this.props.fetchBlock( this.props.postId );
 		}
 	},

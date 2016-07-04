@@ -1,12 +1,17 @@
 import React from 'react';
 
-export default () => {
+const EmptyEditor = ( { onAdd } ) => {
 	return (
 		<div className="sphene-editor__row is-empty">
 			<div className="sphene-editor__block is-empty">
-				<button>Add</button>
+				<button onClick={ onAdd }>Add</button>
 			</div>
 		</div>
 	);
 };
 
+EmptyEditor.propTypes = {
+	onAdd: React.PropTypes.func.isRequired,
+};
+
+export default EmptyEditor;

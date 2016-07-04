@@ -77,13 +77,13 @@ body.sphene-page-body:not(.custom-background-image):after {
 .sphene-editor__block {
 	outline: 2px solid #eee;
 	overflow: hidden;
+	min-height: 120px;
 }
 
 .sphene-editor__block.is-loading {
 	outline: 2px solid;
 	outline-color: rgba(0, 255, 255, 1);
 	animation: outline-pulse 3s infinite;
-	min-height: 120px;
 	color: #ccc;
 	display: flex;
 	justify-content: center;
@@ -98,7 +98,6 @@ body.sphene-page-body:not(.custom-background-image):after {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 120px;
 }
 
 .sphene-editor__block.is-empty button {
@@ -112,6 +111,7 @@ body.sphene-page-body:not(.custom-background-image):after {
 	100%   { outline-color: rgba(0, 255, 255, 1); }
 }
 
+.sphene-editor__block-add,
 .sphene-editor__block-options {
 	border: 1px solid #000;
 	background: #eee;
@@ -127,10 +127,12 @@ body.sphene-page-body:not(.custom-background-image):after {
 	z-index: 100002;
 }
 
+.sphene-editor__block-add.is-active,
 .sphene-editor__block-options.is-active {
 	bottom: 0;
 }
 
+.sphene-editor__block-add button,
 .sphene-editor__block-options button {
 	min-width: 10em;
 }

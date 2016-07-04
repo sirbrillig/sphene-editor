@@ -8,7 +8,7 @@ import { setBlockContent, doneEditing } from '../actions';
 const BlockEditor = React.createClass( {
 	propTypes: {
 		isActive: React.PropTypes.bool,
-		blockId: React.PropTypes.number,
+		blockId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
 		setBlockContent: React.PropTypes.func.isRequired,
 		doneEditing: React.PropTypes.func.isRequired,
 	},

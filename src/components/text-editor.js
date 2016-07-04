@@ -4,7 +4,7 @@ import { getBlock } from '../selectors';
 
 const TextEditor = React.createClass( {
 	propTypes: {
-		blockId: React.PropTypes.number.isRequired,
+		blockId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ).isRequired,
 		blockText: React.PropTypes.string,
 		onChange: React.PropTypes.func.isRequired,
 	},
@@ -22,7 +22,7 @@ const mapStateToProps = ( state, props ) => {
 		console.error( `Sphene Editor Error: could not find block ID ${props.blockId}` );
 		return {};
 	}
-	const blockText = block.content.rendered;
+	const blockText = block.content;
 	return { blockText };
 };
 

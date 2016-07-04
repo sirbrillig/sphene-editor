@@ -6,7 +6,7 @@ import Overlay from './overlay';
 import BlockEditor from './block-editor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchPageAsync, setCurrentPageId, selectBlock, editBlock, doneEditing } from '../actions';
+import { fetchPageAsync, setCurrentPageId, selectBlock, editBlock, doneEditing, createRowAndBlock } from '../actions';
 import { getSpheneData } from '../helpers';
 import { getCurrentPage, getCurrentPageId } from '../selectors';
 
@@ -14,13 +14,14 @@ const SpheneEditor = React.createClass( {
 	propTypes: {
 		rows: React.PropTypes.array,
 		currentPageId: React.PropTypes.number.isRequired,
-		currentBlockId: React.PropTypes.number,
+		currentBlockId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
+		isBlockEditorActive: React.PropTypes.bool,
 		fetchPage: React.PropTypes.func.isRequired,
 		selectBlock: React.PropTypes.func.isRequired,
 		editBlock: React.PropTypes.func.isRequired,
 		setCurrentPageId: React.PropTypes.func.isRequired,
 		doneEditing: React.PropTypes.func.isRequired,
-		isBlockEditorActive: React.PropTypes.bool,
+		createRowAndBlock: React.PropTypes.func.isRequired,
 	},
 
 	componentWillMount() {
@@ -33,14 +34,6 @@ const SpheneEditor = React.createClass( {
 		}
 	},
 
-	onClickOverlay() {
-		this.props.doneEditing();
-	},
-
-	onClickEdit() {
-		this.props.editBlock( this.props.currentBlockId );
-	},
-
 	render() {
 		const { rows } = this.props;
 		const content = ! rows || rows.length < 1
@@ -48,15 +41,18 @@ const SpheneEditor = React.createClass( {
 			: rows.map( ( row, index ) => <SpheneRow key={ `row-${index}` } columns={ row.columns } /> );
 		const isBlockEditorActive = this.props.isBlockEditorActive;
 		const isOverlayActive = !! this.props.currentBlockId;
+		const onClickOverlay = () => this.props.doneEditing();
+		const onAdd = () => this.props.createRowAndBlock();
+		const onClickEdit = () => this.props.editBlock( this.props.currentBlockId );
 		return (
 			<div className="sphene-editor__page">
 				{ content }
-				<EmptyEditor />
+				<EmptyEditor onAdd={ onAdd } />
 				<BlockOptions
 					isActive={ isOverlayActive }
-					onEdit={ this.onClickEdit }
+					onEdit={ onClickEdit }
 				/>
-				<Overlay isActive={ isOverlayActive } onClick={ this.onClickOverlay } />
+				<Overlay isActive={ isOverlayActive } onClick={ onClickOverlay } />
 				<BlockEditor isActive={ isBlockEditorActive } blockId={ this.props.currentBlockId } />
 			</div>
 		);
@@ -68,7 +64,7 @@ const mapStateToProps = state => {
 	const currentBlockId = state.currentBlockId;
 	const isBlockEditorActive = state.ui.showingBlockEditor;
 	const page = getCurrentPage( state );
-	const rows = page ? page.sphene_data_parsed.rows : [];
+	const rows = page ? page.rows : [];
 	return {
 		isBlockEditorActive,
 		currentBlockId,
@@ -84,6 +80,7 @@ const mapDispatchToProps = dispatch => {
 		selectBlock,
 		editBlock,
 		doneEditing,
+		createRowAndBlock,
 	}, dispatch );
 };
 

@@ -9,7 +9,7 @@ export default function blocks( state = {}, action ) {
 		case 'BLOCK_SET_CONTENT':
 			return Object.assign( {}, state, { [ action.id ]: updatePage(
 				state[ action.id ],
-				{ content: { rendered: action.content } }
+				{ content: action.content }
 			) } );
 	}
 	return state;
