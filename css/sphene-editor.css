@@ -55,6 +55,10 @@ body.sphene-page-body:not(.custom-background-image):after {
 	align-items: center;
 }
 
+.sphene-editor__block.is-selected {
+	outline: 2px dotted #15a01f;
+}
+
 .sphene-editor__block.is-empty {
 	display: flex;
 	align-items: center;

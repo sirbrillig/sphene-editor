@@ -10,8 +10,17 @@ function currentPageId( state = 0, action ) {
 	return state;
 }
 
+function currentBlockId( state = 0, action ) {
+	switch ( action.type ) {
+		case 'BLOCK_SELECT':
+			return action.id;
+	}
+	return state;
+}
+
 const rootReducer = combineReducers( {
 	currentPageId,
+	currentBlockId,
 	pages,
 	blocks,
 } );

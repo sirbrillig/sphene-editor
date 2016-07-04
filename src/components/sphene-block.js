@@ -13,13 +13,15 @@ const SpheneBlock = React.createClass( {
 	propTypes: {
 		postId: React.PropTypes.number.isRequired,
 		content: React.PropTypes.string,
+		onClick: React.PropTypes.func.isRequired,
+		isSelected: React.PropTypes.bool,
 	},
 
 	render() {
 		const { content } = this.props;
-		const classNames = classnames( 'sphene-editor__block', { 'is-loading': ! content } );
+		const classNames = classnames( 'sphene-editor__block', { 'is-loading': ! content, 'is-selected': this.props.isSelected } );
 		return (
-			<div className={ classNames }>
+			<div className={ classNames } onClick={ this.props.onClick }>
 			{ content ? renderMarkup( content ) : 'loading...' }
 			</div>
 		);

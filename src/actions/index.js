@@ -50,3 +50,9 @@ export function fetchBlockAsync( id ) {
 	};
 }
 
+export function selectBlock( id ) {
+	return {
+		type: 'BLOCK_SELECT',
+		id
+	};
+}
