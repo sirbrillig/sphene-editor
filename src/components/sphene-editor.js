@@ -2,6 +2,7 @@ import React from 'react';
 import SpheneRow from './sphene-row';
 import EmptyEditor from './empty-editor';
 import BlockOptions from './block-options';
+import Overlay from './overlay';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchPageAsync, setCurrentPageId, selectBlock } from '../actions';
@@ -27,7 +28,7 @@ const SpheneEditor = React.createClass( {
 		}
 	},
 
-	onClick() {
+	onClickOverlay() {
 		if ( this.props.currentBlockId ) {
 			this.props.selectBlock( 0 );
 		}
@@ -38,11 +39,13 @@ const SpheneEditor = React.createClass( {
 		const content = ! rows || rows.length < 1
 			? null
 			: rows.map( ( row, index ) => <SpheneRow key={ `row-${index}` } columns={ row.columns } /> );
+		const isOverlayActive = !! this.props.currentBlockId;
 		return (
-			<div className="sphene-editor__page" onClick={ this.onClick }>
+			<div className="sphene-editor__page">
 				{ content }
 				<EmptyEditor />
 				<BlockOptions blockId={ this.props.currentBlockId }/>
+				<Overlay isActive={ isOverlayActive } onClick={ this.onClickOverlay } />
 			</div>
 		);
 	}
