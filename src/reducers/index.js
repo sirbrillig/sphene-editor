@@ -21,12 +21,23 @@ function currentBlockId( state = 0, action ) {
 	return state;
 }
 
+function isUnsaved( state = false, action ) {
+	switch ( action.type ) {
+		case 'BLOCK_SET_CONTENT':
+		case 'BLOCK_DELETE':
+		case 'PAGE_ADD_ROW':
+			return true;
+	}
+	return state;
+}
+
 const rootReducer = combineReducers( {
 	ui,
 	currentPageId,
 	currentBlockId,
 	pages,
 	blocks,
+	isUnsaved,
 } );
 
 export default rootReducer;
