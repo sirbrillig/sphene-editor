@@ -6,7 +6,7 @@ import Overlay from './overlay';
 import BlockEditor from './block-editor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchPageAsync, setCurrentPageId, selectBlock, editBlock } from '../actions';
+import { fetchPageAsync, setCurrentPageId, selectBlock, editBlock, doneEditing } from '../actions';
 import { getSpheneData } from '../helpers';
 import { getCurrentPage, getCurrentPageId } from '../selectors';
 
@@ -17,6 +17,9 @@ const SpheneEditor = React.createClass( {
 		currentBlockId: React.PropTypes.number,
 		fetchPage: React.PropTypes.func.isRequired,
 		selectBlock: React.PropTypes.func.isRequired,
+		editBlock: React.PropTypes.func.isRequired,
+		setCurrentPageId: React.PropTypes.func.isRequired,
+		doneEditing: React.PropTypes.func.isRequired,
 		isBlockEditorActive: React.PropTypes.bool,
 	},
 
@@ -31,9 +34,7 @@ const SpheneEditor = React.createClass( {
 	},
 
 	onClickOverlay() {
-		if ( this.props.currentBlockId ) {
-			this.props.selectBlock( 0 );
-		}
+		this.props.doneEditing();
 	},
 
 	onClickEdit() {
@@ -46,7 +47,7 @@ const SpheneEditor = React.createClass( {
 			? null
 			: rows.map( ( row, index ) => <SpheneRow key={ `row-${index}` } columns={ row.columns } /> );
 		const isBlockEditorActive = this.props.isBlockEditorActive;
-		const isOverlayActive = !! this.props.currentBlockId && ! isBlockEditorActive;
+		const isOverlayActive = !! this.props.currentBlockId;
 		return (
 			<div className="sphene-editor__page">
 				{ content }
@@ -81,7 +82,8 @@ const mapDispatchToProps = dispatch => {
 		fetchPage: fetchPageAsync,
 		setCurrentPageId,
 		selectBlock,
-		editBlock
+		editBlock,
+		doneEditing,
 	}, dispatch );
 };
 
