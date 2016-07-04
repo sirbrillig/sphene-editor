@@ -14,6 +14,7 @@ function addSphenePageActivationButton() {
 		return;
 	}
 	button.addEventListener( 'click', function() {
+		button.disabled = true;
 		showEditor();
 	} );
 }
