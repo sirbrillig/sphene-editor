@@ -10,7 +10,7 @@ const mapStateToProps = ( state, props ) => {
 	if ( ! block ) {
 		return {};
 	}
-	const content = block.content.raw;
+	const content = block.content.rendered;
 	return { content };
 };
 

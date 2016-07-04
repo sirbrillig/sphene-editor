@@ -1,6 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 
+function createMarkup( markup ) {
+	return { __html: markup };
+}
+
+function renderMarkup( markup ) {
+	return <div dangerouslySetInnerHTML={ createMarkup( markup ) } />;
+}
+
 const SpheneBlock = React.createClass( {
 	propTypes: {
 		postId: React.PropTypes.number.isRequired,
@@ -12,7 +20,7 @@ const SpheneBlock = React.createClass( {
 		const classNames = classnames( 'sphene-editor__block', { 'is-loading': ! content } );
 		return (
 			<div className={ classNames }>
-			{ content ? content : 'loading...' }
+			{ content ? renderMarkup( content ) : 'loading...' }
 			</div>
 		);
 	},
