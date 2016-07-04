@@ -97,12 +97,12 @@ body.sphene-page-body:not(.custom-background-image):after {
 .sphene-editor__block.is-empty {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 }
 
 .sphene-editor__block.is-empty button {
 	max-width: 50%;
-	flex: 1;
+	min-width: 10em;
 }
 
 @keyframes outline-pulse {

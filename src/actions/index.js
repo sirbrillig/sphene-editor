@@ -69,6 +69,13 @@ export function editBlock( id ) {
 	};
 }
 
+export function deleteBlock( id ) {
+	return {
+		type: 'BLOCK_DELETE',
+		id
+	};
+}
+
 export function setBlockContent( id, content ) {
 	return {
 		type: 'BLOCK_SET_CONTENT',

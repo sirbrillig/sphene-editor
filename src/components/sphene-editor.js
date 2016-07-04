@@ -6,7 +6,15 @@ import Overlay from './overlay';
 import BlockEditor from './block-editor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchPageAsync, setCurrentPageId, selectBlock, editBlock, doneEditing, createRowAndBlock } from '../actions';
+import {
+	fetchPageAsync,
+	setCurrentPageId,
+	selectBlock,
+	editBlock,
+	deleteBlock,
+	doneEditing,
+	createRowAndBlock
+} from '../actions';
 import { getSpheneData } from '../helpers';
 import { getCurrentPage, getCurrentPageId } from '../selectors';
 
@@ -19,6 +27,7 @@ const SpheneEditor = React.createClass( {
 		fetchPage: React.PropTypes.func.isRequired,
 		selectBlock: React.PropTypes.func.isRequired,
 		editBlock: React.PropTypes.func.isRequired,
+		deleteBlock: React.PropTypes.func.isRequired,
 		setCurrentPageId: React.PropTypes.func.isRequired,
 		doneEditing: React.PropTypes.func.isRequired,
 		createRowAndBlock: React.PropTypes.func.isRequired,
@@ -36,14 +45,19 @@ const SpheneEditor = React.createClass( {
 
 	render() {
 		const { rows } = this.props;
+		const onAddColumn = () => null;
+		const onDeleteRow = () => null;
 		const content = ! rows || rows.length < 1
 			? null
-			: rows.map( ( row, index ) => <SpheneRow key={ `row-${index}` } columns={ row.columns } /> );
+			: rows.map( ( row, index ) => {
+				return <SpheneRow key={ `row-${index}` } columns={ row.columns } onAddColumn={ onAddColumn } onDeleteRow={ onDeleteRow } />;
+			} );
 		const isBlockEditorActive = this.props.isBlockEditorActive;
 		const isOverlayActive = !! this.props.currentBlockId;
 		const onClickOverlay = () => this.props.doneEditing();
 		const onAdd = () => this.props.createRowAndBlock();
 		const onClickEdit = () => this.props.editBlock( this.props.currentBlockId );
+		const onClickDelete = () => this.props.deleteBlock( this.props.currentBlockId ) && this.props.doneEditing();
 		return (
 			<div className="sphene-editor__page">
 				{ content }
@@ -51,6 +65,7 @@ const SpheneEditor = React.createClass( {
 				<BlockOptions
 					isActive={ isOverlayActive }
 					onEdit={ onClickEdit }
+					onDelete={ onClickDelete }
 				/>
 				<Overlay isActive={ isOverlayActive } onClick={ onClickOverlay } />
 				<BlockEditor isActive={ isBlockEditorActive } blockId={ this.props.currentBlockId } />
@@ -79,6 +94,7 @@ const mapDispatchToProps = dispatch => {
 		setCurrentPageId,
 		selectBlock,
 		editBlock,
+		deleteBlock,
 		doneEditing,
 		createRowAndBlock,
 	}, dispatch );
