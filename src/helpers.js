@@ -1,3 +1,5 @@
+import shortid from 'shortid';
+
 export function findPostById( posts, id ) {
 	return posts.reduce( ( found, post ) => {
 		if ( post.ID === id ) {
@@ -38,3 +40,9 @@ export function getSpheneData() {
 	return window.spheneData;
 }
 
+export function buildUnsavedBlock() {
+	const id = shortid.generate();
+	return { id, unsaved: true, content: { rendered: 'hello world' } };
+}
+
+export const buildRowWithBlock = block => ( { columns: [ { postId: block.id } ] } );

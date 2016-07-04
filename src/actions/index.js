@@ -1,4 +1,4 @@
-import { getPageFromApi, getBlockFromApi } from '../helpers';
+import { getPageFromApi, getBlockFromApi, buildUnsavedBlock, buildRowWithBlock } from '../helpers';
 import { getCurrentPageId } from '../selectors';
 
 export function fetchPage( id ) {
@@ -85,9 +85,6 @@ export function doneEditing() {
 
 export function createRowAndBlock() {
 	return ( dispatch, getState ) => {
-		// TODO: move this somewhere and create a unique unsavedId
-		const buildUnsavedBlock = () => ( { id: 'unique', unsaved: true, content: { rendered: 'hello world' } } );
-		const buildRowWithBlock = block => ( { columns: [ { postId: block.id } ] } );
 		const block = buildUnsavedBlock();
 		const currentPageId = getCurrentPageId( getState() );
 		dispatch( blockReceived( block ) );
