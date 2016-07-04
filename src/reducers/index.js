@@ -15,6 +15,8 @@ function currentBlockId( state = 0, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_SELECT':
 			return action.id;
+		case 'BLOCK_EDIT_COMPLETE':
+			return 0;
 	}
 	return state;
 }

@@ -115,3 +115,24 @@ body.sphene-page-body:not(.custom-background-image):after {
 .sphene-editor__overlay.is-active {
 	top: 0;
 }
+
+.sphene-editor__block-editor {
+	border: 1px solid #000;
+	background: #eee;
+	position: fixed;
+	width: 100%;
+	height: 300px;
+	bottom: -500px;
+	left: 0;
+	transition: all 0.5s ease-in-out;
+	z-index: 100002;
+}
+
+.sphene-editor__block-editor.is-active {
+	bottom: 0;
+}
+
+.sphene-editor__block-editor textarea {
+	height: 80%;
+	width: 100%;
+}

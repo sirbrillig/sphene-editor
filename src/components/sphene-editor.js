@@ -45,14 +45,14 @@ const SpheneEditor = React.createClass( {
 		const content = ! rows || rows.length < 1
 			? null
 			: rows.map( ( row, index ) => <SpheneRow key={ `row-${index}` } columns={ row.columns } /> );
-		const isOverlayActive = !! this.props.currentBlockId;
 		const isBlockEditorActive = this.props.isBlockEditorActive;
+		const isOverlayActive = !! this.props.currentBlockId && ! isBlockEditorActive;
 		return (
 			<div className="sphene-editor__page">
 				{ content }
 				<EmptyEditor />
 				<BlockOptions
-					blockId={ this.props.currentBlockId }
+					isActive={ isOverlayActive }
 					onEdit={ this.onClickEdit }
 				/>
 				<Overlay isActive={ isOverlayActive } onClick={ this.onClickOverlay } />

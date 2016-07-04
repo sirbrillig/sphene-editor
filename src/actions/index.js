@@ -63,3 +63,17 @@ export function editBlock( id ) {
 		id
 	};
 }
+
+export function setBlockContent( id, content ) {
+	return {
+		type: 'BLOCK_SET_CONTENT',
+		id,
+		content,
+	};
+}
+
+export function doneEditing() {
+	return {
+		type: 'BLOCK_EDIT_COMPLETE',
+	};
+}
