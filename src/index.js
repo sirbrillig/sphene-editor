@@ -79,6 +79,10 @@ function findElement( selector ) {
 }
 
 function showEditor() {
+	if ( findElement( '.sphene-editor' ) ) {
+		console.error( 'Sphene error: already running' );
+		return;
+	}
 	const body = findElement( 'body' );
 	if ( ! body ) {
 		console.error( 'Sphene error: could not find page body' );

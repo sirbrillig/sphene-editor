@@ -27,11 +27,12 @@ const SpheneEditor = React.createClass( {
 	render() {
 		const { rows } = this.props;
 		const content = ! rows || rows.length < 1
-			? <EmptyEditor />
+			? null
 			: rows.map( ( row, index ) => <SpheneRow key={ `row-${index}` } columns={ row.columns } /> );
 		return (
 			<div className="sphene-editor__page">
 			{ content }
+			<EmptyEditor />
 			</div>
 		);
 	}

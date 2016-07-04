@@ -21,11 +21,12 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
+	margin-top: 32px;
 }
 
+.sphene-editor,
 .sphene-editor * {
 	box-sizing: border-box;
-	margin-top: 32px;
 }
 
 .sphene-page-body {
@@ -46,6 +47,19 @@ body.sphene-page-body:not(.custom-background-image):after {
 	outline: 2px solid;
 	outline-color: rgba(0, 255, 255, 1);
 	animation: outline-pulse 3s infinite;
+	min-height: 120px;
+}
+
+.sphene-editor__block.is-empty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 120px;
+}
+
+.sphene-editor__block.is-empty button {
+	max-width: 50%;
+	flex: 1;
 }
 
 @keyframes outline-pulse {
