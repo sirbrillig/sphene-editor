@@ -42,7 +42,7 @@ export function getSpheneData() {
 
 export function buildUnsavedBlock() {
 	const id = shortid.generate();
-	return { id, unsaved: true, content: { rendered: 'hello world' } };
+	return { id, unsaved: true, content: { rendered: 'This is a new block. <strong>Click</strong> to edit it!' } };
 }
 
 export const buildRowWithBlock = block => ( { columns: [ { postId: block.id } ] } );
