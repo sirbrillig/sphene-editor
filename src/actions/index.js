@@ -127,7 +127,8 @@ export function savePageAsync( id ) {
 		dispatch( savePage( id ) );
 		const page = getPage( id, state );
 		page.content = getFullPageContent( page.rows, state );
-		sendPageToApi( page ).then( () => dispatch( pageSaved( id ) ) );
-		getAllBlocks( page, state ).map( block => sendBlockToApi( block ) );
+		let jobs = [ sendPageToApi( page ) ];
+		jobs = jobs.concat( getAllBlocks( page, state ).map( block => sendBlockToApi( block ) ) );
+		Promise.all( jobs ).then( () => dispatch( pageSaved( id ) ) );
 	};
 }
