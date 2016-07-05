@@ -75,10 +75,17 @@ body.sphene-page-body:not(.custom-background-image):after {
   height: auto;
 }
 
+.sphene-editor__row {
+  display: flex;
+}
+
 .sphene-editor__block {
   outline: 2px solid #eee;
   overflow: hidden;
   min-height: 120px;
+  display: inline-block;
+  flex: 1;
+  width: 100%;
 }
 
 .sphene-editor__block.is-loading {
