@@ -19,12 +19,13 @@ import {
 	savePageAsync,
 } from '../actions';
 import { getSpheneData } from '../helpers';
-import { getCurrentPage, getCurrentPageId } from '../selectors';
+import { getCurrentPage, getCurrentPageId, getCurrentRow } from '../selectors';
 
 const SpheneEditor = React.createClass( {
 	propTypes: {
 		rows: React.PropTypes.array,
 		currentPageId: React.PropTypes.number.isRequired,
+		currentRowId: React.PropTypes.string,
 		currentBlockId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
 		isBlockEditorActive: React.PropTypes.bool,
 		isUnsaved: React.PropTypes.bool,
@@ -68,19 +69,21 @@ const SpheneEditor = React.createClass( {
 		const isSaveActive = this.props.isUnsaved;
 		const isOverlayActive = !! this.props.currentBlockId;
 		const onClickOverlay = () => this.props.doneEditing();
-		const onAdd = () => this.props.createRowAndBlock();
+		const onAddRow = () => this.props.createRowAndBlock();
 		const onEditBlock = () => this.props.editBlock( this.props.currentBlockId );
 		const onDeleteBlock = () => this.props.deleteBlock( this.props.currentBlockId ) && this.props.doneEditing();
 		const onClickSave = () => this.props.savePage( this.props.currentPageId );
+		const onAddColumnAfterBlock = () => onAddColumn( this.props.currentRowId );
 		return (
 			<div className="sphene-editor__page">
 				<SaveButton isActive={ isSaveActive } onClick={ onClickSave } />
 				{ pageRows }
-				<EmptyEditor onAdd={ onAdd } />
+				<EmptyEditor onAdd={ onAddRow } />
 				<BlockOptions
 					isActive={ isOverlayActive }
 					onEdit={ onEditBlock }
 					onDelete={ onDeleteBlock }
+					onAdd={ onAddColumnAfterBlock }
 				/>
 				<Overlay isActive={ isOverlayActive } onClick={ onClickOverlay } />
 				<BlockEditor isActive={ isBlockEditorActive } blockId={ this.props.currentBlockId } />
@@ -92,6 +95,7 @@ const SpheneEditor = React.createClass( {
 const mapStateToProps = state => {
 	const currentPageId = getCurrentPageId( state );
 	const currentBlockId = state.currentBlockId;
+	const currentRowId = currentBlockId ? getCurrentRow( state ).rowId : 0;
 	const isBlockEditorActive = state.ui.showingBlockEditor;
 	const isUnsaved = state.isUnsaved;
 	const page = getCurrentPage( state );
@@ -99,6 +103,7 @@ const mapStateToProps = state => {
 	return {
 		isBlockEditorActive,
 		currentBlockId,
+		currentRowId,
 		currentPageId,
 		rows,
 		isUnsaved,

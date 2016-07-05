@@ -13,10 +13,11 @@ const SpheneRow = React.createClass( {
 	render() {
 		const { columns, rowId } = this.props;
 		const onDelete = () => this.props.onDeleteRow( rowId );
+		const onAddColumn = () => this.props.onAddColumn( rowId );
 		const allColumns = columns.map( block => <SpheneBlockData key={ `block-${block.postId}` } postId={ block.postId } /> );
 		return (
 			<div className="sphene-editor__row">
-				{ columns.length > 0 ? allColumns : <EmptyRow onAdd={ this.props.onAddColumn } onDelete={ onDelete } /> }
+				{ columns.length > 0 ? allColumns : <EmptyRow onAdd={ onAddColumn } onDelete={ onDelete } /> }
 			</div>
 		);
 	}
