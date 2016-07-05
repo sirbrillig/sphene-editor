@@ -97,7 +97,8 @@ const SpheneEditor = React.createClass( {
 const mapStateToProps = state => {
 	const currentPageId = getCurrentPageId( state );
 	const currentBlockId = state.currentBlockId;
-	const currentRowId = currentBlockId ? getCurrentRow( state ).rowId : '';
+	const currentRow = currentPageId ? getCurrentRow( state ) : null;
+	const currentRowId = currentRow ? currentRow.rowId : '';
 	const isBlockEditorActive = state.ui.showingBlockEditor;
 	const isUnsaved = state.isUnsaved;
 	const page = getCurrentPage( state );
