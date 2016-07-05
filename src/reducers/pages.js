@@ -1,3 +1,5 @@
+import shortid from 'shortid';
+
 function addRowToPage( row, page ) {
 	return Object.assign( {}, page, {
 		rows: page.rows.concat( row )
@@ -41,10 +43,20 @@ function replaceBlockInPages( oldId, newId, allPages ) {
 	}, {} );
 }
 
+function validatePage( page ) {
+	const rows = page.rows.map( row => {
+		if ( ! row.rowId ) {
+			row.rowId = shortid.generate();
+		}
+		return row;
+	} );
+	return Object.assign( {}, page, { rows } );
+}
+
 export default function pages( state = {}, action ) {
 	switch ( action.type ) {
 		case 'PAGE_RECEIVED':
-			return Object.assign( {}, state, { [ action.page.id ]: action.page } );
+			return Object.assign( {}, state, { [ action.page.id ]: validatePage( action.page ) } );
 		case 'PAGE_ADD_ROW':
 			return Object.assign( {}, state, { [ action.id ]: addRowToPage( action.row, state[ action.id ] ) } );
 		case 'BLOCK_DELETE':

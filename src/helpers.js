@@ -72,4 +72,4 @@ export function buildUnsavedBlock() {
 	return { id, unsaved: true, content: { rendered: 'This is a new block. <strong>Click</strong> to edit it!' } };
 }
 
-export const buildRowWithBlock = block => ( { columns: [ { postId: block.id } ] } );
+export const buildRowWithBlock = block => ( { rowId: shortid.generate(), columns: [ { postId: block.id } ] } );
