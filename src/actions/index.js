@@ -5,9 +5,17 @@ import {
 	sendBlockToApi,
 	getBlockFromApi,
 	buildUnsavedBlock,
-	buildRowWithBlock
+	buildRowWithBlock,
+	removeBlockFromApi,
 } from '../helpers';
-import { getCurrentPageId, getPage, getPageWithFullContent, getModifiedBlocks, getUnsavedBlocks } from '../selectors';
+import {
+	getCurrentPageId,
+	getPage,
+	getPageWithFullContent,
+	getModifiedBlocks,
+	getUnsavedBlocks,
+	getDeletedBlocks,
+} from '../selectors';
 
 export function fetchPage( id ) {
 	return {
@@ -146,6 +154,13 @@ export function savedBlockReceived( id, data ) {
 	};
 }
 
+export function blockDeleted( id ) {
+	return {
+		type: 'BLOCK_DELETED',
+		id
+	};
+}
+
 export function savePageAsync( id ) {
 	return ( dispatch, getState ) => {
 		const state = getState();
@@ -157,11 +172,14 @@ export function savePageAsync( id ) {
 		const saveNewBlocksPromises = getUnsavedBlocks( page, state ).map( block => {
 			return createBlockInApi( block ).then( data => dispatch( savedBlockReceived( block.id, data ) ) );
 		} );
-		// TODO: remove deleted blocks
+		// Remove deleted blocks
+		const deleteBlocksPromises = getDeletedBlocks( state ).map( block => {
+			return removeBlockFromApi( block.id ).then( () => dispatch( blockDeleted( block.id ) ) );
+		} );
 		// Update the page after new blocks are created
 		Promise.all( saveNewBlocksPromises )
 		.then( () => sendPageToApi( getPageWithFullContent( id, getState() ) ) )
-		.then( () => Promise.all( updateBlocksPromises ) )
+		.then( () => Promise.all( updateBlocksPromises.concat( deleteBlocksPromises ) ) )
 		.then( () => dispatch( pageSaved( id ) ) );
 	};
 }

@@ -18,12 +18,19 @@ export function sendPageToApi( page ) {
 	} );
 }
 
+export function removeBlockFromApi( id ) {
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_block/' + id,
+		method: 'DELETE',
+	} );
+}
+
 export function createBlockInApi( page ) {
 	const { content } = page;
 	return ajax( {
 		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_block',
 		method: 'POST',
-		data: { content },
+		data: { content, status: 'publish' },
 	} );
 }
 

@@ -32,6 +32,8 @@ export default function blocks( state = {}, action ) {
 			) } );
 		case 'BLOCK_DELETE':
 			return markBlockDeleted( action.id, state );
+		case 'BLOCK_DELETED':
+			return removeBlock( action.id, state );
 		case 'BLOCK_REPLACED':
 			return addBlock( action.page, removeBlock( action.id, state ) );
 	}
