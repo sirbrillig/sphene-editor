@@ -14,6 +14,7 @@ import {
 	editBlock,
 	deleteBlock,
 	doneEditing,
+	deleteRow,
 	createRowAndBlock,
 	savePageAsync,
 } from '../actions';
@@ -35,6 +36,7 @@ const SpheneEditor = React.createClass( {
 		doneEditing: React.PropTypes.func.isRequired,
 		createRowAndBlock: React.PropTypes.func.isRequired,
 		savePage: React.PropTypes.func.isRequired,
+		deleteRow: React.PropTypes.func.isRequired,
 	},
 
 	componentWillMount() {
@@ -50,11 +52,17 @@ const SpheneEditor = React.createClass( {
 	render() {
 		const { rows } = this.props;
 		const onAddColumn = () => null;
-		const onDeleteRow = () => null;
+		const onDeleteRow = id => this.props.deleteRow( id );
 		const pageRows = ! rows || rows.length < 1
 			? null
-			: rows.map( ( row, index ) => {
-				return <SpheneRow key={ `row-${index}` } columns={ row.columns } onAddColumn={ onAddColumn } onDeleteRow={ onDeleteRow } />;
+			: rows.map( row => {
+				return <SpheneRow
+					key={ `row-${row.rowId}` }
+					rowId={ row.rowId }
+					columns={ row.columns }
+					onAddColumn={ onAddColumn }
+					onDeleteRow={ onDeleteRow }
+				/>;
 			} );
 		const isBlockEditorActive = this.props.isBlockEditorActive;
 		const isSaveActive = this.props.isUnsaved;
@@ -106,6 +114,7 @@ const mapDispatchToProps = dispatch => {
 		deleteBlock,
 		doneEditing,
 		createRowAndBlock,
+		deleteRow,
 		savePage: savePageAsync,
 	}, dispatch );
 };

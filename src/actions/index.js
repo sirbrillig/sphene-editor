@@ -98,6 +98,13 @@ export function doneEditing() {
 	};
 }
 
+export function deleteRow( id ) {
+	return {
+		type: 'ROW_DELETE',
+		id
+	};
+}
+
 export function createRowAndBlock() {
 	return ( dispatch, getState ) => {
 		const block = buildUnsavedBlock();
