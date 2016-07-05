@@ -14,7 +14,8 @@ import {
 	editBlock,
 	deleteBlock,
 	doneEditing,
-	createRowAndBlock
+	createRowAndBlock,
+	savePageAsync,
 } from '../actions';
 import { getSpheneData } from '../helpers';
 import { getCurrentPage, getCurrentPageId } from '../selectors';
@@ -33,6 +34,7 @@ const SpheneEditor = React.createClass( {
 		setCurrentPageId: React.PropTypes.func.isRequired,
 		doneEditing: React.PropTypes.func.isRequired,
 		createRowAndBlock: React.PropTypes.func.isRequired,
+		savePage: React.PropTypes.func.isRequired,
 	},
 
 	componentWillMount() {
@@ -61,7 +63,7 @@ const SpheneEditor = React.createClass( {
 		const onAdd = () => this.props.createRowAndBlock();
 		const onClickEdit = () => this.props.editBlock( this.props.currentBlockId );
 		const onClickDelete = () => this.props.deleteBlock( this.props.currentBlockId ) && this.props.doneEditing();
-		const onClickSave = () => null;
+		const onClickSave = () => this.props.savePage( this.props.currentPageId );
 		return (
 			<div className="sphene-editor__page">
 				<SaveButton isActive={ isSaveActive } onClick={ onClickSave } />
@@ -104,6 +106,7 @@ const mapDispatchToProps = dispatch => {
 		deleteBlock,
 		doneEditing,
 		createRowAndBlock,
+		savePage: savePageAsync,
 	}, dispatch );
 };
 

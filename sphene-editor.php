@@ -32,6 +32,7 @@ class SpheneEditor {
 	public function rest_api_init() {
 		register_rest_field( 'sphene_page', 'sphene_data', array(
 			'get_callback' => array( $this, 'get_post_content_filtered' ),
+			'update_callback' => array( $this, 'set_post_content_filtered' ),
 		) );
 	}
 
@@ -44,6 +45,21 @@ class SpheneEditor {
 			return $post->post_content;
 		}
 		return $post->post_content_filtered;
+	}
+
+	function set_post_content_filtered( $value, $object ) {
+		$post = get_post( $object->ID );
+		if ( ! $post ) {
+			return;
+		}
+		$updated = array(
+			'ID' => $post->ID,
+			'post_content_filtered' => $value,
+		);
+		$res = wp_update_post( $updated, true );
+		if ( is_wp_error( $res ) ) {
+			echo $res->message;
+		}
 	}
 
 	public function create_post_types() {
