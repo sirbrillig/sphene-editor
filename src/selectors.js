@@ -34,7 +34,7 @@ export const getUnsavedBlocks = ( page, state ) => getAllBlocks( page, state ).f
 export const getDeletedBlocks = state => Object.keys( state.blocks ).map( id => state.blocks[ id ] ).filter( block => block.deleted );
 
 export const getRowForBlock = ( blockId, state ) => {
-	return getCurrentPage( state ).rows.find( row => row.columns.filter( block => block.postId === blockId ) );
+	return getCurrentPage( state ).rows.find( row => row.columns.some( block => block.postId === blockId ) );
 };
 
 export const getCurrentRow = state => getRowForBlock( state.currentBlockId, state );
