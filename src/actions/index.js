@@ -1,5 +1,13 @@
-import { getPageFromApi, sendPageToApi, sendBlockToApi, getBlockFromApi, buildUnsavedBlock, buildRowWithBlock } from '../helpers';
-import { getCurrentPageId, getPage, getFullPageContent, getAllBlocks } from '../selectors';
+import {
+	getPageFromApi,
+	sendPageToApi,
+	createBlockInApi,
+	sendBlockToApi,
+	getBlockFromApi,
+	buildUnsavedBlock,
+	buildRowWithBlock
+} from '../helpers';
+import { getCurrentPageId, getPage, getFullPageContent, getModifiedBlocks, getUnsavedBlocks } from '../selectors';
 
 export function fetchPage( id ) {
 	return {
@@ -121,14 +129,29 @@ export function pageSaved( id ) {
 	};
 }
 
+export function savedBlockReceived( id, page ) {
+	return {
+		type: 'BLOCK_REPLACED',
+		id,
+		page
+	};
+}
+
 export function savePageAsync( id ) {
 	return ( dispatch, getState ) => {
 		const state = getState();
 		dispatch( savePage( id ) );
 		const page = getPage( id, state );
 		page.content = getFullPageContent( page.rows, state );
-		let jobs = [ sendPageToApi( page ) ];
-		jobs = jobs.concat( getAllBlocks( page, state ).map( block => sendBlockToApi( block ) ) );
-		Promise.all( jobs ).then( () => dispatch( pageSaved( id ) ) );
+		// Update the blocks
+		const updateBlocksPromises = getModifiedBlocks( page, state ).map( block => sendBlockToApi( block ) );
+		// Create new blocks
+		const saveNewBlocksPromises = getUnsavedBlocks( page, state ).map( block => {
+			return createBlockInApi( block ).then( data => dispatch( savedBlockReceived( block.id, data ) ) );
+		} );
+		// TODO: remove deleted blocks
+		// Update the page
+		const createPagesPromises = [ sendPageToApi( page ) ];
+		Promise.all( createPagesPromises.concat( updateBlocksPromises, saveNewBlocksPromises ) ).then( () => dispatch( pageSaved( id ) ) );
 	};
 }

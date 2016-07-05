@@ -18,6 +18,15 @@ export function sendPageToApi( page ) {
 	} );
 }
 
+export function createBlockInApi( page ) {
+	const { content } = page;
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_block',
+		method: 'POST',
+		data: { content },
+	} );
+}
+
 export function sendBlockToApi( page ) {
 	const { id, content } = page;
 	return ajax( {

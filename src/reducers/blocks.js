@@ -19,6 +19,9 @@ export default function blocks( state = {}, action ) {
 			) } );
 		case 'BLOCK_DELETE':
 			return removeBlock( action.id, state );
+		case 'BLOCK_REPLACED':
+			state = removeBlock( action.id, state );
+			return Object.assign( {}, state, { [ action.page.id ]: action.page } );
 	}
 	return state;
 }

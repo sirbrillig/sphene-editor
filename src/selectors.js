@@ -20,3 +20,7 @@ export const getAllBlocks = ( page, state ) => {
 		return blocks;
 	}, [] );
 };
+
+export const getModifiedBlocks = ( page, state ) => getAllBlocks( page, state ).filter( block => ! block.unsaved );
+
+export const getUnsavedBlocks = ( page, state ) => getAllBlocks( page, state ).filter( block => block.unsaved );

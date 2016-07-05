@@ -28,6 +28,9 @@ export default function pages( state = {}, action ) {
 			return Object.assign( {}, state, { [ action.id ]: addRowToPage( action.row, state[ action.id ] ) } );
 		case 'BLOCK_DELETE':
 			return removeBlockFromPages( action.id, state );
+		case 'BLOCK_REPLACED':
+			state = removeBlockFromPages( action.id, state );
+			// TODO: find all instances of action.id and replace with action.page.id
 	}
 	return state;
 }
