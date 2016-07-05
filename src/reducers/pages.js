@@ -20,6 +20,27 @@ function removeBlockFromPages( id, allPages ) {
 	}, {} );
 }
 
+function replaceBlockInRow( oldId, newId, row ) {
+	const columns = row.columns.map( block => {
+		if ( block.postId === oldId ) {
+			block.postId = newId;
+		}
+		return block;
+	} );
+	return Object.assign( {}, row, { columns } );
+}
+
+function replaceBlockInPage( oldId, newId, page ) {
+	return Object.assign( {}, page, { rows: page.rows.map( row => replaceBlockInRow( oldId, newId, row ) ) } );
+}
+
+function replaceBlockInPages( oldId, newId, allPages ) {
+	return Object.keys( allPages ).reduce( ( state, pageId ) => {
+		state[ pageId ] = replaceBlockInPage( oldId, newId, allPages[ pageId ] );
+		return state;
+	}, {} );
+}
+
 export default function pages( state = {}, action ) {
 	switch ( action.type ) {
 		case 'PAGE_RECEIVED':
@@ -29,8 +50,7 @@ export default function pages( state = {}, action ) {
 		case 'BLOCK_DELETE':
 			return removeBlockFromPages( action.id, state );
 		case 'BLOCK_REPLACED':
-			state = removeBlockFromPages( action.id, state );
-			// TODO: find all instances of action.id and replace with action.page.id
+			return replaceBlockInPages( action.id, action.page.id, state );
 	}
 	return state;
 }

@@ -14,6 +14,12 @@ export const getFullPageContent = ( rows, state ) => {
 	return rows.map( row => getFullRowContent( row, state ) ).join( ' ' );
 };
 
+export const getPageWithFullContent = ( id, state ) => {
+	const page = getPage( id, state );
+	page.content = getFullPageContent( page.rows, state );
+	return page;
+};
+
 export const getAllBlocks = ( page, state ) => {
 	return page.rows.reduce( ( blocks, row ) => {
 		row.columns.map( block => blocks = blocks.concat( getBlock( block.postId, state ) ) );

@@ -8,6 +8,10 @@ const removeBlock = ( id, state ) => {
 	return newState;
 };
 
+const addBlock = ( page, state ) => {
+	return Object.assign( {}, state, { [ page.id ]: page } );
+};
+
 export default function blocks( state = {}, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_RECEIVED':
@@ -20,8 +24,7 @@ export default function blocks( state = {}, action ) {
 		case 'BLOCK_DELETE':
 			return removeBlock( action.id, state );
 		case 'BLOCK_REPLACED':
-			state = removeBlock( action.id, state );
-			return Object.assign( {}, state, { [ action.page.id ]: action.page } );
+			return addBlock( action.page, removeBlock( action.id, state ) );
 	}
 	return state;
 }
