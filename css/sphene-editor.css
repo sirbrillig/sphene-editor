@@ -187,3 +187,15 @@ body.sphene-page-body:not(.custom-background-image):after {
   left: 0;
   position: absolute;
 }
+
+.sphene-block {
+  overflow: hidden;
+  min-height: 120px;
+  display: inline-block;
+  flex: 1;
+  width: 100%;
+}
+
+.sphene-row {
+  display: flex;
+}

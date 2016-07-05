@@ -7,16 +7,20 @@ export const getPage = ( id, state ) => state.pages[ id ];
 export const getCurrentPage = state => getPage( state.currentPageId, state );
 
 export const getFullRowContent = ( row, state ) => {
-	return row.columns.map( block => getBlock( block.postId, state ).content ).join( ' ' );
+	return row.columns.map( block => getBlock( block.postId, state ).content )
+	.map( content => `<div class="sphene-block">${content}</div>` )
+	.join( ' ' );
 };
 
 export const getFullPageContent = ( rows, state ) => {
-	return rows.map( row => getFullRowContent( row, state ) ).join( ' ' );
+	return rows.map( row => getFullRowContent( row, state ) )
+	.map( content => `<div class="sphene-row">${content}</div>` )
+	.join( ' ' );
 };
 
 export const getPageWithFullContent = ( id, state ) => {
 	const page = getPage( id, state );
-	page.content = getFullPageContent( page.rows, state );
+	page.content = '<div class="sphene-page-content">' + getFullPageContent( page.rows, state ) + '</div>';
 	return page;
 };
 
