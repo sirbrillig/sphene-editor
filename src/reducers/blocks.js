@@ -8,6 +8,15 @@ const removeBlock = ( id, state ) => {
 	return newState;
 };
 
+const markBlockDeleted = ( id, state ) => {
+	const block = state[ id ];
+	if ( block.unsaved ) {
+		return removeBlock( id, state );
+	}
+	block.deleted = true;
+	return Object.assign( {}, state, { [ id ]: block } );
+};
+
 const addBlock = ( page, state ) => {
 	return Object.assign( {}, state, { [ page.id ]: page } );
 };
@@ -22,7 +31,7 @@ export default function blocks( state = {}, action ) {
 				{ content: action.content }
 			) } );
 		case 'BLOCK_DELETE':
-			return removeBlock( action.id, state );
+			return markBlockDeleted( action.id, state );
 		case 'BLOCK_REPLACED':
 			return addBlock( action.page, removeBlock( action.id, state ) );
 	}

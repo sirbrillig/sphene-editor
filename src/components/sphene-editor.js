@@ -69,8 +69,8 @@ const SpheneEditor = React.createClass( {
 		const isOverlayActive = !! this.props.currentBlockId;
 		const onClickOverlay = () => this.props.doneEditing();
 		const onAdd = () => this.props.createRowAndBlock();
-		const onClickEdit = () => this.props.editBlock( this.props.currentBlockId );
-		const onClickDelete = () => this.props.deleteBlock( this.props.currentBlockId ) && this.props.doneEditing();
+		const onEditBlock = () => this.props.editBlock( this.props.currentBlockId );
+		const onDeleteBlock = () => this.props.deleteBlock( this.props.currentBlockId ) && this.props.doneEditing();
 		const onClickSave = () => this.props.savePage( this.props.currentPageId );
 		return (
 			<div className="sphene-editor__page">
@@ -79,8 +79,8 @@ const SpheneEditor = React.createClass( {
 				<EmptyEditor onAdd={ onAdd } />
 				<BlockOptions
 					isActive={ isOverlayActive }
-					onEdit={ onClickEdit }
-					onDelete={ onClickDelete }
+					onEdit={ onEditBlock }
+					onDelete={ onDeleteBlock }
 				/>
 				<Overlay isActive={ isOverlayActive } onClick={ onClickOverlay } />
 				<BlockEditor isActive={ isBlockEditorActive } blockId={ this.props.currentBlockId } />
