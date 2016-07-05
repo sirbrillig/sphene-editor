@@ -17,6 +17,7 @@ import {
 	deleteRow,
 	createRowAndBlock,
 	savePageAsync,
+	createAndAddBlockToRow,
 } from '../actions';
 import { getSpheneData } from '../helpers';
 import { getCurrentPage, getCurrentPageId, getCurrentRow } from '../selectors';
@@ -38,6 +39,7 @@ const SpheneEditor = React.createClass( {
 		createRowAndBlock: React.PropTypes.func.isRequired,
 		savePage: React.PropTypes.func.isRequired,
 		deleteRow: React.PropTypes.func.isRequired,
+		createAndAddBlockToRow: React.PropTypes.func.isRequired,
 	},
 
 	componentWillMount() {
@@ -52,7 +54,7 @@ const SpheneEditor = React.createClass( {
 
 	render() {
 		const { rows } = this.props;
-		const onAddColumn = () => null;
+		const onAddColumn = rowId => this.props.createAndAddBlockToRow( rowId );
 		const onDeleteRow = rowId => this.props.deleteRow( rowId, getSpheneData().currentPageId );
 		const pageRows = ! rows || rows.length < 1
 			? null
@@ -95,7 +97,7 @@ const SpheneEditor = React.createClass( {
 const mapStateToProps = state => {
 	const currentPageId = getCurrentPageId( state );
 	const currentBlockId = state.currentBlockId;
-	const currentRowId = currentBlockId ? getCurrentRow( state ).rowId : 0;
+	const currentRowId = currentBlockId ? getCurrentRow( state ).rowId : '';
 	const isBlockEditorActive = state.ui.showingBlockEditor;
 	const isUnsaved = state.isUnsaved;
 	const page = getCurrentPage( state );
@@ -120,6 +122,7 @@ const mapDispatchToProps = dispatch => {
 		doneEditing,
 		createRowAndBlock,
 		deleteRow,
+		createAndAddBlockToRow,
 		savePage: savePageAsync,
 	}, dispatch );
 };

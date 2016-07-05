@@ -114,6 +114,24 @@ export function deleteRow( rowId, pageId ) {
 	};
 }
 
+export function createAndAddBlockToRow( rowId ) {
+	return ( dispatch, getState ) => {
+		const block = buildUnsavedBlock();
+		const pageId = getCurrentPageId( getState() );
+		dispatch( blockReceived( block ) );
+		dispatch( addBlockToRow( block.id, rowId, pageId ) );
+	};
+}
+
+export function addBlockToRow( blockId, rowId, pageId ) {
+	return {
+		type: 'ROW_ADD_BLOCK',
+		pageId,
+		blockId,
+		rowId,
+	};
+}
+
 export function createRowAndBlock() {
 	return ( dispatch, getState ) => {
 		const block = buildUnsavedBlock();

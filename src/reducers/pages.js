@@ -57,18 +57,46 @@ function removeRowFromPage( rowId, page ) {
 	return Object.assign( {}, page, { rows: page.rows.filter( row => row.rowId !== rowId ) } );
 }
 
+function getRowFromPage( rowId, page ) {
+	return page.rows.find( row => row.rowId === rowId );
+}
+
+function replaceRowInPage( newRow, page ) {
+	const newRows = page.rows.map( row => {
+		if ( row.rowId === newRow.rowId ) {
+			return newRow;
+		}
+		return row;
+	} );
+	return Object.assign( {}, page, {
+		rows: newRows
+	} );
+}
+
+function addBlockToRowInPage( blockId, rowId, page ) {
+	const row = getRowFromPage( rowId, page );
+	const newRow = Object.assign( {}, row, { columns: row.columns.concat( { postId: blockId } ) } );
+	return replaceRowInPage( newRow, page );
+}
+
+function replacePage( pageId, newPage, state ) {
+	return Object.assign( {}, state, { [ pageId ]: newPage } );
+}
+
 export default function pages( state = {}, action ) {
 	switch ( action.type ) {
 		case 'PAGE_RECEIVED':
-			return Object.assign( {}, state, { [ action.page.id ]: validatePage( action.page ) } );
+			return replacePage( action.page.id, validatePage( action.page ), state );
 		case 'PAGE_ADD_ROW':
-			return Object.assign( {}, state, { [ action.id ]: addRowToPage( action.row, state[ action.id ] ) } );
+			return replacePage( action.id, addRowToPage( action.row, state[ action.id ] ), state );
 		case 'BLOCK_DELETE':
 			return removeBlockFromPages( action.id, state );
 		case 'BLOCK_REPLACED':
 			return replaceBlockInPages( action.id, action.page.id, state );
 		case 'ROW_DELETE':
-			return Object.assign( {}, state, { [ action.pageId ]: removeRowFromPage( action.rowId, state[ action.pageId ] ) } );
+			return replacePage( action.pageId, removeRowFromPage( action.rowId, state[ action.pageId ] ), state );
+		case 'ROW_ADD_BLOCK':
+			return replacePage( action.pageId, addBlockToRowInPage( action.blockId, action.rowId, state[ action.pageId ] ), state );
 	}
 	return state;
 }
