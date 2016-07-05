@@ -27,6 +27,8 @@ function isUnsaved( state = false, action ) {
 		case 'BLOCK_DELETE':
 		case 'PAGE_ADD_ROW':
 			return true;
+		case 'PAGE_SAVED':
+			return false;
 	}
 	return state;
 }

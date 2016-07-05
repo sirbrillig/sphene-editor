@@ -1,5 +1,5 @@
-import { getPageFromApi, sendPageToApi, getBlockFromApi, buildUnsavedBlock, buildRowWithBlock } from '../helpers';
-import { getCurrentPageId, getPage } from '../selectors';
+import { getPageFromApi, sendPageToApi, sendBlockToApi, getBlockFromApi, buildUnsavedBlock, buildRowWithBlock } from '../helpers';
+import { getCurrentPageId, getPage, getFullPageContent, getAllBlocks } from '../selectors';
 
 export function fetchPage( id ) {
 	return {
@@ -126,6 +126,8 @@ export function savePageAsync( id ) {
 		const state = getState();
 		dispatch( savePage( id ) );
 		const page = getPage( id, state );
-		sendPageToApi( page, state ).then( () => dispatch( pageSaved( id ) ) );
+		page.content = getFullPageContent( page.rows, state );
+		sendPageToApi( page ).then( () => dispatch( pageSaved( id ) ) );
+		getAllBlocks( page, state ).map( block => sendBlockToApi( block ) );
 	};
 }

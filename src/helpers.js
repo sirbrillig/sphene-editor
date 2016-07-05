@@ -1,5 +1,4 @@
 import shortid from 'shortid';
-import { getBlock } from './selectors';
 
 export function findPostById( posts, id ) {
 	return posts.reduce( ( found, post ) => {
@@ -10,20 +9,21 @@ export function findPostById( posts, id ) {
 	}, [] );
 }
 
-export function getFullRow( row, state ) {
-	return row.columns.map( block => getBlock( block.postId, state ).content );
-}
-
-export function getFullPage( rows, state ) {
-	return rows.map( row => getFullRow( row, state ) ).join( ' ' );
-}
-
-export function sendPageToApi( page, state ) {
-	const { id, rows } = page;
+export function sendPageToApi( page ) {
+	const { id, rows, content } = page;
 	return ajax( {
 		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_page/' + id,
 		method: 'POST',
-		data: { id, sphene_data: JSON.stringify( { rows } ), content: getFullPage( rows, state ) },
+		data: { id, sphene_data: JSON.stringify( { rows } ), content },
+	} );
+}
+
+export function sendBlockToApi( page ) {
+	const { id, content } = page;
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_block/' + id,
+		method: 'POST',
+		data: { id, content },
 	} );
 }
 
