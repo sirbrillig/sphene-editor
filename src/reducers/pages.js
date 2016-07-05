@@ -53,6 +53,10 @@ function validatePage( page ) {
 	return Object.assign( {}, page, { rows } );
 }
 
+function removeRowFromPage( rowId, page ) {
+	return Object.assign( {}, page, { rows: page.rows.filter( row => row.rowId !== rowId ) } );
+}
+
 export default function pages( state = {}, action ) {
 	switch ( action.type ) {
 		case 'PAGE_RECEIVED':
@@ -63,6 +67,8 @@ export default function pages( state = {}, action ) {
 			return removeBlockFromPages( action.id, state );
 		case 'BLOCK_REPLACED':
 			return replaceBlockInPages( action.id, action.page.id, state );
+		case 'ROW_DELETE':
+			return Object.assign( {}, state, { [ action.pageId ]: removeRowFromPage( action.rowId, state[ action.pageId ] ) } );
 	}
 	return state;
 }

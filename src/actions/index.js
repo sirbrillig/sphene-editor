@@ -98,10 +98,11 @@ export function doneEditing() {
 	};
 }
 
-export function deleteRow( id ) {
+export function deleteRow( rowId, pageId ) {
 	return {
 		type: 'ROW_DELETE',
-		id
+		rowId,
+		pageId,
 	};
 }
 

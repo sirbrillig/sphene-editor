@@ -52,7 +52,7 @@ const SpheneEditor = React.createClass( {
 	render() {
 		const { rows } = this.props;
 		const onAddColumn = () => null;
-		const onDeleteRow = id => this.props.deleteRow( id );
+		const onDeleteRow = rowId => this.props.deleteRow( rowId, getSpheneData().currentPageId );
 		const pageRows = ! rows || rows.length < 1
 			? null
 			: rows.map( row => {
