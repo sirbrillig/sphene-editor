@@ -44,6 +44,9 @@ function replaceBlockInPages( oldId, newId, allPages ) {
 }
 
 function validatePage( page ) {
+	if ( ! page.rows ) {
+		page.rows = [];
+	}
 	const rows = page.rows.map( row => {
 		if ( ! row.rowId ) {
 			row.rowId = shortid.generate();

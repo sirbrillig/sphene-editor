@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { isUnsaved } from '../src/reducers';
+import { isUnsaved } from '../../src/reducers';
 
 describe( 'reducer', function() {
 	describe( 'isUnsaved', function() {
