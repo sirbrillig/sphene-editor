@@ -3,7 +3,7 @@ import pages from './pages';
 import blocks from './blocks';
 import ui from './ui';
 
-function currentPageId( state = 0, action ) {
+export function currentPageId( state = 0, action ) {
 	switch ( action.type ) {
 		case 'PAGE_ID_RECEIVED':
 			return action.id;
@@ -11,7 +11,7 @@ function currentPageId( state = 0, action ) {
 	return state;
 }
 
-function currentBlockId( state = 0, action ) {
+export function currentBlockId( state = 0, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_SELECT':
 			return action.id;
@@ -21,7 +21,7 @@ function currentBlockId( state = 0, action ) {
 	return state;
 }
 
-function isUnsaved( state = false, action ) {
+export function isUnsaved( state = false, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_SET_CONTENT':
 		case 'BLOCK_DELETE':

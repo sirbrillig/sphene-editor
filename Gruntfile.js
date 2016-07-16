@@ -19,6 +19,16 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		mochaTest: {
+			test: {
+				options: {
+					reporter: 'spec',
+					require: 'babel-register'
+				},
+				src: [ 'test/**/*.js' ]
+			}
+		},
+
 		watch: {
 			scripts: {
 				files: [ 'src/**/*.js', '**/*.php', 'css/*.css' ],
@@ -29,4 +39,5 @@ module.exports = function( grunt ) {
 
 	grunt.registerTask( 'default', [ 'browserify', 'copytotheplace' ] );
 	grunt.registerTask( 'start', [ 'default', 'watch' ] );
+	grunt.registerTask( 'test', [ 'mochaTest' ] );
 };
