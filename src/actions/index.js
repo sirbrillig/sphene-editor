@@ -208,3 +208,10 @@ export function activateOverlay( overlay ) {
 		overlay,
 	};
 }
+
+export function deactivateOverlay() {
+	return {
+		type: 'OVERLAY_ACTIVATE',
+		overlay: null,
+	};
+}

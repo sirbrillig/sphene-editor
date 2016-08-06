@@ -9,7 +9,6 @@ export default function ui( state = initialState, action ) {
 		case 'OVERLAY_ACTIVATE':
 			return Object.assign( {}, state, { currentOverlay: action.overlay } );
 		case 'BLOCK_EDIT_COMPLETE':
-		case 'OVERLAY_CLOSE':
 			return Object.assign( {}, state, { currentOverlay: null } );
 	}
 	return state;
