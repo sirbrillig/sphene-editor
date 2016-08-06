@@ -4,9 +4,9 @@ import EmptyEditor from './empty-editor';
 import BlockOptions from './block-options';
 import Overlay from './overlay';
 import BlockEditor from './block-editor';
+import BlockTypePicker from './block-type-picker';
 import SaveButton from './save-button';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import {
 	fetchPageAsync,
 	setCurrentPageId,
@@ -28,7 +28,7 @@ const SpheneEditor = React.createClass( {
 		currentPageId: React.PropTypes.number.isRequired,
 		currentRowId: React.PropTypes.string,
 		currentBlockId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
-		isBlockEditorActive: React.PropTypes.bool,
+		currentOverlay: React.PropTypes.oneOf( [ 'block-editor', 'block-options', 'block-type-picker' ] ),
 		isUnsaved: React.PropTypes.bool,
 		fetchPage: React.PropTypes.func.isRequired,
 		selectBlock: React.PropTypes.func.isRequired,
@@ -67,9 +67,11 @@ const SpheneEditor = React.createClass( {
 					onDeleteRow={ onDeleteRow }
 				/>;
 			} );
-		const isBlockEditorActive = this.props.isBlockEditorActive;
+		const isBlockEditorActive = this.props.currentOverlay === 'block-editor';
+		const isTypePickerActive = this.props.currentOverlay === 'block-type-picker';
+		const isBlockOptionsActive = this.props.currentOverlay === 'block-options';
 		const isSaveActive = this.props.isUnsaved;
-		const isOverlayActive = !! this.props.currentBlockId;
+		const isOverlayActive = this.props.currentBlockId && this.props.currentOverlay !== null;
 		const onClickOverlay = () => this.props.doneEditing();
 		const onAddRow = () => this.props.createRowAndBlock();
 		const onEditBlock = () => this.props.editBlock( this.props.currentBlockId );
@@ -81,8 +83,11 @@ const SpheneEditor = React.createClass( {
 				<SaveButton isActive={ isSaveActive } onClick={ onClickSave } />
 				{ pageRows }
 				<EmptyEditor onAdd={ onAddRow } />
+				<BlockTypePicker
+					isActive={ isTypePickerActive }
+				/>
 				<BlockOptions
-					isActive={ isOverlayActive }
+					isActive={ isBlockOptionsActive }
 					onEdit={ onEditBlock }
 					onDelete={ onDeleteBlock }
 					onAdd={ onAddColumnAfterBlock }
@@ -99,12 +104,11 @@ const mapStateToProps = state => {
 	const currentBlockId = state.currentBlockId;
 	const currentRow = currentPageId ? getCurrentRow( state ) : null;
 	const currentRowId = currentRow ? currentRow.rowId : '';
-	const isBlockEditorActive = state.ui.showingBlockEditor;
 	const isUnsaved = state.isUnsaved;
 	const page = getCurrentPage( state );
 	const rows = page ? page.rows : [];
 	return {
-		isBlockEditorActive,
+		currentOverlay: state.ui.currentOverlay,
 		currentBlockId,
 		currentRowId,
 		currentPageId,
@@ -113,19 +117,17 @@ const mapStateToProps = state => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators( {
-		fetchPage: fetchPageAsync,
-		setCurrentPageId,
-		selectBlock,
-		editBlock,
-		deleteBlock,
-		doneEditing,
-		createRowAndBlock,
-		deleteRow,
-		createAndAddBlockToRow,
-		savePage: savePageAsync,
-	}, dispatch );
+const actions = {
+	fetchPage: fetchPageAsync,
+	setCurrentPageId,
+	selectBlock,
+	editBlock,
+	deleteBlock,
+	doneEditing,
+	createRowAndBlock,
+	deleteRow,
+	createAndAddBlockToRow,
+	savePage: savePageAsync,
 };
 
-export default connect( mapStateToProps, mapDispatchToProps )( SpheneEditor );
+export default connect( mapStateToProps, actions )( SpheneEditor );

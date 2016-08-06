@@ -201,3 +201,10 @@ export function savePageAsync( id ) {
 		.then( () => dispatch( pageSaved( id ) ) );
 	};
 }
+
+export function activateOverlay( overlay ) {
+	return {
+		type: 'OVERLAY_ACTIVATE',
+		overlay,
+	};
+}

@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { getBlock } from '../selectors';
-import { fetchBlockAsync, selectBlock } from '../actions';
+import { fetchBlockAsync, selectBlock, activateOverlay } from '../actions';
 import SpheneBlock from './sphene-block';
 
 const mapStateToProps = ( state, props ) => {
@@ -10,13 +9,10 @@ const mapStateToProps = ( state, props ) => {
 	if ( ! block ) {
 		return {};
 	}
-	const content = block.content;
-	const isSelected = state.currentBlockId === props.postId;
-	return { content, isSelected };
-};
-
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators( { fetchBlock: fetchBlockAsync, selectBlock }, dispatch );
+	return {
+		content: block.content,
+		isSelected: state.currentBlockId === props.postId
+	};
 };
 
 const SpheneBlockData = React.createClass( {
@@ -42,6 +38,7 @@ const SpheneBlockData = React.createClass( {
 
 	onClick() {
 		this.props.selectBlock( this.props.postId );
+		this.props.activateOverlay( 'block-options' );
 	},
 
 	render() {
@@ -53,4 +50,4 @@ const SpheneBlockData = React.createClass( {
 		/>;
 	},
 } );
-export default connect( mapStateToProps, mapDispatchToProps )( SpheneBlockData );
+export default connect( mapStateToProps, { fetchBlock: fetchBlockAsync, selectBlock, activateOverlay } )( SpheneBlockData );
