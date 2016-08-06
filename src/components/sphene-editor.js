@@ -58,7 +58,10 @@ const SpheneEditor = React.createClass( {
 
 	render() {
 		const { rows } = this.props;
-		const onAddColumn = rowId => this.props.createAndAddBlockToRow( rowId );
+		const onAddColumn = rowId => {
+			this.props.createAndAddBlockToRow( rowId );
+			this.props.deactivateOverlay();
+		};
 		const onDeleteRow = rowId => this.props.deleteRow( rowId, getSpheneData().currentPageId );
 		const pageRows = ! rows || rows.length < 1
 			? null
