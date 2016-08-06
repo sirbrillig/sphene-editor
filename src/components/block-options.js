@@ -5,8 +5,8 @@ const BlockOptions = ( { isActive, onEdit, onDelete, onAdd } ) => {
 	const classNames = classnames( 'sphene-editor__block-options', { 'is-active': isActive } );
 	return (
 		<div className={ classNames }>
-			<button onClick={ onEdit }>Edit</button>
 			<button onClick={ onDelete }>Delete</button>
+			<button onClick={ onEdit }>Edit</button>
 			<button onClick={ onAdd }>Add Column</button>
 		</div>
 	);
