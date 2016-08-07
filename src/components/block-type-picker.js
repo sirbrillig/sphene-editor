@@ -8,7 +8,7 @@ const BlockTypePicker = ( { isActive, createRowAndBlock, deactivateOverlay } ) =
 		deactivateOverlay();
 	};
 	const chooseHeader = () => {
-		createRowAndBlock();
+		createRowAndBlock( { blockType: 'header' } );
 		deactivateOverlay();
 	};
 	return (

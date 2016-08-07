@@ -138,9 +138,9 @@ export function addBlockToRow( blockId, rowId, pageId ) {
 	};
 }
 
-export function createRowAndBlock() {
+export function createRowAndBlock( options = {} ) {
 	return ( dispatch, getState ) => {
-		const block = buildUnsavedBlock();
+		const block = buildUnsavedBlock( options.blockType );
 		const currentPageId = getCurrentPageId( getState() );
 		dispatch( blockReceived( block ) );
 		dispatch( addRowToPage( currentPageId, buildRowWithBlock( block ) ) );
