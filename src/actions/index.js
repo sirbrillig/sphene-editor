@@ -1,3 +1,5 @@
+import get from 'lodash/get';
+
 import {
 	getPageFromApi,
 	sendPageToApi,
@@ -54,9 +56,13 @@ export function fetchBlock( id ) {
 }
 
 export function blockReceived( data ) {
-	const page = { id: data.id, content: data.content.rendered };
+	const content = get( data, 'content.rendered', data.defaultContent || '' );
+	const page = { id: data.id, content };
 	if ( data.unsaved ) {
 		page.unsaved = true;
+	}
+	if ( data.blockType ) {
+		page.blockType = data.blockType;
 	}
 	return {
 		type: 'BLOCK_RECEIVED',

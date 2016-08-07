@@ -74,9 +74,10 @@ export function getSpheneData() {
 	return window.spheneData;
 }
 
-export function buildUnsavedBlock() {
+export function buildUnsavedBlock( blockType = 'text' ) {
 	const id = shortid.generate();
-	return { id, unsaved: true, content: { rendered: 'This is a new block. <strong>Click</strong> to edit it!' } };
+	const defaultContent = 'This is a new block. <strong>Click</strong> to edit it!';
+	return { id, unsaved: true, blockType, defaultContent };
 }
 
 export const buildRowWithBlock = block => ( { rowId: shortid.generate(), columns: [ { postId: block.id } ] } );

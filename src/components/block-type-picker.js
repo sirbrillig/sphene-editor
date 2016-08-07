@@ -7,11 +7,16 @@ const BlockTypePicker = ( { isActive, createRowAndBlock, deactivateOverlay } ) =
 		createRowAndBlock();
 		deactivateOverlay();
 	};
+	const chooseHeader = () => {
+		createRowAndBlock();
+		deactivateOverlay();
+	};
 	return (
 		<div className={ classNames }>
 			<p>Choose a block type</p>
 			<div className="sphene-editor__block-type-picker__buttons">
 				<button onClick={ chooseText }>Text</button>
+				<button onClick={ chooseHeader }>Header</button>
 			</div>
 		</div>
 	);
