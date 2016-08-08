@@ -5,7 +5,7 @@ module.exports = function( grunt ) {
 		pkg: grunt.file.readJSON( 'package.json' ),
 
 		copytotheplace: {
-			all: [ 'sphene-editor.php', 'js', 'css', 'theme' ],
+			all: [ 'sphene-editor.php', 'SpheneEditor', 'js', 'css', 'theme' ],
 		},
 
 		browserify: {

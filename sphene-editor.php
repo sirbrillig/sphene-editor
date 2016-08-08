@@ -19,6 +19,11 @@ class SpheneEditor {
 		return self::$instance;
 	}
 
+	public function __construct( $options = array() ) {
+		require_once( plugin_dir_path( __FILE__  ) . 'SpheneEditor/src/HeaderImageController.php' );
+		$this->header_image_controller = isset( $options['header_image_controller'] ) ? $options['header_image_controller'] : new SpheneEditor\HeaderImageController();
+	}
+
 	public function add_hooks() {
 		$this->create_post_types();
 		if ( current_user_can( 'edit_pages' ) ) {
@@ -34,6 +39,7 @@ class SpheneEditor {
 			'get_callback' => array( $this, 'get_post_content_filtered' ),
 			'update_callback' => array( $this, 'set_post_content_filtered' ),
 		) );
+		$this->header_image_controller->register_routes();
 	}
 
 	function get_post_content_filtered( $object ) {
