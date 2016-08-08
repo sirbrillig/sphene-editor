@@ -83,7 +83,7 @@ export function getSpheneData() {
 
 export function buildUnsavedBlock( blockType = 'text' ) {
 	const id = shortid.generate();
-	const imageUrl = 'https://placehold.it/150x150';
+	const imageUrl = blockType === 'header' ? 'https://placehold.it/150x150' : null;
 	const defaultContent = blockType === 'text' ? 'This is a new block. <strong>Click</strong> to edit it!' : `<img src="${imageUrl}">`;
 	return { id, unsaved: true, blockType, imageUrl, defaultContent };
 }
