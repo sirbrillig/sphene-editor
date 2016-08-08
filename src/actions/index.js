@@ -9,12 +9,14 @@ import {
 	buildUnsavedBlock,
 	buildRowWithBlock,
 	removeBlockFromApi,
+	getHeaderDataFromApi,
 } from '../helpers';
 import {
 	getCurrentPageId,
 	getPage,
 	getPageWithFullContent,
 	getModifiedBlocks,
+	getHeaderBlocks,
 	getUnsavedBlocks,
 	getDeletedBlocks,
 } from '../selectors';
@@ -56,13 +58,16 @@ export function fetchBlock( id ) {
 }
 
 export function blockReceived( data ) {
-	const content = get( data, 'content.rendered', data.defaultContent || '' );
+	const content = get( data, 'content.rendered', data.defaultContent );
 	const page = { id: data.id, content };
 	if ( data.unsaved ) {
 		page.unsaved = true;
 	}
 	if ( data.blockType ) {
 		page.blockType = data.blockType;
+	}
+	if ( data.imageUrl ) {
+		page.imageUrl = data.imageUrl;
 	}
 	return {
 		type: 'BLOCK_RECEIVED',
@@ -221,3 +226,20 @@ export function deactivateOverlay() {
 		overlay: null,
 	};
 }
+
+export function headerDataReceived( id, data ) {
+	return {
+		type: 'HEADER_DATA_RECEIVED',
+		data,
+		id,
+	};
+}
+
+export function fetchHeaderAsync() {
+	return ( dispatch, getState ) => {
+		const state = getState();
+		const currentPageId = getCurrentPageId( state );
+		const page = getPage( currentPageId, state );
+		getHeaderDataFromApi()
+		.then( data => getHeaderBlocks( page, state ).map( block => dispatch( headerDataReceived( block.id, data ) ) ) );
+	}; }

@@ -1,5 +1,12 @@
 import shortid from 'shortid';
 
+export function getHeaderDataFromApi() {
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'sphene-editor/v1/settings/header',
+		method: 'GET',
+	} );
+}
+
 export function findPostById( posts, id ) {
 	return posts.reduce( ( found, post ) => {
 		if ( post.ID === id ) {
@@ -76,8 +83,9 @@ export function getSpheneData() {
 
 export function buildUnsavedBlock( blockType = 'text' ) {
 	const id = shortid.generate();
-	const defaultContent = 'This is a new block. <strong>Click</strong> to edit it!';
-	return { id, unsaved: true, blockType, defaultContent };
+	const imageUrl = 'https://placehold.it/150x150';
+	const defaultContent = blockType === 'text' ? 'This is a new block. <strong>Click</strong> to edit it!' : `<img src="${imageUrl}">`;
+	return { id, unsaved: true, blockType, imageUrl, defaultContent };
 }
 
 export const buildRowWithBlock = block => ( { rowId: shortid.generate(), columns: [ { postId: block.id } ] } );

@@ -33,6 +33,8 @@ export const getAllBlocks = ( page, state ) => {
 
 export const getModifiedBlocks = ( page, state ) => getAllBlocks( page, state ).filter( block => ! block.unsaved );
 
+export const getHeaderBlocks = ( page, state ) => getAllBlocks( page, state ).filter( block => block.blockType === 'header' );
+
 export const getUnsavedBlocks = ( page, state ) => getAllBlocks( page, state ).filter( block => block.unsaved );
 
 export const getDeletedBlocks = state => Object.keys( state.blocks ).map( id => state.blocks[ id ] ).filter( block => block.deleted );

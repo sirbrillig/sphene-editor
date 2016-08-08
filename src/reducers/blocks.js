@@ -21,6 +21,10 @@ const addBlock = ( page, state ) => {
 	return Object.assign( {}, state, { [ page.id ]: page } );
 };
 
+const replaceUrlInContent = ( content, oldUrl, newUrl ) => {
+	return content.replace( oldUrl, newUrl );
+};
+
 export default function blocks( state = {}, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_RECEIVED':
@@ -36,6 +40,14 @@ export default function blocks( state = {}, action ) {
 			return removeBlock( action.id, state );
 		case 'BLOCK_REPLACED':
 			return addBlock( action.page, removeBlock( action.id, state ) );
+		case 'HEADER_DATA_RECEIVED':
+			return Object.assign( {}, state, { [ action.id ]: updatePage(
+				state[ action.id ],
+				{
+					imageUrl: action.data.url,
+					content: replaceUrlInContent( state[ action.id ].content, state[ action.id ].imageUrl, action.data.url ),
+				}
+			) } );
 	}
 	return state;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getBlock } from '../selectors';
-import { fetchBlockAsync, selectBlock, activateOverlay } from '../actions';
+import { fetchBlockAsync, selectBlock, activateOverlay, fetchHeaderAsync } from '../actions';
 import SpheneBlock from './sphene-block';
 
 const mapStateToProps = ( state, props ) => {
@@ -11,7 +11,9 @@ const mapStateToProps = ( state, props ) => {
 	}
 	return {
 		content: block.content,
-		isSelected: state.currentBlockId === props.postId
+		isSelected: state.currentBlockId === props.postId,
+		isUnsaved: block.unsaved,
+		blockType: block.blockType,
 	};
 };
 
@@ -22,6 +24,9 @@ const SpheneBlockData = React.createClass( {
 		selectBlock: React.PropTypes.func.isRequired,
 		content: React.PropTypes.string,
 		isSelected: React.PropTypes.bool,
+		isUnsaved: React.PropTypes.bool,
+		blockType: React.PropTypes.string,
+		fetchHeader: React.PropTypes.func.isRequired,
 	},
 
 	getDefaultProps() {
@@ -31,8 +36,10 @@ const SpheneBlockData = React.createClass( {
 	},
 
 	componentWillMount() {
-		if ( this.props.content === null ) {
+		if ( this.props.content === null && ! this.props.isUnsaved ) {
 			this.props.fetchBlock( this.props.postId );
+		} else if ( this.props.blockType === 'header' ) {
+			this.props.fetchHeader();
 		}
 	},
 
@@ -43,11 +50,16 @@ const SpheneBlockData = React.createClass( {
 
 	render() {
 		return <SpheneBlock
-		postId={ this.props.postId }
-		content={ this.props.content }
-		onClick={ this.onClick }
-		isSelected={ this.props.isSelected }
+			postId={ this.props.postId }
+			content={ this.props.content }
+			onClick={ this.onClick }
+			isSelected={ this.props.isSelected }
 		/>;
 	},
 } );
-export default connect( mapStateToProps, { fetchBlock: fetchBlockAsync, selectBlock, activateOverlay } )( SpheneBlockData );
+export default connect( mapStateToProps, {
+	fetchBlock: fetchBlockAsync,
+	selectBlock,
+	activateOverlay,
+	fetchHeader: fetchHeaderAsync,
+} )( SpheneBlockData );
