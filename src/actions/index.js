@@ -125,10 +125,11 @@ export function deleteRow( rowId, pageId ) {
 	};
 }
 
-export function createAndAddBlockToRow( rowId ) {
+export function createAndAddBlockToRow( options = {} ) {
 	return ( dispatch, getState ) => {
-		const block = buildUnsavedBlock();
+		const block = buildUnsavedBlock( options.blockType );
 		const pageId = getCurrentPageId( getState() );
+		const { rowId } = options;
 		dispatch( blockReceived( block ) );
 		dispatch( addBlockToRow( block.id, rowId, pageId ) );
 	};

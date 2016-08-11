@@ -58,9 +58,8 @@ const SpheneEditor = React.createClass( {
 
 	render() {
 		const { rows } = this.props;
-		const onAddColumn = rowId => {
-			this.props.createAndAddBlockToRow( rowId );
-			this.props.deactivateOverlay();
+		const onAddColumn = () => {
+			this.props.activateOverlay( 'block-type-picker' );
 		};
 		const onDeleteRow = rowId => this.props.deleteRow( rowId, getSpheneData().currentPageId );
 		const pageRows = ! rows || rows.length < 1
@@ -93,7 +92,9 @@ const SpheneEditor = React.createClass( {
 				<BlockTypePicker
 					isActive={ isTypePickerActive }
 					createRowAndBlock={ this.props.createRowAndBlock }
+					createAndAddBlockToRow={ this.props.createAndAddBlockToRow }
 					deactivateOverlay={ this.props.deactivateOverlay }
+					rowId={ this.props.currentRowId }
 				/>
 				<BlockOptions
 					isActive={ isBlockOptionsActive }

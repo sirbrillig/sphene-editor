@@ -1,14 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const BlockTypePicker = ( { isActive, createRowAndBlock, deactivateOverlay } ) => {
+const BlockTypePicker = ( { isActive, createRowAndBlock, deactivateOverlay, rowId, createAndAddBlockToRow } ) => {
 	const classNames = classnames( 'sphene-editor__block-type-picker', { 'is-active': isActive } );
 	const chooseText = () => {
-		createRowAndBlock();
+		rowId ? createAndAddBlockToRow( { rowId } ) : createRowAndBlock();
 		deactivateOverlay();
 	};
 	const chooseHeader = () => {
-		createRowAndBlock( { blockType: 'header' } );
+		rowId ? createAndAddBlockToRow( { rowId, blockType: 'header' } ) : createRowAndBlock( { blockType: 'header' } );
 		deactivateOverlay();
 	};
 	return (
@@ -25,7 +25,9 @@ const BlockTypePicker = ( { isActive, createRowAndBlock, deactivateOverlay } ) =
 BlockTypePicker.propTypes = {
 	isActive: React.PropTypes.bool,
 	createRowAndBlock: React.PropTypes.func.isRequired,
+	createAndAddBlockToRow: React.PropTypes.func.isRequired,
 	deactivateOverlay: React.PropTypes.func.isRequired,
+	rowId: React.PropTypes.string,
 };
 
 export default BlockTypePicker;
