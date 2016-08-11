@@ -39,11 +39,26 @@ class SpheneEditor {
 			'get_callback' => array( $this, 'get_post_content_filtered' ),
 			'update_callback' => array( $this, 'set_post_content_filtered' ),
 		) );
-		register_rest_field( 'sphene_block', 'block_type', array(
+		register_rest_field( 'sphene_block', 'blockType', array(
 			'get_callback' => array( $this, 'get_block_type' ),
 			'update_callback' => array( $this, 'set_block_type' ),
 		) );
+		register_rest_field( 'sphene_block', 'imageUrl', array(
+			'get_callback' => array( $this, 'get_block_image_url' ),
+			'update_callback' => array( $this, 'set_block_image_url' ),
+		) );
 		$this->header_image_controller->register_routes();
+	}
+
+	function set_block_image_url( $value, $object ) {
+		if ( ! $value || ! is_string( $value ) ) {
+			return;
+		}
+		update_post_meta( $object->ID, 'sphene-editor-block-image', strip_tags( $value ) );
+	}
+
+	function get_block_image_url( $object ) {
+		return get_post_meta( $object['id'], 'sphene-editor-block-image', true );
 	}
 
 	function set_block_type( $value, $object ) {
