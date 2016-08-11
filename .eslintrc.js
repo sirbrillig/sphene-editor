@@ -10,5 +10,6 @@ module.exports = {
 	rules: {
 		'wpcalypso/jsx-classname-namespace': 0,
 		'max-len': 0,
+		'camelcase': 0,
 	}
 };

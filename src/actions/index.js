@@ -63,6 +63,9 @@ export function blockReceived( data ) {
 	if ( data.unsaved ) {
 		page.unsaved = true;
 	}
+	if ( data.block_type ) {
+		page.blockType = data.block_type;
+	}
 	if ( data.blockType ) {
 		page.blockType = data.blockType;
 	}
@@ -176,7 +179,7 @@ export function pageSaved( id ) {
 }
 
 export function savedBlockReceived( id, data ) {
-	const page = { id: data.id, content: data.content.rendered };
+	const page = { id: data.id, content: data.content.rendered, blockType: data.block_type };
 	return {
 		type: 'BLOCK_REPLACED',
 		id,
