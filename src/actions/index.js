@@ -19,6 +19,7 @@ import {
 	getHeaderBlocks,
 	getUnsavedBlocks,
 	getDeletedBlocks,
+	getHeaderImageUrl,
 } from '../selectors';
 
 export function fetchPage( id ) {
@@ -228,19 +229,44 @@ export function deactivateOverlay() {
 	};
 }
 
-export function headerDataReceived( id, data ) {
+export function setBlockHeader( id, imageUrl ) {
 	return {
-		type: 'HEADER_DATA_RECEIVED',
-		data,
+		type: 'BLOCK_SET_HEADER',
 		id,
+		imageUrl,
 	};
 }
 
-export function fetchHeaderAsync() {
+export function fetchHeader() {
+	return {
+		type: 'HEADER_FETCH'
+	};
+}
+
+export function headerImageRecieved( imageUrl ) {
+	return {
+		type: 'HEADER_IMAGE_RECEIVED',
+		imageUrl,
+	};
+}
+
+export function updateBlockHeaders() {
 	return ( dispatch, getState ) => {
 		const state = getState();
 		const currentPageId = getCurrentPageId( state );
 		const page = getPage( currentPageId, state );
+		const imageUrl = getHeaderImageUrl( state );
+		getHeaderBlocks( page, state ).map( block => dispatch( setBlockHeader( block.id, imageUrl ) ) );
+	};
+}
+
+export function fetchHeaderAsync() {
+	return ( dispatch ) => {
+		dispatch( fetchHeader() );
 		getHeaderDataFromApi()
-		.then( data => getHeaderBlocks( page, state ).map( block => dispatch( headerDataReceived( block.id, data ) ) ) );
-	}; }
+			.then( data => {
+				dispatch( headerImageRecieved( data.url ) );
+				dispatch( updateBlockHeaders() );
+			} );
+	};
+}

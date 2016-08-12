@@ -9,6 +9,7 @@ import SaveButton from './save-button';
 import { connect } from 'react-redux';
 import {
 	fetchPageAsync,
+	fetchHeaderAsync,
 	setCurrentPageId,
 	selectBlock,
 	editBlock,
@@ -44,6 +45,7 @@ const SpheneEditor = React.createClass( {
 		savePage: React.PropTypes.func.isRequired,
 		deleteRow: React.PropTypes.func.isRequired,
 		createAndAddBlockToRow: React.PropTypes.func.isRequired,
+		fetchHeader: React.PropTypes.func.isRequired,
 	},
 
 	componentWillMount() {
@@ -54,6 +56,7 @@ const SpheneEditor = React.createClass( {
 			this.props.setCurrentPageId( id );
 			this.props.fetchPage( id );
 		}
+		this.props.fetchHeader();
 	},
 
 	render() {
@@ -129,6 +132,7 @@ const mapStateToProps = state => {
 
 const actions = {
 	fetchPage: fetchPageAsync,
+	fetchHeader: fetchHeaderAsync,
 	setCurrentPageId,
 	selectBlock,
 	editBlock,

@@ -34,6 +34,14 @@ export function isUnsaved( state = false, action ) {
 	return state;
 }
 
+export function headerImageUrl( state = null, action ) {
+	switch ( action.type ) {
+		case 'HEADER_IMAGE_RECEIVED':
+			return action.imageUrl;
+	}
+	return state;
+}
+
 const rootReducer = combineReducers( {
 	ui,
 	currentPageId,
@@ -41,6 +49,7 @@ const rootReducer = combineReducers( {
 	pages,
 	blocks,
 	isUnsaved,
+	headerImageUrl,
 } );
 
 export default rootReducer;

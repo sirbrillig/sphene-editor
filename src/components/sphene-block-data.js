@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getBlock } from '../selectors';
-import { fetchBlockAsync, selectBlock, activateOverlay, fetchHeaderAsync } from '../actions';
+import { fetchBlockAsync, selectBlock, activateOverlay, updateBlockHeaders } from '../actions';
 import SpheneBlock from './sphene-block';
 
 const mapStateToProps = ( state, props ) => {
@@ -26,7 +26,7 @@ const SpheneBlockData = React.createClass( {
 		isSelected: React.PropTypes.bool,
 		isUnsaved: React.PropTypes.bool,
 		blockType: React.PropTypes.string,
-		fetchHeader: React.PropTypes.func.isRequired,
+		updateBlockHeaders: React.PropTypes.func.isRequired,
 	},
 
 	getDefaultProps() {
@@ -39,7 +39,13 @@ const SpheneBlockData = React.createClass( {
 		if ( this.props.content === null && ! this.props.isUnsaved ) {
 			this.props.fetchBlock( this.props.postId );
 		} else if ( this.props.blockType === 'header' ) {
-			this.props.fetchHeader();
+			this.props.updateBlockHeaders();
+		}
+	},
+
+	componentWillReceiveProps( nextProps ) {
+		if ( nextProps.content !== this.props.content && nextProps.blockType === 'header' ) {
+			this.props.updateBlockHeaders();
 		}
 	},
 
@@ -61,5 +67,5 @@ export default connect( mapStateToProps, {
 	fetchBlock: fetchBlockAsync,
 	selectBlock,
 	activateOverlay,
-	fetchHeader: fetchHeaderAsync,
+	updateBlockHeaders,
 } )( SpheneBlockData );
