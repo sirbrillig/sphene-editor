@@ -1,63 +1,23 @@
-import shortid from 'shortid';
+import { generate as generateId } from 'shortid';
+
+function assign( obj, newObj ) {
+	return Object.assign( {}, obj, newObj );
+}
 
 function addRowToPage( row, page ) {
-	return Object.assign( {}, page, {
+	return assign( page, {
 		rows: page.rows.concat( row )
 	} );
 }
 
-function removeBlockFromRow( id, row ) {
-	const columns = row.columns.filter( block => block.postId !== id );
-	return Object.assign( {}, row, { columns } );
-}
-
-function removeBlockFromPage( id, page ) {
-	return Object.assign( {}, page, { rows: page.rows.map( row => removeBlockFromRow( id, row ) ) } );
-}
-
-function removeBlockFromPages( id, allPages ) {
-	return Object.keys( allPages ).reduce( ( state, pageId ) => {
-		state[ pageId ] = removeBlockFromPage( id, allPages[ pageId ] );
-		return state;
-	}, {} );
-}
-
-function replaceBlockInRow( oldId, newId, row ) {
-	const columns = row.columns.map( block => {
-		if ( block.postId === oldId ) {
-			block.postId = newId;
-		}
-		return block;
-	} );
-	return Object.assign( {}, row, { columns } );
-}
-
-function replaceBlockInPage( oldId, newId, page ) {
-	return Object.assign( {}, page, { rows: page.rows.map( row => replaceBlockInRow( oldId, newId, row ) ) } );
-}
-
-function replaceBlockInPages( oldId, newId, allPages ) {
-	return Object.keys( allPages ).reduce( ( state, pageId ) => {
-		state[ pageId ] = replaceBlockInPage( oldId, newId, allPages[ pageId ] );
-		return state;
-	}, {} );
-}
-
 function validatePage( page ) {
-	if ( ! page.rows ) {
-		page.rows = [];
-	}
-	const rows = page.rows.map( row => {
-		if ( ! row.rowId ) {
-			row.rowId = shortid.generate();
-		}
-		return row;
+	return assign( page, {
+		rows: assign( { rows: [] }, page ).rows.map( row => assign( { rowId: generateId() }, row ) )
 	} );
-	return Object.assign( {}, page, { rows } );
 }
 
 function removeRowFromPage( rowId, page ) {
-	return Object.assign( {}, page, { rows: page.rows.filter( row => row.rowId !== rowId ) } );
+	return assign( page, { rows: page.rows.filter( row => row.rowId !== rowId ) } );
 }
 
 function getRowFromPage( rowId, page ) {
@@ -65,25 +25,61 @@ function getRowFromPage( rowId, page ) {
 }
 
 function replaceRowInPage( newRow, page ) {
-	const newRows = page.rows.map( row => {
-		if ( row.rowId === newRow.rowId ) {
-			return newRow;
-		}
-		return row;
-	} );
-	return Object.assign( {}, page, {
-		rows: newRows
+	return assign( page, {
+		rows: page.rows.map( row => ( row.rowId === newRow.rowId ) ? newRow : row )
 	} );
 }
 
 function addBlockToRowInPage( blockId, rowId, page ) {
 	const row = getRowFromPage( rowId, page );
-	const newRow = Object.assign( {}, row, { columns: row.columns.concat( { postId: blockId } ) } );
+	const newRow = assign( row, { columns: row.columns.concat( { postId: blockId } ) } );
 	return replaceRowInPage( newRow, page );
 }
 
 function replacePage( pageId, newPage, state ) {
-	return Object.assign( {}, state, { [ pageId ]: newPage } );
+	return assign( state, { [ pageId ]: newPage } );
+}
+
+export function rowReducer( state = {}, action ) {
+	switch ( action.type ) {
+		case 'BLOCK_DELETE':
+			return assign( state, {
+				columns: state.columns.filter( block => block.postId !== action.id )
+			} );
+		case 'BLOCK_REPLACED':
+			const { id, page } = action;
+			return assign( state, {
+				columns: state.columns.map( block => {
+					return ( block.postId === id ) ? assign( block, { postId: page.id } ) : block;
+				} )
+			} );
+	}
+	return state;
+}
+
+export function pageReducer( state = {}, action ) {
+	switch ( action.type ) {
+		case 'PAGE_ADD_ROW':
+			return addRowToPage( action.row, state );
+		case 'PAGE_ROW_DELETE':
+			return removeRowFromPage( action.rowId, state );
+		case 'BLOCK_DELETE':
+			return assign( state, {
+				rows: state.rows.map( row => rowReducer( row, action ) )
+			} );
+		case 'BLOCK_REPLACED':
+			return assign( state, {
+				rows: state.rows.map( row => rowReducer( row, action ) )
+			} );
+	}
+	return state;
+}
+
+export function pageReducerOnAllPages( allPages, action ) {
+	return Object.keys( allPages ).reduce( ( newState, pageId ) => {
+		newState[ pageId ] = pageReducer( allPages[ pageId ], action );
+		return newState;
+	}, {} );
 }
 
 export default function pages( state = {}, action ) {
@@ -91,15 +87,19 @@ export default function pages( state = {}, action ) {
 		case 'PAGE_RECEIVED':
 			return replacePage( action.page.id, validatePage( action.page ), state );
 		case 'PAGE_ADD_ROW':
-			return replacePage( action.id, addRowToPage( action.row, state[ action.id ] ), state );
+			return replacePage( action.id, pageReducer( state[ action.id ], action ), state );
 		case 'BLOCK_DELETE':
-			return removeBlockFromPages( action.id, state );
+			return pageReducerOnAllPages( state, action );
 		case 'BLOCK_REPLACED':
-			return replaceBlockInPages( action.id, action.page.id, state );
+			return pageReducerOnAllPages( state, action );
 		case 'PAGE_ROW_DELETE':
-			return replacePage( action.pageId, removeRowFromPage( action.rowId, state[ action.pageId ] ), state );
+			return replacePage( action.pageId, pageReducer( state[ action.pageId ], action ), state );
 		case 'PAGE_ROW_ADD_BLOCK':
-			return replacePage( action.pageId, addBlockToRowInPage( action.blockId, action.rowId, state[ action.pageId ] ), state );
+			return replacePage(
+				action.pageId,
+				addBlockToRowInPage( action.blockId, action.rowId, state[ action.pageId ] ),
+				state
+			);
 	}
 	return state;
 }
