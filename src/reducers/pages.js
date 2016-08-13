@@ -96,9 +96,9 @@ export default function pages( state = {}, action ) {
 			return removeBlockFromPages( action.id, state );
 		case 'BLOCK_REPLACED':
 			return replaceBlockInPages( action.id, action.page.id, state );
-		case 'ROW_DELETE':
+		case 'PAGE_ROW_DELETE':
 			return replacePage( action.pageId, removeRowFromPage( action.rowId, state[ action.pageId ] ), state );
-		case 'ROW_ADD_BLOCK':
+		case 'PAGE_ROW_ADD_BLOCK':
 			return replacePage( action.pageId, addBlockToRowInPage( action.blockId, action.rowId, state[ action.pageId ] ), state );
 	}
 	return state;

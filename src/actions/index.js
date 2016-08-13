@@ -120,7 +120,7 @@ export function doneEditing() {
 
 export function deleteRow( rowId, pageId ) {
 	return {
-		type: 'ROW_DELETE',
+		type: 'PAGE_ROW_DELETE',
 		rowId,
 		pageId,
 	};
@@ -138,7 +138,7 @@ export function createAndAddBlockToRow( options = {} ) {
 
 export function addBlockToRow( blockId, rowId, pageId ) {
 	return {
-		type: 'ROW_ADD_BLOCK',
+		type: 'PAGE_ROW_ADD_BLOCK',
 		pageId,
 		blockId,
 		rowId,

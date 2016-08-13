@@ -26,7 +26,7 @@ export function isUnsaved( state = false, action ) {
 		case 'BLOCK_SET_CONTENT':
 		case 'BLOCK_DELETE':
 		case 'PAGE_ADD_ROW':
-		case 'ROW_DELETE':
+		case 'PAGE_ROW_DELETE':
 			return true;
 		case 'PAGE_SAVED':
 			return false;

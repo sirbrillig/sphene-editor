@@ -14,7 +14,7 @@ describe( 'isUnsaved reducer', function() {
 	} );
 
 	it( 'is true when a row is deleted', function() {
-		const newState = isUnsaved( undefined, { type: 'ROW_DELETE' } );
+		const newState = isUnsaved( undefined, { type: 'PAGE_ROW_DELETE' } );
 		expect( newState ).to.be.true;
 	} );
 
