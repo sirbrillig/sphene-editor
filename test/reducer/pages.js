@@ -14,6 +14,26 @@ describe( 'pages reducer', function() {
 		expect( newState ).to.eql( { 5: page } );
 	} );
 
+	it( 'ensures a new page has rows when a page is received', function() {
+		const page = { id: 5 };
+		const newState = pages( undefined, { type: 'PAGE_RECEIVED', page } );
+		expect( newState ).to.eql( { 5: { id: 5, rows: [] } } );
+	} );
+
+	it( 'ensures page rows have unique IDs when a page is received', function() {
+		const page = { id: 5, rows: [
+			{ columns: [
+				{ postId: 17 },
+			] },
+			{ columns: [
+				{ postId: 27 },
+			] }
+		] };
+		const newState = pages( undefined, { type: 'PAGE_RECEIVED', page } );
+		expect( newState[ 5 ].rows[ 0 ].rowId ).to.have.length.above( 2 );
+		expect( newState[ 5 ].rows[ 1 ].rowId ).to.have.length.above( 2 );
+	} );
+
 	it( 'adds a new row to the page when a row is added', function() {
 		const page = { id: 5, rows: [] };
 		const row = { rowId: 'abcd', columns: [] };
@@ -23,18 +43,18 @@ describe( 'pages reducer', function() {
 
 	it( 'removes a block from its columns when the block is deleted', function() {
 		const page = { id: 5, rows: [
-			{ columns: [
+			{ rowid: 'row1', columns: [
 				{ postId: 17 },
 				{ postId: 27 },
 			] }
 		] };
 		const newState = pages( { 5: page }, { type: 'BLOCK_DELETE', id: 17 } );
-		expect( newState[ 5 ] ).to.eql( { id: 5, rows: [ { columns: [ { postId: 27 } ] } ] } );
+		expect( newState[ 5 ].rows[ 0 ].columns ).to.eql( [ { postId: 27 } ] );
 	} );
 
 	it( 'replaces a block in its columns with a new ID when the block is saved', function() {
 		const page = { id: 5, rows: [
-			{ columns: [
+			{ rowid: 'row1', columns: [
 				{ postId: 'abcd' },
 				{ postId: 27 },
 			] }
