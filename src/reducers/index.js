@@ -46,6 +46,7 @@ export function newBlockOptions( state = {}, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_PREPARE_ADD':
 			return Object.assign( {}, state, action.options );
+		case 'BLOCK_EDIT_COMPLETE':
 		case 'BLOCK_PREPARE_CLEAR':
 			return {};
 	}
