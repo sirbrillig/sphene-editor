@@ -34,11 +34,22 @@ describe( 'pages reducer', function() {
 		expect( newState[ 5 ].rows[ 1 ].rowId ).to.have.length.above( 2 );
 	} );
 
-	it( 'adds a new row to the page when a row is added', function() {
-		const page = { id: 5, rows: [] };
+	it( 'adds a new row to the end of the page when a row is added', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [] },
+		] };
 		const row = { rowId: 'abcd', columns: [] };
 		const newState = pages( { 5: page }, { type: 'PAGE_ADD_ROW', id: page.id, row } );
-		expect( newState[ 5 ] ).to.eql( { id: 5, rows: [ row ] } );
+		expect( newState[ 5 ].rows ).to.eql( [ page.rows[ 0 ], row ] );
+	} );
+
+	it( 'adds a new row before a certain row when a row is added before a row', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [] },
+		] };
+		const row = { rowId: 'abcd', columns: [] };
+		const newState = pages( { 5: page }, { type: 'PAGE_ADD_ROW', id: page.id, row, beforeRowId: 'row1' } );
+		expect( newState[ 5 ].rows ).to.eql( [ row, page.rows[ 0 ] ] );
 	} );
 
 	it( 'removes a row from the page when a row is deleted', function() {

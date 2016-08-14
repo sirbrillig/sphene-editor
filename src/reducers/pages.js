@@ -4,12 +4,6 @@ function assign( obj, newObj ) {
 	return Object.assign( {}, obj, newObj );
 }
 
-function addRowToPage( row, page ) {
-	return assign( page, {
-		rows: page.rows.concat( row )
-	} );
-}
-
 function validatePage( page ) {
 	return assign( page, {
 		rows: assign( { rows: [] }, page ).rows.map( row => assign( { rowId: generateId() }, row ) )
@@ -62,7 +56,15 @@ export function rowReducer( state = {}, action ) {
 export function pageReducer( state = {}, action ) {
 	switch ( action.type ) {
 		case 'PAGE_ADD_ROW':
-			return addRowToPage( action.row, state );
+			if ( action.beforeRowId ) {
+				const rowIndex = state.rows.indexOf( state.rows.find( row => row.rowId === action.beforeRowId ) );
+				return assign( state, {
+					rows: state.rows.slice( 0, rowIndex ).concat( action.row ).concat( state.rows.slice( rowIndex ) )
+				} );
+			}
+			return assign( state, {
+				rows: state.rows.concat( action.row )
+			} );
 		case 'PAGE_ROW_DELETE':
 			return removeRowFromPage( action.rowId, state );
 		case 'PAGE_ROW_ADD_BLOCK':
