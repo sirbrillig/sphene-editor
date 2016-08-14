@@ -128,21 +128,22 @@ export function deleteRow( rowId, pageId ) {
 
 export function createAndAddBlockToRow( options = {} ) {
 	return ( dispatch, getState ) => {
+		if ( ! options.rowId ) {
+			return dispatch( createRowAndBlock( options ) );
+		}
 		const block = buildUnsavedBlock( options.blockType );
 		const pageId = getCurrentPageId( getState() );
-		const { rowId } = options;
 		dispatch( blockReceived( block ) );
-		dispatch( addBlockToRow( block.id, rowId, pageId ) );
+		dispatch( addBlockToRow( block.id, pageId, options ) );
 	};
 }
 
-export function addBlockToRow( blockId, rowId, pageId ) {
-	return {
+export function addBlockToRow( blockId, pageId, options = {} ) {
+	return Object.assign( {}, options, {
 		type: 'PAGE_ROW_ADD_BLOCK',
 		pageId,
 		blockId,
-		rowId,
-	};
+	} );
 }
 
 export function createRowAndBlock( options = {} ) {
@@ -150,16 +151,16 @@ export function createRowAndBlock( options = {} ) {
 		const block = buildUnsavedBlock( options.blockType );
 		const currentPageId = getCurrentPageId( getState() );
 		dispatch( blockReceived( block ) );
-		dispatch( addRowToPage( currentPageId, buildRowWithBlock( block ) ) );
+		dispatch( addRowToPage( currentPageId, buildRowWithBlock( block ), options ) );
 	};
 }
 
-export function addRowToPage( id, row ) {
-	return {
+export function addRowToPage( id, row, options = {} ) {
+	return Object.assign( {}, options, {
 		type: 'PAGE_ADD_ROW',
 		row,
 		id
-	};
+	} );
 }
 
 export function savePage( id ) {
@@ -268,5 +269,19 @@ export function fetchHeaderAsync() {
 				dispatch( headerImageRecieved( data.url ) );
 				dispatch( updateBlockHeaders() );
 			} );
+	};
+}
+
+export function prepareNewBlock( options ) {
+	return {
+		type: 'BLOCK_PREPARE_ADD',
+		options,
+	};
+}
+
+export function clearPreparedOptions( options ) {
+	return {
+		type: 'BLOCK_PREPARE_CLEAR',
+		options,
 	};
 }

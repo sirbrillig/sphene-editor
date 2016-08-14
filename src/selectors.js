@@ -62,3 +62,7 @@ export const getRowForBlock = ( blockId, state ) => {
 export const getCurrentRow = state => getRowForBlock( state.currentBlockId, state );
 
 export const getHeaderImageUrl = ( state ) => state.headerImageUrl;
+
+export const getPreparedOptions = ( state ) => state.newBlockOptions;
+
+export const getCurrentOverlay = ( state ) => state.ui.currentOverlay;

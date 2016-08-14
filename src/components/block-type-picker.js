@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
+import { getCurrentOverlay, getPreparedOptions, getCurrentRow } from '../selectors';
+import { createAndAddBlockToRow, deactivateOverlay, clearPreparedOptions } from '../actions';
 
-const BlockTypePicker = ( { isActive, createRowAndBlock, deactivateOverlay, rowId, createAndAddBlockToRow } ) => {
-	const classNames = classnames( 'sphene-editor__block-type-picker', { 'is-active': isActive } );
+const BlockTypePicker = function( props ) {
+	const classNames = classnames( 'sphene-editor__block-type-picker', { 'is-active': props.isActive } );
 	const chooseText = () => {
-		rowId ? createAndAddBlockToRow( { rowId } ) : createRowAndBlock();
-		deactivateOverlay();
+		props.createAndAddBlockToRow( Object.assign( {}, props.preparedOptions, { blockType: 'text' } ) );
+		props.deactivateOverlay();
+		props.clearPreparedOptions();
 	};
 	const chooseHeader = () => {
-		rowId ? createAndAddBlockToRow( { rowId, blockType: 'header' } ) : createRowAndBlock( { blockType: 'header' } );
-		deactivateOverlay();
+		props.createAndAddBlockToRow( Object.assign( {}, props.preparedOptions, { blockType: 'header' } ) );
+		props.deactivateOverlay();
+		props.clearPreparedOptions();
 	};
 	return (
 		<div className={ classNames }>
@@ -23,12 +28,27 @@ const BlockTypePicker = ( { isActive, createRowAndBlock, deactivateOverlay, rowI
 };
 
 BlockTypePicker.propTypes = {
-	isActive: React.PropTypes.bool,
-	createRowAndBlock: React.PropTypes.func.isRequired,
-	createAndAddBlockToRow: React.PropTypes.func.isRequired,
-	deactivateOverlay: React.PropTypes.func.isRequired,
-	rowId: React.PropTypes.string,
+	isActive: PropTypes.bool,
+	rowId: PropTypes.string,
+	preparedOptions: PropTypes.object,
+	createAndAddBlockToRow: PropTypes.func.isRequired,
+	deactivateOverlay: PropTypes.func.isRequired,
+	clearPreparedOptions: PropTypes.func.isRequired,
 };
 
-export default BlockTypePicker;
+function mapStateToProps( state ) {
+	const currentRow = getCurrentRow( state );
+	const rowId = currentRow ? currentRow.rowId : '';
+	return {
+		isActive: getCurrentOverlay( state ) === 'block-type-picker',
+		preparedOptions: getPreparedOptions( state ),
+		rowId,
+	};
+}
+
+export default connect( mapStateToProps, {
+	createAndAddBlockToRow,
+	deactivateOverlay,
+	clearPreparedOptions,
+} )( BlockTypePicker );
 

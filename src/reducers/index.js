@@ -42,6 +42,16 @@ export function headerImageUrl( state = null, action ) {
 	return state;
 }
 
+export function newBlockOptions( state = {}, action ) {
+	switch ( action.type ) {
+		case 'BLOCK_PREPARE_ADD':
+			return Object.assign( {}, state, action.options );
+		case 'BLOCK_PREPARE_CLEAR':
+			return {};
+	}
+	return state;
+}
+
 const rootReducer = combineReducers( {
 	ui,
 	currentPageId,
@@ -50,6 +60,7 @@ const rootReducer = combineReducers( {
 	blocks,
 	isUnsaved,
 	headerImageUrl,
+	newBlockOptions,
 } );
 
 export default rootReducer;
