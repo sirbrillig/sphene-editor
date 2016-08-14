@@ -18,6 +18,14 @@ const BlockOptions = ( {
 		prepareNewBlock( { rowId, afterBlockId: blockId } );
 		activateOverlay( 'block-type-picker' );
 	};
+	const addRowBefore = () => {
+		prepareNewBlock( { beforeRowId: rowId } );
+		activateOverlay( 'block-type-picker' );
+	};
+	const addRowAfter = () => {
+		prepareNewBlock( { afterRowId: rowId } );
+		activateOverlay( 'block-type-picker' );
+	};
 	const classNames = classnames( 'sphene-editor__block-options', { 'is-active': isActive } );
 	return (
 		<div className={ classNames }>
@@ -25,6 +33,8 @@ const BlockOptions = ( {
 			<button onClick={ onEdit }>Edit</button>
 			<button onClick={ addColumnBeforeBlock }>Add Column Before</button>
 			<button onClick={ addColumnAfterBlock }>Add Column After</button>
+			<button onClick={ addRowBefore }>Add Row Before</button>
+			<button onClick={ addRowAfter }>Add Row After</button>
 		</div>
 	);
 };
