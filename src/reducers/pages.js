@@ -4,14 +4,10 @@ function assign( obj, newObj ) {
 	return Object.assign( {}, obj, newObj );
 }
 
-function validatePage( page ) {
+function ensureRowIds( page ) {
 	return assign( page, {
 		rows: assign( { rows: [] }, page ).rows.map( row => assign( { rowId: generateId() }, row ) )
 	} );
-}
-
-function replacePage( pageId, newPage, state ) {
-	return assign( state, { [ pageId ]: newPage } );
 }
 
 export function columnReducer( state = [], action ) {
@@ -86,15 +82,15 @@ export function pageReducerOnAllPages( allPages, action ) {
 export default function pages( state = {}, action ) {
 	switch ( action.type ) {
 		case 'PAGE_RECEIVED':
-			return replacePage( action.page.id, validatePage( action.page ), state );
+			return assign( state, { [ action.page.id ]: ensureRowIds( action.page ) } );
 		case 'PAGE_ADD_ROW':
-			return replacePage( action.id, pageReducer( state[ action.id ], action ), state );
+			return assign( state, { [ action.id ]: pageReducer( state[ action.id ], action ) } );
 		case 'BLOCK_DELETE':
 		case 'BLOCK_REPLACED':
 			return pageReducerOnAllPages( state, action );
 		case 'PAGE_ROW_DELETE':
 		case 'PAGE_ROW_ADD_BLOCK':
-			return replacePage( action.pageId, pageReducer( state[ action.pageId ], action ), state );
+			return assign( state, { [ action.pageId ]: pageReducer( state[ action.pageId ], action ) } );
 	}
 	return state;
 }
