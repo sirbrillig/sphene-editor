@@ -71,17 +71,9 @@ export function rowReducer( state = [], action ) {
 }
 
 export function pageReducer( state = {}, action ) {
-	switch ( action.type ) {
-		case 'PAGE_ROW_DELETE':
-		case 'PAGE_ADD_ROW':
-		case 'PAGE_ROW_ADD_BLOCK':
-		case 'BLOCK_DELETE':
-		case 'BLOCK_REPLACED':
-			return assign( state, {
-				rows: rowReducer( state.rows, action )
-			} );
-	}
-	return state;
+	return assign( state, {
+		rows: rowReducer( state.rows, action )
+	} );
 }
 
 export function pageReducerOnAllPages( allPages, action ) {
