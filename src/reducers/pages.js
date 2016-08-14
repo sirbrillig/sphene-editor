@@ -24,6 +24,21 @@ function replacePage( pageId, newPage, state ) {
 	return assign( state, { [ pageId ]: newPage } );
 }
 
+export function columnReducer( state = [], action ) {
+	switch ( action.type ) {
+		case 'PAGE_ROW_ADD_BLOCK':
+			if ( action.beforeBlockId ) {
+				const blockIndex = state.indexOf( state.find( block => block.postId === action.beforeBlockId ) );
+				return state.slice( 0, blockIndex ).concat( { postId: action.blockId } ).concat( state.slice( blockIndex ) );
+			} else if ( action.afterBlockId ) {
+				const blockIndex = state.indexOf( state.find( block => block.postId === action.afterBlockId ) ) + 1;
+				return state.slice( 0, blockIndex ).concat( { postId: action.blockId } ).concat( state.slice( blockIndex ) );
+			}
+			return state.concat( { postId: action.blockId } );
+	}
+	return state;
+}
+
 export function rowReducer( state = {}, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_DELETE':
@@ -39,7 +54,7 @@ export function rowReducer( state = {}, action ) {
 			} );
 		case 'PAGE_ROW_ADD_BLOCK':
 			return state.rowId === action.rowId ? assign( state, {
-				columns: state.columns.concat( { postId: action.blockId } )
+				columns: columnReducer( state.columns, action )
 			} ) : state;
 	}
 	return state;

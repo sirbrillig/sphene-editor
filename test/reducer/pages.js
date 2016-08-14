@@ -82,4 +82,47 @@ describe( 'pages reducer', function() {
 		const newState = pages( { 5: page }, { type: 'PAGE_ROW_ADD_BLOCK', pageId: 5, blockId: 'abcd', rowId: 'row1' } );
 		expect( newState[ 5 ].rows[ 0 ].columns ).to.eql( [ { postId: 27 }, { postId: 'abcd' } ] );
 	} );
+
+	it( 'adds a new block before a certain block when added before that block', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [
+				{ postId: 10 },
+				{ postId: 27 },
+			] }
+		] };
+		const newState = pages( { 5: page }, { type: 'PAGE_ROW_ADD_BLOCK', pageId: 5, blockId: 'abcd', rowId: 'row1', beforeBlockId: 27 } );
+		expect( newState[ 5 ].rows[ 0 ].columns ).to.eql( [ { postId: 10 }, { postId: 'abcd' }, { postId: 27 } ] );
+	} );
+
+	it( 'adds a new block to the beginning of the row when added before the first block', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [
+				{ postId: 27 },
+			] }
+		] };
+		const newState = pages( { 5: page }, { type: 'PAGE_ROW_ADD_BLOCK', pageId: 5, blockId: 'abcd', rowId: 'row1', beforeBlockId: 27 } );
+		expect( newState[ 5 ].rows[ 0 ].columns ).to.eql( [ { postId: 'abcd' }, { postId: 27 } ] );
+	} );
+
+	it( 'adds a new block after a certain block when added after that block', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [
+				{ postId: 10 },
+				{ postId: 27 },
+			] }
+		] };
+		const newState = pages( { 5: page }, { type: 'PAGE_ROW_ADD_BLOCK', pageId: 5, blockId: 'abcd', rowId: 'row1', afterBlockId: 10 } );
+		expect( newState[ 5 ].rows[ 0 ].columns ).to.eql( [ { postId: 10 }, { postId: 'abcd' }, { postId: 27 } ] );
+	} );
+
+	it( 'adds a new block to the end of the row when added after the last block', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [
+				{ postId: 10 },
+				{ postId: 27 },
+			] }
+		] };
+		const newState = pages( { 5: page }, { type: 'PAGE_ROW_ADD_BLOCK', pageId: 5, blockId: 'abcd', rowId: 'row1', afterBlockId: 27 } );
+		expect( newState[ 5 ].rows[ 0 ].columns ).to.eql( [ { postId: 10 }, { postId: 27 }, { postId: 'abcd' } ] );
+	} );
 } );
