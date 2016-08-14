@@ -46,10 +46,21 @@ describe( 'pages reducer', function() {
 	it( 'adds a new row before a certain row when a row is added before a row', function() {
 		const page = { id: 5, rows: [
 			{ rowId: 'row1', columns: [] },
+			{ rowId: 'row2', columns: [] },
 		] };
 		const row = { rowId: 'abcd', columns: [] };
-		const newState = pages( { 5: page }, { type: 'PAGE_ADD_ROW', id: page.id, row, beforeRowId: 'row1' } );
-		expect( newState[ 5 ].rows ).to.eql( [ row, page.rows[ 0 ] ] );
+		const newState = pages( { 5: page }, { type: 'PAGE_ADD_ROW', id: page.id, row, beforeRowId: 'row2' } );
+		expect( newState[ 5 ].rows ).to.eql( [ page.rows[ 0 ], row, page.rows[ 1 ] ] );
+	} );
+
+	it( 'adds a new row after a certain row when a row is added after a row', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [] },
+			{ rowId: 'row2', columns: [] },
+		] };
+		const row = { rowId: 'abcd', columns: [] };
+		const newState = pages( { 5: page }, { type: 'PAGE_ADD_ROW', id: page.id, row, afterRowId: 'row1' } );
+		expect( newState[ 5 ].rows ).to.eql( [ page.rows[ 0 ], row, page.rows[ 1 ] ] );
 	} );
 
 	it( 'removes a row from the page when a row is deleted', function() {

@@ -37,7 +37,7 @@ export function columnReducer( state = [], action ) {
 	return state;
 }
 
-export function rowReducer( state = {}, action ) {
+export function singleRowReducer( state = {}, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_DELETE':
 			return assign( state, {
@@ -53,25 +53,35 @@ export function rowReducer( state = {}, action ) {
 	return state;
 }
 
-export function pageReducer( state = {}, action ) {
+export function rowReducer( state = [], action ) {
 	switch ( action.type ) {
+		case 'BLOCK_DELETE':
+		case 'BLOCK_REPLACED':
+		case 'PAGE_ROW_ADD_BLOCK':
+			return state.map( row => singleRowReducer( row, action ) );
 		case 'PAGE_ADD_ROW':
 			if ( action.beforeRowId ) {
-				const rowIndex = state.rows.indexOf( state.rows.find( row => row.rowId === action.beforeRowId ) );
-				return assign( state, {
-					rows: state.rows.slice( 0, rowIndex ).concat( action.row ).concat( state.rows.slice( rowIndex ) )
-				} );
+				const rowIndex = state.indexOf( state.find( row => row.rowId === action.beforeRowId ) );
+				return state.slice( 0, rowIndex ).concat( action.row ).concat( state.slice( rowIndex ) );
+			} else if ( action.afterRowId ) {
+				const rowIndex = state.indexOf( state.find( row => row.rowId === action.afterRowId ) ) + 1;
+				return state.slice( 0, rowIndex ).concat( action.row ).concat( state.slice( rowIndex ) );
 			}
-			return assign( state, {
-				rows: state.rows.concat( action.row )
-			} );
+			return state.concat( action.row );
+	}
+	return state;
+}
+
+export function pageReducer( state = {}, action ) {
+	switch ( action.type ) {
 		case 'PAGE_ROW_DELETE':
 			return removeRowFromPage( action.rowId, state );
+		case 'PAGE_ADD_ROW':
 		case 'PAGE_ROW_ADD_BLOCK':
 		case 'BLOCK_DELETE':
 		case 'BLOCK_REPLACED':
 			return assign( state, {
-				rows: state.rows.map( row => rowReducer( row, action ) )
+				rows: rowReducer( state.rows, action )
 			} );
 	}
 	return state;
