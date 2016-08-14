@@ -20,22 +20,6 @@ function removeRowFromPage( rowId, page ) {
 	return assign( page, { rows: page.rows.filter( row => row.rowId !== rowId ) } );
 }
 
-function getRowFromPage( rowId, page ) {
-	return page.rows.find( row => row.rowId === rowId );
-}
-
-function replaceRowInPage( newRow, page ) {
-	return assign( page, {
-		rows: page.rows.map( row => ( row.rowId === newRow.rowId ) ? newRow : row )
-	} );
-}
-
-function addBlockToRowInPage( blockId, rowId, page ) {
-	const row = getRowFromPage( rowId, page );
-	const newRow = assign( row, { columns: row.columns.concat( { postId: blockId } ) } );
-	return replaceRowInPage( newRow, page );
-}
-
 function replacePage( pageId, newPage, state ) {
 	return assign( state, { [ pageId ]: newPage } );
 }
@@ -53,6 +37,10 @@ export function rowReducer( state = {}, action ) {
 					return ( block.postId === id ) ? assign( block, { postId: page.id } ) : block;
 				} )
 			} );
+		case 'PAGE_ROW_ADD_BLOCK':
+			return state.rowId === action.rowId ? assign( state, {
+				columns: state.columns.concat( { postId: action.blockId } )
+			} ) : state;
 	}
 	return state;
 }
@@ -63,10 +51,8 @@ export function pageReducer( state = {}, action ) {
 			return addRowToPage( action.row, state );
 		case 'PAGE_ROW_DELETE':
 			return removeRowFromPage( action.rowId, state );
+		case 'PAGE_ROW_ADD_BLOCK':
 		case 'BLOCK_DELETE':
-			return assign( state, {
-				rows: state.rows.map( row => rowReducer( row, action ) )
-			} );
 		case 'BLOCK_REPLACED':
 			return assign( state, {
 				rows: state.rows.map( row => rowReducer( row, action ) )
@@ -89,17 +75,11 @@ export default function pages( state = {}, action ) {
 		case 'PAGE_ADD_ROW':
 			return replacePage( action.id, pageReducer( state[ action.id ], action ), state );
 		case 'BLOCK_DELETE':
-			return pageReducerOnAllPages( state, action );
 		case 'BLOCK_REPLACED':
 			return pageReducerOnAllPages( state, action );
 		case 'PAGE_ROW_DELETE':
-			return replacePage( action.pageId, pageReducer( state[ action.pageId ], action ), state );
 		case 'PAGE_ROW_ADD_BLOCK':
-			return replacePage(
-				action.pageId,
-				addBlockToRowInPage( action.blockId, action.rowId, state[ action.pageId ] ),
-				state
-			);
+			return replacePage( action.pageId, pageReducer( state[ action.pageId ], action ), state );
 	}
 	return state;
 }
