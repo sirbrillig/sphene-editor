@@ -60,6 +60,7 @@ const SpheneBlockData = React.createClass( {
 			content={ this.props.content }
 			onClick={ this.onClick }
 			isSelected={ this.props.isSelected }
+			blockType={ this.props.blockType }
 		/>;
 	},
 } );

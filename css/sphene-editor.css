@@ -201,3 +201,8 @@ body.sphene-page-body:not(.custom-background-image):after {
   display: flex;
   width: 100%;
 }
+
+.sphene-editor__block.is-header img,
+.sphene-block.is-header img {
+  width: 100%;
+}

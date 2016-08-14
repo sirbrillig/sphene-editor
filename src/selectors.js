@@ -1,3 +1,5 @@
+import classnames from 'classnames';
+
 export const getCurrentPageId = state => state.currentPageId;
 
 export const getBlock = ( id, state ) => state.blocks[ id ] || {};
@@ -6,9 +8,16 @@ export const getPage = ( id, state ) => state.pages[ id ];
 
 export const getCurrentPage = state => getPage( state.currentPageId, state );
 
+const getFullBlockContent = ( { content, blockType } ) => {
+	const className = classnames( 'sphene-block', {
+		'is-header': blockType === 'header',
+	} );
+	return `<div class="${className}">${content}</div>`;
+};
+
 export const getFullRowContent = ( row, state ) => {
-	return row.columns.map( block => getBlock( block.postId, state ).content )
-	.map( content => `<div class="sphene-block">${content}</div>` )
+	return row.columns.map( block => getBlock( block.postId, state ) )
+	.map( getFullBlockContent )
 	.join( ' ' );
 };
 

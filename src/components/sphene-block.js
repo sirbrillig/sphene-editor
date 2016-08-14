@@ -15,11 +15,16 @@ const SpheneBlock = React.createClass( {
 		content: React.PropTypes.string,
 		onClick: React.PropTypes.func.isRequired,
 		isSelected: React.PropTypes.bool,
+		blockType: React.PropTypes.string,
 	},
 
 	render() {
 		const { content } = this.props;
-		const classNames = classnames( 'sphene-editor__block', { 'is-loading': content === null, 'is-selected': this.props.isSelected } );
+		const classNames = classnames( 'sphene-editor__block', {
+			'is-loading': content === null,
+			'is-selected': this.props.isSelected,
+			'is-header': this.props.blockType === 'header',
+		} );
 		return (
 			<div className={ classNames } onClick={ this.props.onClick }>
 			{ content !== null ? renderMarkup( content ) : 'loading...' }
