@@ -10,10 +10,6 @@ function validatePage( page ) {
 	} );
 }
 
-function removeRowFromPage( rowId, page ) {
-	return assign( page, { rows: page.rows.filter( row => row.rowId !== rowId ) } );
-}
-
 function replacePage( pageId, newPage, state ) {
 	return assign( state, { [ pageId ]: newPage } );
 }
@@ -59,6 +55,8 @@ export function rowReducer( state = [], action ) {
 		case 'BLOCK_REPLACED':
 		case 'PAGE_ROW_ADD_BLOCK':
 			return state.map( row => singleRowReducer( row, action ) );
+		case 'PAGE_ROW_DELETE':
+			return state.filter( row => row.rowId !== action.rowId );
 		case 'PAGE_ADD_ROW':
 			if ( action.beforeRowId ) {
 				const rowIndex = state.indexOf( state.find( row => row.rowId === action.beforeRowId ) );
@@ -75,7 +73,6 @@ export function rowReducer( state = [], action ) {
 export function pageReducer( state = {}, action ) {
 	switch ( action.type ) {
 		case 'PAGE_ROW_DELETE':
-			return removeRowFromPage( action.rowId, state );
 		case 'PAGE_ADD_ROW':
 		case 'PAGE_ROW_ADD_BLOCK':
 		case 'BLOCK_DELETE':
