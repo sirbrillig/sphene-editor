@@ -38,6 +38,7 @@ module.exports = function( grunt ) {
 	} );
 
 	grunt.registerTask( 'default', [ 'browserify', 'copytotheplace' ] );
+	grunt.registerTask( 'dist', [ 'browserify', 'copytotheplace' ] );
 	grunt.registerTask( 'start', [ 'default', 'watch' ] );
 	grunt.registerTask( 'test', [ 'mochaTest' ] );
 };
