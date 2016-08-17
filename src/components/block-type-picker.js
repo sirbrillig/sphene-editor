@@ -16,12 +16,18 @@ const BlockTypePicker = function( props ) {
 		props.deactivateOverlay();
 		props.clearPreparedOptions();
 	};
+	const chooseImage = () => {
+		props.createAndAddBlockToRow( Object.assign( {}, props.preparedOptions, { blockType: 'image' } ) );
+		props.deactivateOverlay();
+		props.clearPreparedOptions();
+	};
 	return (
 		<div className={ classNames }>
 			<p>Choose a block type</p>
 			<div className="sphene-editor__block-type-picker__buttons">
 				<button onClick={ chooseText }>Text</button>
 				<button onClick={ chooseHeader }>Header</button>
+				<button onClick={ chooseImage }>Image</button>
 			</div>
 		</div>
 	);

@@ -50,29 +50,57 @@ class SpheneEditor {
 		$this->header_image_controller->register_routes();
 	}
 
-	function set_block_image_url( $value, $object ) {
+	public function set_block_image_url( $value, $object ) {
 		if ( ! $value || ! is_string( $value ) ) {
+			return;
+		}
+		$block_type = $this->get_block_type_from_id( $object->ID );
+		if ( $block_type === 'image' ) {
+			// 'image' blocks use the featured image on the post, which is set by ID
 			return;
 		}
 		update_post_meta( $object->ID, 'sphene-editor-block-image', strip_tags( $value ) );
 	}
 
-	function get_block_image_url( $object ) {
+	public function get_block_image_url( $object ) {
+		$block_type = $this->get_block_type( $object );
+		if ( $block_type === 'image' ) {
+			return $this->get_block_featured_image_url( $object );
+		}
 		return get_post_meta( $object['id'], 'sphene-editor-block-image', true );
 	}
 
-	function set_block_type( $value, $object ) {
+	private function get_block_featured_image_url( $object ) {
+		return $this->get_image_url_from_attachment_id( get_post_thumbnail_id( $object['id'] ) );
+	}
+
+	private function get_image_url_from_attachment_id( $attachment_id ) {
+		if ( ! $attachment_id || is_wp_error( $attachment_id  ) ) {
+			return '';
+		}
+		$url = wp_get_attachment_url( $attachment_id );
+		if ( ! $url || is_wp_error( $url  ) ) {
+			return '';
+		}
+		return $url;
+	}
+
+	public function set_block_type( $value, $object ) {
 		if ( ! $value || ! is_string( $value ) ) {
 			return;
 		}
 		update_post_meta( $object->ID, 'sphene-editor-block-type', strip_tags( $value ) );
 	}
 
-	function get_block_type( $object ) {
-		return get_post_meta( $object['id'], 'sphene-editor-block-type', true );
+	public function get_block_type( $object ) {
+		return $this->get_block_type_from_id( $object['id'] );
 	}
 
-	function get_post_content_filtered( $object ) {
+	private function get_block_type_from_id( $id ) {
+		return get_post_meta( $id, 'sphene-editor-block-type', true );
+	}
+
+	public function get_post_content_filtered( $object ) {
 		$post = get_post( $object['id'] );
 		if ( ! $post ) {
 			return '';
@@ -83,7 +111,7 @@ class SpheneEditor {
 		return $post->post_content_filtered;
 	}
 
-	function set_post_content_filtered( $value, $object ) {
+	public function set_post_content_filtered( $value, $object ) {
 		$post = get_post( $object->ID );
 		if ( ! $post ) {
 			return;
@@ -125,7 +153,7 @@ class SpheneEditor {
 				'public' => true,
 				'has_archive' => true,
 				'show_in_rest' => true,
-				// 'supports' => array( 'author', 'thumbnail' ),
+				'supports' => array( 'author', 'thumbnail', 'editor' ),
 			)
 		);
 	}
