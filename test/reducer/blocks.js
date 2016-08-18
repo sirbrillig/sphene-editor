@@ -8,10 +8,22 @@ describe( 'blocks reducer', function() {
 		expect( newState ).to.eql( {} );
 	} );
 
-	it( 'adds a new block object when a a block is received', function() {
+	it( 'adds a new block object when a block is received', function() {
 		const page = { id: 4, content: 'hello', blockType: 'text', unsaved: false };
 		const newState = blocks( undefined, { type: 'BLOCK_RECEIVED', page } );
 		expect( newState ).to.eql( { 4: page } );
+	} );
+
+	it( 'replaces imageUrl in block with featuredImageUrl when an image block is received', function() {
+		const page = { id: 4, content: '<p><img src="http://old.url"></p>', blockType: 'image', unsaved: false, imageUrl: 'http://old.url', featuredImageUrl: 'http://new.url' };
+		const newState = blocks( undefined, { type: 'BLOCK_RECEIVED', page } );
+		expect( newState[ 4 ].imageUrl ).to.eql( 'http://new.url' );
+	} );
+
+	it( 'replaces image src in block content with featuredImageUrl when an image block is received', function() {
+		const page = { id: 4, content: '<p><img src="http://old.url"></p>', blockType: 'image', unsaved: false, imageUrl: 'http://old.url', featuredImageUrl: 'http://new.url' };
+		const newState = blocks( undefined, { type: 'BLOCK_RECEIVED', page } );
+		expect( newState[ 4 ].content ).to.eql( '<p><img src="http://new.url"></p>' );
 	} );
 
 	it( 'marks a saved block as deleted when the block is deleted', function() {
