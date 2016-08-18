@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { getCurrentOverlay, getPreparedOptions, getCurrentRow } from '../selectors';
-import { createAndAddBlockToRow, deactivateOverlay, clearPreparedOptions } from '../actions';
+import { getCurrentOverlay, getPreparedOptions, getCurrentRowId } from '../selectors';
+import { createAndAddBlockToRow, deactivateOverlay, clearPreparedOptions, prepareNewBlock, activateOverlay } from '../actions';
 
 const BlockTypePicker = function( props ) {
 	const classNames = classnames( 'sphene-editor__block-type-picker', { 'is-active': props.isActive } );
@@ -17,9 +17,8 @@ const BlockTypePicker = function( props ) {
 		props.clearPreparedOptions();
 	};
 	const chooseImage = () => {
-		props.createAndAddBlockToRow( Object.assign( {}, props.preparedOptions, { blockType: 'image' } ) );
-		props.deactivateOverlay();
-		props.clearPreparedOptions();
+		props.prepareNewBlock( { blockType: 'image' } );
+		props.activateOverlay( 'block-image-picker' );
 	};
 	return (
 		<div className={ classNames }>
@@ -40,21 +39,21 @@ BlockTypePicker.propTypes = {
 	createAndAddBlockToRow: PropTypes.func.isRequired,
 	deactivateOverlay: PropTypes.func.isRequired,
 	clearPreparedOptions: PropTypes.func.isRequired,
+	prepareNewBlock: PropTypes.func.isRequired,
+	activateOverlay: PropTypes.func.isRequired,
 };
 
-function mapStateToProps( state ) {
-	const currentRow = getCurrentRow( state );
-	const rowId = currentRow ? currentRow.rowId : '';
-	return {
-		isActive: getCurrentOverlay( state ) === 'block-type-picker',
-		preparedOptions: getPreparedOptions( state ),
-		rowId,
-	};
-}
+const mapStateToProps = state => ( {
+	isActive: getCurrentOverlay( state ) === 'block-type-picker',
+	preparedOptions: getPreparedOptions( state ),
+	rowId: getCurrentRowId( state ) || '',
+} );
 
 export default connect( mapStateToProps, {
 	createAndAddBlockToRow,
 	deactivateOverlay,
 	clearPreparedOptions,
+	prepareNewBlock,
+	activateOverlay,
 } )( BlockTypePicker );
 

@@ -121,6 +121,7 @@ body.sphene-page-body:not(.custom-background-image):after {
 }
 
 .sphene-editor__block-type-picker,
+.sphene-editor__block-image-picker,
 .sphene-editor__block-options {
   border: 1px solid #000;
   background: #eee;
@@ -137,6 +138,7 @@ body.sphene-page-body:not(.custom-background-image):after {
 }
 
 .sphene-editor__block-type-picker.is-active,
+.sphene-editor__block-image-picker.is-active,
 .sphene-editor__block-options.is-active {
   bottom: 0;
 }

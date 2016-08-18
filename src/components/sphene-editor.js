@@ -5,6 +5,7 @@ import BlockOptions from './block-options';
 import Overlay from './overlay';
 import BlockEditor from './block-editor';
 import BlockTypePicker from './block-type-picker';
+import BlockImagePicker from './block-image-picker';
 import SaveButton from './save-button';
 import { connect } from 'react-redux';
 import {
@@ -31,7 +32,7 @@ const SpheneEditor = React.createClass( {
 		currentPageId: React.PropTypes.number.isRequired,
 		currentRowId: React.PropTypes.string,
 		currentBlockId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
-		currentOverlay: React.PropTypes.oneOf( [ 'block-editor', 'block-options', 'block-type-picker' ] ),
+		currentOverlay: React.PropTypes.oneOf( [ 'block-editor', 'block-options', 'block-type-picker', 'block-image-picker' ] ),
 		isUnsaved: React.PropTypes.bool,
 		fetchPage: React.PropTypes.func.isRequired,
 		selectBlock: React.PropTypes.func.isRequired,
@@ -60,9 +61,7 @@ const SpheneEditor = React.createClass( {
 
 	render() {
 		const { rows } = this.props;
-		const onAddColumn = () => {
-			this.props.activateOverlay( 'block-type-picker' );
-		};
+		const onAddBlock = () => this.props.activateOverlay( 'block-type-picker' );
 		const onDeleteRow = rowId => this.props.deleteRow( rowId, getSpheneData().currentPageId );
 		const pageRows = ! rows || rows.length < 1
 			? null
@@ -71,27 +70,24 @@ const SpheneEditor = React.createClass( {
 					key={ `row-${row.rowId}` }
 					rowId={ row.rowId }
 					columns={ row.columns }
-					onAddColumn={ onAddColumn }
+					onAddColumn={ onAddBlock }
 					onDeleteRow={ onDeleteRow }
 				/>;
 			} );
-		const isBlockEditorActive = this.props.currentOverlay === 'block-editor';
-		const isBlockOptionsActive = this.props.currentOverlay === 'block-options';
-		const isSaveActive = this.props.isUnsaved;
-		const isOverlayActive = this.props.currentBlockId && this.props.currentOverlay !== null;
+		const isOverlayActive = this.props.currentOverlay !== null;
 		const onClickOverlay = () => this.props.doneEditing();
-		const onAddRow = () => this.props.activateOverlay( 'block-type-picker' );
 		const onEditBlock = () => this.props.editBlock( this.props.currentBlockId );
 		const onDeleteBlock = () => this.props.deleteBlock( this.props.currentBlockId ) && this.props.doneEditing();
 		const onClickSave = () => this.props.savePage( this.props.currentPageId );
 		return (
 			<div className="sphene-editor__page">
-				<SaveButton isActive={ isSaveActive } onClick={ onClickSave } />
+				<SaveButton isActive={ this.props.isUnsaved } onClick={ onClickSave } />
 				{ pageRows }
-				<EmptyEditor onAdd={ onAddRow } />
+				<EmptyEditor onAdd={ onAddBlock } />
 				<BlockTypePicker />
+				<BlockImagePicker />
 				<BlockOptions
-					isActive={ isBlockOptionsActive }
+					isActive={ this.props.currentOverlay === 'block-options' }
 					onEdit={ onEditBlock }
 					onDelete={ onDeleteBlock }
 					blockId={ this.props.currentBlockId }
@@ -100,7 +96,7 @@ const SpheneEditor = React.createClass( {
 					prepareNewBlock={ this.props.prepareNewBlock }
 				/>
 				<Overlay isActive={ isOverlayActive } onClick={ onClickOverlay } />
-				<BlockEditor isActive={ isBlockEditorActive } blockId={ this.props.currentBlockId } />
+				<BlockEditor isActive={ this.props.currentOverlay === 'block-editor' } blockId={ this.props.currentBlockId } />
 			</div>
 		);
 	}

@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import get from 'lodash/get';
 
 export const getCurrentPageId = state => state.currentPageId;
 
@@ -60,6 +61,8 @@ export const getRowForBlock = ( blockId, state ) => {
 };
 
 export const getCurrentRow = state => getRowForBlock( state.currentBlockId, state );
+
+export const getCurrentRowId = state => get( getRowForBlock( state.currentBlockId, state ), 'id' );
 
 export const getHeaderImageUrl = ( state ) => state.headerImageUrl;
 
