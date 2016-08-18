@@ -50,7 +50,8 @@ export function rowReducer( state = [], action ) {
 		case 'BLOCK_DELETE':
 		case 'BLOCK_REPLACED':
 		case 'PAGE_ROW_ADD_BLOCK':
-			return state.map( row => singleRowReducer( row, action ) );
+			const newState = state.map( row => singleRowReducer( row, action ) );
+			return newState.filter( row => row.columns.length > 0 );
 		case 'PAGE_ROW_DELETE':
 			return state.filter( row => row.rowId !== action.rowId );
 		case 'PAGE_ADD_ROW':

@@ -83,6 +83,16 @@ describe( 'pages reducer', function() {
 		expect( newState[ 5 ].rows[ 0 ].columns ).to.eql( [ { postId: 27 } ] );
 	} );
 
+	it( 'removes a row when the last block is deleted', function() {
+		const page = { id: 5, rows: [
+			{ rowId: 'row1', columns: [
+				{ postId: 27 },
+			] }
+		] };
+		const newState = pages( { 5: page }, { type: 'BLOCK_DELETE', id: 27 } );
+		expect( newState[ 5 ].rows ).to.eql( [] );
+	} );
+
 	it( 'replaces a block in its columns with a new ID when the block is saved', function() {
 		const page = { id: 5, rows: [
 			{ rowId: 'row1', columns: [
