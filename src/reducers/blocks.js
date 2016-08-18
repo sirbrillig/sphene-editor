@@ -14,6 +14,12 @@ function markBlockDeleted( id, state ) {
 }
 
 function addBlock( page, state ) {
+	if ( page.blockType === 'image' && page.featuredImageUrl ) {
+		return Object.assign( {}, state, { [ page.id ]: Object.assign( {}, page, {
+			imageUrl: page.featuredImageUrl,
+			content: replaceUrlInContent( page.content, page.imageUrl, page.featuredImageUrl )
+		} ) } );
+	}
 	return Object.assign( {}, state, { [ page.id ]: page } );
 }
 

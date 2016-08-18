@@ -43,6 +43,9 @@ class SpheneEditor {
 			'get_callback' => array( $this, 'get_block_type' ),
 			'update_callback' => array( $this, 'set_block_type' ),
 		) );
+		register_rest_field( 'sphene_block', 'featuredImageUrl', array(
+			'get_callback' => array( $this, 'get_block_featured_image_url' ),
+		) );
 		register_rest_field( 'sphene_block', 'imageUrl', array(
 			'get_callback' => array( $this, 'get_block_image_url' ),
 			'update_callback' => array( $this, 'set_block_image_url' ),
@@ -54,23 +57,14 @@ class SpheneEditor {
 		if ( ! $value || ! is_string( $value ) ) {
 			return;
 		}
-		$block_type = $this->get_block_type_from_id( $object->ID );
-		if ( $block_type === 'image' ) {
-			// 'image' blocks use the featured image on the post, which is set by ID
-			return;
-		}
 		update_post_meta( $object->ID, 'sphene-editor-block-image', strip_tags( $value ) );
 	}
 
 	public function get_block_image_url( $object ) {
-		$block_type = $this->get_block_type( $object );
-		if ( $block_type === 'image' ) {
-			return $this->get_block_featured_image_url( $object );
-		}
 		return get_post_meta( $object['id'], 'sphene-editor-block-image', true );
 	}
 
-	private function get_block_featured_image_url( $object ) {
+	public function get_block_featured_image_url( $object ) {
 		return $this->get_image_url_from_attachment_id( get_post_thumbnail_id( $object['id'] ) );
 	}
 

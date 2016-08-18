@@ -70,6 +70,9 @@ export function blockReceived( data ) {
 	if ( data.imageUrl ) {
 		page.imageUrl = data.imageUrl;
 	}
+	if ( data.featuredImageUrl ) {
+		page.featuredImageUrl = data.featuredImageUrl;
+	}
 	return {
 		type: 'BLOCK_RECEIVED',
 		page
