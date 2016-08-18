@@ -81,10 +81,23 @@ export function getSpheneData() {
 	return window.spheneData;
 }
 
+function getImageUrlByBlockType( blockType ) {
+	const imageUrlOptions = {
+		header: 'https://placehold.it/150x150',
+		image: 'https://placehold.it/150x150',
+	};
+	return imageUrlOptions[ blockType ] || null;
+}
+
 export function buildUnsavedBlock( blockType = 'text' ) {
 	const id = shortid.generate();
-	const imageUrl = ( blockType === 'header' || blockType === 'image' ) ? 'https://placehold.it/150x150' : null;
-	const defaultContent = blockType === 'text' ? 'This is a new block. <strong>Click</strong> to edit it!' : `<img src="${imageUrl}">`;
+	const imageUrl = getImageUrlByBlockType( blockType );
+	const defaultContentOptions = {
+		text: 'This is a new block. <strong>Click</strong> to edit it!',
+		image: `<img src="${imageUrl}">`,
+		header: `<img src="${imageUrl}">`,
+	};
+	const defaultContent = defaultContentOptions[ blockType ] || defaultContentOptions.text;
 	return { id, unsaved: true, blockType, imageUrl, defaultContent };
 }
 
