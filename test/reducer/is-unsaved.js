@@ -28,6 +28,11 @@ describe( 'isUnsaved reducer', function() {
 		expect( newState ).to.be.true;
 	} );
 
+	it( 'is true when a block is added', function() {
+		const newState = isUnsaved( undefined, { type: 'BLOCK_RECEIVED' } );
+		expect( newState ).to.be.true;
+	} );
+
 	it( 'is reset to false when a page is saved', function() {
 		const newState = isUnsaved( true, { type: 'PAGE_SAVED' } );
 		expect( newState ).to.be.false;
