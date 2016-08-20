@@ -69,3 +69,5 @@ export const getHeaderImageUrl = ( state ) => state.headerImageUrl;
 export const getPreparedOptions = ( state ) => state.newBlockOptions;
 
 export const getCurrentOverlay = ( state ) => state.ui.currentOverlay;
+
+export const getAllMedia = state => Object.keys( state.media ).map( key => state.media[ key ] );

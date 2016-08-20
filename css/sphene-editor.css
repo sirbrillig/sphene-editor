@@ -208,3 +208,22 @@ body.sphene-page-body:not(.custom-background-image):after {
 .sphene-block.is-header img {
   width: 100%;
 }
+
+.sphene-editor .sphene-editor__block-image-picker {
+  display: block;
+  text-align: center;
+}
+
+.sphene-editor .sphene-editor__image-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.sphene-editor .sphene-editor__image-list-item {
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
+  border: 1px solid #ccc;
+}

@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { getCurrentOverlay, getPreparedOptions, getCurrentRowId } from '../selectors';
+import ImageList from './image-list';
+import { getCurrentOverlay, getPreparedOptions, getCurrentRowId, getAllMedia } from '../selectors';
 import {
 	createAndAddBlockToRow,
 	deactivateOverlay,
@@ -21,6 +22,7 @@ class BlockImagePicker extends React.Component {
 		return (
 			<div className={ classNames }>
 				<p>Choose an image</p>
+				<ImageList images={ this.props.images } />
 			</div>
 		);
 	}
@@ -30,6 +32,7 @@ BlockImagePicker.propTypes = {
 	isActive: PropTypes.bool,
 	rowId: PropTypes.string,
 	preparedOptions: PropTypes.object,
+	images: PropTypes.array,
 	createAndAddBlockToRow: PropTypes.func.isRequired,
 	deactivateOverlay: PropTypes.func.isRequired,
 	clearPreparedOptions: PropTypes.func.isRequired,
@@ -41,6 +44,7 @@ const mapStateToProps = state => ( {
 	isActive: getCurrentOverlay( state ) === 'block-image-picker',
 	preparedOptions: getPreparedOptions( state ),
 	rowId: getCurrentRowId( state ) || '',
+	images: getAllMedia( state ),
 } );
 
 export default connect( mapStateToProps, {
