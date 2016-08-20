@@ -135,7 +135,7 @@ export function createAndAddBlockToRow( options = {} ) {
 		if ( ! options.rowId ) {
 			return dispatch( createRowAndBlock( options ) );
 		}
-		const block = buildUnsavedBlock( options.blockType );
+		const block = buildUnsavedBlock( options );
 		const pageId = getCurrentPageId( getState() );
 		dispatch( blockReceived( block ) );
 		dispatch( addBlockToRow( block.id, pageId, options ) );
@@ -152,7 +152,7 @@ export function addBlockToRow( blockId, pageId, options = {} ) {
 
 export function createRowAndBlock( options = {} ) {
 	return ( dispatch, getState ) => {
-		const block = buildUnsavedBlock( options.blockType );
+		const block = buildUnsavedBlock( options );
 		const currentPageId = getCurrentPageId( getState() );
 		dispatch( blockReceived( block ) );
 		dispatch( addRowToPage( currentPageId, buildRowWithBlock( block ), options ) );

@@ -89,16 +89,17 @@ function getImageUrlByBlockType( blockType ) {
 	return imageUrlOptions[ blockType ] || null;
 }
 
-export function buildUnsavedBlock( blockType = 'text' ) {
+export function buildUnsavedBlock( options = {} ) {
+	const blockType = options.blockType || 'text';
 	const id = shortid.generate();
-	const imageUrl = getImageUrlByBlockType( blockType );
+	const imageUrl = options.imageUrl || getImageUrlByBlockType( blockType );
 	const defaultContentOptions = {
 		text: 'This is a new block. <strong>Click</strong> to edit it!',
 		image: `<img src="${imageUrl}">`,
 		header: `<img src="${imageUrl}">`,
 	};
 	const defaultContent = defaultContentOptions[ blockType ] || defaultContentOptions.text;
-	return { id, unsaved: true, blockType, imageUrl, defaultContent };
+	return Object.assign( {}, options, { id, unsaved: true, blockType, imageUrl, defaultContent } );
 }
 
 export const buildRowWithBlock = block => ( { rowId: shortid.generate(), columns: [ { postId: block.id } ] } );
