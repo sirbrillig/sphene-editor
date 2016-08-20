@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import pages from './pages';
 import blocks from './blocks';
 import ui from './ui';
+import media from './media';
 
 export function currentPageId( state = 0, action ) {
 	switch ( action.type ) {
@@ -60,6 +61,7 @@ const rootReducer = combineReducers( {
 	currentBlockId,
 	pages,
 	blocks,
+	media,
 	isUnsaved,
 	headerImageUrl,
 	newBlockOptions,

@@ -10,6 +10,7 @@ import {
 	buildRowWithBlock,
 	removeBlockFromApi,
 	getHeaderDataFromApi,
+	getMediaFromApi,
 } from '../helpers';
 import {
 	getCurrentPageId,
@@ -286,5 +287,18 @@ export function clearPreparedOptions( options ) {
 	return {
 		type: 'BLOCK_PREPARE_CLEAR',
 		options,
+	};
+}
+
+export function mediaReceived( media ) {
+	return {
+		type: 'ALL_MEDIA_RECEIVED',
+		media,
+	};
+}
+
+export function fetchMediaAsync() {
+	return ( dispatch ) => {
+		getMediaFromApi().then( image => dispatch( mediaReceived( image ) ) );
 	};
 }

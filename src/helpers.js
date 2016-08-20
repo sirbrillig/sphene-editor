@@ -102,3 +102,10 @@ export function buildUnsavedBlock( blockType = 'text' ) {
 }
 
 export const buildRowWithBlock = block => ( { rowId: shortid.generate(), columns: [ { postId: block.id } ] } );
+
+export function getMediaFromApi() {
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'wp/v2/media',
+		method: 'GET',
+	} );
+}

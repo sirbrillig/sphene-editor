@@ -2,9 +2,20 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { getCurrentOverlay, getPreparedOptions, getCurrentRowId } from '../selectors';
-import { createAndAddBlockToRow, deactivateOverlay, clearPreparedOptions, prepareNewBlock, activateOverlay } from '../actions';
+import {
+	createAndAddBlockToRow,
+	deactivateOverlay,
+	clearPreparedOptions,
+	prepareNewBlock,
+	activateOverlay,
+	fetchMediaAsync,
+} from '../actions';
 
 class BlockImagePicker extends React.Component {
+	componentWillMount() {
+		this.props.fetchMedia();
+	}
+
 	render() {
 		const classNames = classnames( 'sphene-editor__block-image-picker', { 'is-active': this.props.isActive } );
 		return (
@@ -38,4 +49,5 @@ export default connect( mapStateToProps, {
 	clearPreparedOptions,
 	prepareNewBlock,
 	activateOverlay,
+	fetchMedia: fetchMediaAsync,
 } )( BlockImagePicker );
