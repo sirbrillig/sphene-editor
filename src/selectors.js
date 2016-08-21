@@ -62,7 +62,9 @@ export const getRowForBlock = ( blockId, state ) => {
 
 export const getCurrentRow = state => getRowForBlock( state.currentBlockId, state );
 
-export const getCurrentRowId = state => get( getRowForBlock( state.currentBlockId, state ), 'id' );
+export const getCurrentBlockId = state => state.currentBlockId;
+
+export const getCurrentRowId = state => get( getRowForBlock( getCurrentBlockId( state ), state ), 'rowId' );
 
 export const getHeaderImageUrl = ( state ) => state.headerImageUrl;
 

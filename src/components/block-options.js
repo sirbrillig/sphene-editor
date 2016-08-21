@@ -1,36 +1,41 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
-
-const BlockOptions = ( {
-	isActive,
-	onEdit,
-	onDelete,
+import {
+	deleteBlock,
+	doneEditing,
 	activateOverlay,
 	prepareNewBlock,
-	rowId,
-	blockId,
-} ) => {
+	editBlock,
+} from '../actions';
+import { getCurrentOverlay, getCurrentRowId, getCurrentBlockId } from '../selectors';
+
+const BlockOptions = ( props ) => {
 	const addColumnBeforeBlock = () => {
-		prepareNewBlock( { rowId, beforeBlockId: blockId } );
-		activateOverlay( 'block-type-picker' );
+		props.prepareNewBlock( { rowId: props.rowId, beforeBlockId: props.blockId } );
+		props.activateOverlay( 'block-type-picker' );
 	};
 	const addColumnAfterBlock = () => {
-		prepareNewBlock( { rowId, afterBlockId: blockId } );
-		activateOverlay( 'block-type-picker' );
+		props.prepareNewBlock( { rowId: props.rowId, afterBlockId: props.blockId } );
+		props.activateOverlay( 'block-type-picker' );
 	};
 	const addRowBefore = () => {
-		prepareNewBlock( { beforeRowId: rowId } );
-		activateOverlay( 'block-type-picker' );
+		props.prepareNewBlock( { beforeRowId: props.rowId } );
+		props.activateOverlay( 'block-type-picker' );
 	};
 	const addRowAfter = () => {
-		prepareNewBlock( { afterRowId: rowId } );
-		activateOverlay( 'block-type-picker' );
+		props.prepareNewBlock( { afterRowId: props.rowId } );
+		props.activateOverlay( 'block-type-picker' );
 	};
-	const classNames = classnames( 'sphene-editor__block-options', { 'is-active': isActive } );
+	const onEditBlock = () => {
+		props.editBlock( props.blockId );
+	};
+	const onDeleteBlock = () => props.deleteBlock( props.blockId ) && props.doneEditing();
+	const classNames = classnames( 'sphene-editor__block-options', { 'is-active': props.isActive } );
 	return (
 		<div className={ classNames }>
-			<button onClick={ onDelete }>Delete</button>
-			<button onClick={ onEdit }>Edit</button>
+			<button onClick={ onDeleteBlock }>Delete</button>
+			<button onClick={ onEditBlock }>Edit</button>
 			<button onClick={ addColumnBeforeBlock }>Add Column Before</button>
 			<button onClick={ addColumnAfterBlock }>Add Column After</button>
 			<button onClick={ addRowBefore }>Add Row Before</button>
@@ -40,13 +45,26 @@ const BlockOptions = ( {
 };
 
 BlockOptions.propTypes = {
-	isActive: PropTypes.bool,
-	onEdit: PropTypes.func.isRequired,
-	onDelete: PropTypes.func.isRequired,
+	deleteBlock: PropTypes.func.isRequired,
+	doneEditing: PropTypes.func.isRequired,
 	activateOverlay: PropTypes.func.isRequired,
 	prepareNewBlock: PropTypes.func.isRequired,
+	editBlock: React.PropTypes.func.isRequired,
+	isActive: PropTypes.bool,
 	rowId: PropTypes.string,
 	blockId: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 };
 
-export default BlockOptions;
+const mapStateToProps = state => ( {
+	isActive: getCurrentOverlay( state ) === 'block-options',
+	rowId: getCurrentRowId( state ),
+	blockId: getCurrentBlockId( state ),
+} );
+
+export default connect( mapStateToProps, {
+	deleteBlock,
+	doneEditing,
+	activateOverlay,
+	prepareNewBlock,
+	editBlock,
+} )( BlockOptions );
