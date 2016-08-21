@@ -31,6 +31,12 @@ export function blockReducer( state = {}, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_SET_CONTENT':
 			return Object.assign( {}, state, { content: action.content } );
+		case 'BLOCK_SET_IMAGE':
+			return Object.assign( {}, state, {
+				imageUrl: action.imageUrl,
+				imageId: action.imageId,
+				content: replaceUrlInContent( state.content, state.imageUrl, action.imageUrl ),
+			} );
 		case 'BLOCK_SET_HEADER':
 			return Object.assign( {}, state, {
 				imageUrl: action.imageUrl,
@@ -46,6 +52,7 @@ export default function blocks( state = {}, action ) {
 			return addBlock( action.page, state );
 		case 'BLOCK_SET_HEADER':
 		case 'BLOCK_SET_CONTENT':
+		case 'BLOCK_SET_IMAGE':
 			return Object.assign( {}, state, { [ action.id ]: blockReducer( state[ action.id ], action ) } );
 		case 'BLOCK_DELETE':
 			return markBlockDeleted( action.id, state );

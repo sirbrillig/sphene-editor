@@ -63,6 +63,23 @@ describe( 'blocks reducer', function() {
 		expect( newState ).to.eql( { 4: newPage } );
 	} );
 
+	it( 'updates the image data of an image block when the image data has been changed', function() {
+		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'image', unsaved: false, imageUrl: 'old.url', imageId: 1 };
+		const initial = { 4: page };
+		const newPage = Object.assign( {}, page, { imageUrl: 'new.url', imageId: 4 } );
+		const newState = blocks( initial, { type: 'BLOCK_SET_IMAGE', id: page.id, imageUrl: newPage.imageUrl, imageId: newPage.imageId } );
+		expect( newState[ 4 ].imageUrl ).to.equal( newPage.imageUrl );
+		expect( newState[ 4 ].imageId ).to.equal( newPage.imageId );
+	} );
+
+	it( 'updates the image url in the content of an image block when the image data has been changed', function() {
+		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'image', unsaved: false, imageUrl: 'old.url', imageId: 1 };
+		const initial = { 4: page };
+		const newPage = Object.assign( {}, page, { imageUrl: 'new.url', imageId: 4 } );
+		const newState = blocks( initial, { type: 'BLOCK_SET_IMAGE', id: page.id, imageUrl: newPage.imageUrl, imageId: newPage.imageId } );
+		expect( newState[ 4 ].content ).to.include( 'new.url' );
+	} );
+
 	it( 'updates the header image of a header block when the image has been changed', function() {
 		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url' };
 		const initial = { 4: page };

@@ -198,6 +198,15 @@ export function savedBlockReceived( id, data ) {
 	};
 }
 
+export function setBlockImage( id, imageUrl, imageId ) {
+	return {
+		type: 'BLOCK_SET_IMAGE',
+		id,
+		imageUrl,
+		imageId,
+	};
+}
+
 export function blockDeleted( id ) {
 	return {
 		type: 'BLOCK_DELETED',

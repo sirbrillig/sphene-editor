@@ -8,7 +8,7 @@ import {
 	prepareNewBlock,
 	editBlock,
 } from '../actions';
-import { getCurrentOverlay, getCurrentRowId, getCurrentBlockId } from '../selectors';
+import { getCurrentOverlay, getCurrentRowId, getCurrentBlockId, getCurrentBlockType, } from '../selectors';
 
 const BlockOptions = ( props ) => {
 	const addColumnBeforeBlock = () => {
@@ -28,6 +28,9 @@ const BlockOptions = ( props ) => {
 		props.activateOverlay( 'block-type-picker' );
 	};
 	const onEditBlock = () => {
+		if ( props.blockType === 'image' || props.blockType === 'header' ) {
+			return props.activateOverlay( 'block-image-picker' );
+		}
 		props.editBlock( props.blockId );
 	};
 	const onDeleteBlock = () => props.deleteBlock( props.blockId ) && props.doneEditing();
@@ -53,12 +56,14 @@ BlockOptions.propTypes = {
 	isActive: PropTypes.bool,
 	rowId: PropTypes.string,
 	blockId: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+	blockType: PropTypes.string,
 };
 
 const mapStateToProps = state => ( {
 	isActive: getCurrentOverlay( state ) === 'block-options',
 	rowId: getCurrentRowId( state ),
 	blockId: getCurrentBlockId( state ),
+	blockType: getCurrentBlockType( state ),
 } );
 
 export default connect( mapStateToProps, {
