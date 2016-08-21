@@ -61,18 +61,20 @@ export function fetchBlock( id ) {
 
 export function blockReceived( data ) {
 	const content = get( data, 'content.rendered', data.defaultContent );
-	const page = { id: data.id, content };
-	if ( data.unsaved ) {
-		page.unsaved = true;
-	}
-	if ( data.blockType ) {
-		page.blockType = data.blockType;
-	}
-	if ( data.imageUrl ) {
-		page.imageUrl = data.imageUrl;
-	}
-	if ( data.featuredImageUrl ) {
-		page.featuredImageUrl = data.featuredImageUrl;
+	const allowedProperties = [
+		'unsaved',
+		'blockType',
+		'imageUrl',
+		'featuredImageUrl',
+		'imageId',
+	];
+	const allowedData = Object.keys( data ).reduce( ( allowed, key ) => {
+		return allowedProperties.indexOf( key ) === -1 ? allowed
+			: Object.assign( {}, allowed, { [ key ]: data[ key ] } );
+	}, {} );
+	const page = Object.assign( {}, allowedData, { id: data.id, content } );
+	if ( data.featured_media ) {
+		page.imageId = data.featured_media;
 	}
 	return {
 		type: 'BLOCK_RECEIVED',
@@ -182,7 +184,13 @@ export function pageSaved( id ) {
 }
 
 export function savedBlockReceived( id, data ) {
-	const page = { id: data.id, content: data.content.rendered, blockType: data.blockType, imageUrl: data.imageUrl };
+	const page = {
+		id: data.id,
+		content: data.content.rendered,
+		blockType: data.blockType,
+		imageUrl: data.imageUrl,
+		imageId: data.featured_media,
+	};
 	return {
 		type: 'BLOCK_REPLACED',
 		id,

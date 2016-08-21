@@ -33,20 +33,20 @@ export function removeBlockFromApi( id ) {
 }
 
 export function createBlockInApi( page ) {
-	const { content, blockType, imageUrl } = page;
+	const { content, blockType, imageUrl, imageId } = page;
 	return ajax( {
 		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_block',
 		method: 'POST',
-		data: { content, status: 'publish', blockType, imageUrl },
+		data: { content, status: 'publish', blockType, imageUrl, featured_media: imageId },
 	} );
 }
 
 export function sendBlockToApi( page ) {
-	const { id, content, blockType, imageUrl } = page;
+	const { id, content, blockType, imageUrl, imageId } = page;
 	return ajax( {
 		url: getSpheneData().wpApiSettings.root + 'wp/v2/sphene_block/' + id,
 		method: 'POST',
-		data: { id, content, blockType, imageUrl },
+		data: { id, content, blockType, imageUrl, featured_media: imageId },
 	} );
 }
 
