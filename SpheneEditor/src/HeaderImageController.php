@@ -9,6 +9,15 @@ class HeaderImageController extends \WP_REST_Controller {
 			'methods' => 'GET',
 			'callback' => array( $this, 'get_header_data' ),
 		) );
+		\register_rest_route( $namespace, '/settings/header', array(
+			'methods' => 'POST',
+			'callback' => array( $this, 'set_header_data' ),
+		) );
+	}
+
+	public function set_header_data( $request ) {
+		$this->set_header_image( $request[ 'url' ] );
+		return $this->get_header_data();
 	}
 
 	public function get_header_data() {
@@ -40,5 +49,10 @@ class HeaderImageController extends \WP_REST_Controller {
 	private function get_default_header_url() {
 		$default_header = \get_theme_support( 'custom-header', 'default-image' );
 		return sprintf( $default_header, \get_template_directory_uri(), \get_stylesheet_directory_uri() );
+	}
+
+	private function set_header_image( $url ) {
+		$url = \esc_url_raw( $url );
+		\set_theme_mod( 'header_image', $url );
 	}
 }

@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import {
 	getPageFromApi,
 	sendPageToApi,
+	sendHeaderToApi,
 	createBlockInApi,
 	sendBlockToApi,
 	getBlockFromApi,
@@ -232,6 +233,7 @@ export function savePageAsync( id ) {
 		// Update the page after new blocks are created
 		Promise.all( saveNewBlocksPromises )
 		.then( () => sendPageToApi( getPageWithFullContent( id, getState() ) ) )
+		.then( () => sendHeaderToApi( getHeaderImageUrl( getState() ) ) )
 		.then( () => Promise.all( updateBlocksPromises.concat( deleteBlocksPromises ) ) )
 		.then( () => dispatch( pageSaved( id ) ) );
 	};

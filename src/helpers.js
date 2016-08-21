@@ -7,6 +7,14 @@ export function getHeaderDataFromApi() {
 	} );
 }
 
+export function sendHeaderToApi( url ) {
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'sphene-editor/v1/settings/header',
+		method: 'POST',
+		data: { url },
+	} );
+}
+
 export function findPostById( posts, id ) {
 	return posts.reduce( ( found, post ) => {
 		if ( post.ID === id ) {
