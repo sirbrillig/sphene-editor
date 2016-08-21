@@ -22,6 +22,7 @@ const SpheneBlock = React.createClass( {
 		const { content } = this.props;
 		const classNames = classnames( 'sphene-editor__block', {
 			'is-loading': content === null,
+			'is-loaded': content !== null,
 			'is-selected': this.props.isSelected,
 			'is-header': this.props.blockType === 'header',
 		} );

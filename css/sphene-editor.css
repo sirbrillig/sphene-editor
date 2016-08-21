@@ -81,16 +81,24 @@ body.sphene-page-body:not(.custom-background-image):after {
 }
 
 .sphene-editor__block {
-  outline: 2px solid #eee;
   overflow: hidden;
   min-height: 120px;
   display: inline-block;
   flex: 1;
   width: 100%;
+  margin: 10px;
+}
+
+.sphene-editor__block.is-loaded {
+  animation: outline-fade 2s;
+}
+
+.sphene-editor__block:hover {
+  outline: 2px solid #43ff50;
 }
 
 .sphene-editor__block.is-loading {
-  outline: 2px solid;
+  outline: 2px solid #eee;
   outline-color: rgba(0, 255, 255, 1);
   animation: outline-pulse 3s infinite;
   color: #ccc;
@@ -112,6 +120,32 @@ body.sphene-page-body:not(.custom-background-image):after {
 .sphene-editor__block.is-empty button {
   max-width: 50%;
   min-width: 10em;
+}
+
+@keyframes outline-fade {
+  0% {
+    outline: 2px solid;
+    outline-color: rgba(55, 55, 55, 1);
+  }
+  25% {
+    outline: 2px solid;
+    outline-color: rgba(55, 55, 55, 0.75);
+  }
+  50% {
+    outline: 2px solid;
+    outline-color: rgba(55, 55, 55, 0.50);
+  }
+  75% {
+    outline: 2px solid;
+    outline-color: rgba(55, 55, 55, 0.25);
+  }
+  99% {
+    outline: 2px solid;
+    outline-color: rgba(55, 55, 55, 0);
+  }
+  100% {
+    outline: none;
+  }
 }
 
 @keyframes outline-pulse {
@@ -197,6 +231,7 @@ body.sphene-page-body:not(.custom-background-image):after {
   display: inline-block;
   flex: 1;
   width: 100%;
+  margin: 10px;
 }
 
 .sphene-row {
