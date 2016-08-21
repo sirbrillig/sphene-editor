@@ -2,13 +2,20 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import ImageList from './image-list';
-import { getCurrentOverlay, getPreparedOptions, getAllMedia, getCurrentBlockId } from '../selectors';
+import {
+	getCurrentOverlay,
+	getPreparedOptions,
+	getAllMedia,
+	getCurrentBlockId,
+	getCurrentBlockType,
+} from '../selectors';
 import {
 	createAndAddBlockToRow,
 	deactivateOverlay,
 	clearPreparedOptions,
 	activateOverlay,
 	setBlockImage,
+	setHeaderImage,
 	fetchMediaAsync,
 } from '../actions';
 
@@ -23,8 +30,10 @@ class BlockImagePicker extends React.Component {
 				imageUrl: image.url,
 				imageId: image.id,
 			};
-			if ( this.props.currentBlockId ) {
+			if ( this.props.currentBlockId && this.props.currentBlockType === 'image' ) {
 				this.props.setBlockImage( this.props.currentBlockId, image.url, image.id );
+			} else if ( this.props.currentBlockId && this.props.currentBlockType === 'header' ) {
+				this.props.setHeaderImage( image.url );
 			} else {
 				this.props.createAndAddBlockToRow( Object.assign( {}, this.props.preparedOptions, imageProps ) );
 			}
@@ -46,6 +55,7 @@ BlockImagePicker.propTypes = {
 	preparedOptions: PropTypes.object,
 	images: PropTypes.array,
 	currentBlockId: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+	currentBlockType: PropTypes.string,
 	createAndAddBlockToRow: PropTypes.func.isRequired,
 	deactivateOverlay: PropTypes.func.isRequired,
 	clearPreparedOptions: PropTypes.func.isRequired,
@@ -58,6 +68,7 @@ const mapStateToProps = state => ( {
 	preparedOptions: getPreparedOptions( state ),
 	images: getAllMedia( state ),
 	currentBlockId: getCurrentBlockId( state ),
+	currentBlockType: getCurrentBlockType( state ),
 } );
 
 export default connect( mapStateToProps, {
@@ -67,4 +78,5 @@ export default connect( mapStateToProps, {
 	activateOverlay,
 	fetchMedia: fetchMediaAsync,
 	setBlockImage,
+	setHeaderImage,
 } )( BlockImagePicker );

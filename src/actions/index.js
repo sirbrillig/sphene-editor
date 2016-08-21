@@ -251,6 +251,13 @@ export function deactivateOverlay() {
 	};
 }
 
+export function setHeaderImage( imageUrl ) {
+	return dispatch => {
+		dispatch( headerImageRecieved( imageUrl ) );
+		dispatch( updateBlockHeaders() );
+	};
+}
+
 export function setBlockHeader( id, imageUrl ) {
 	return {
 		type: 'BLOCK_SET_HEADER',
@@ -286,10 +293,7 @@ export function fetchHeaderAsync() {
 	return ( dispatch ) => {
 		dispatch( fetchHeader() );
 		getHeaderDataFromApi()
-			.then( data => {
-				dispatch( headerImageRecieved( data.url ) );
-				dispatch( updateBlockHeaders() );
-			} );
+			.then( data => dispatch( setHeaderImage( data.url ) ) );
 	};
 }
 
