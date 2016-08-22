@@ -27,6 +27,13 @@ function replaceUrlInContent( content, oldUrl, newUrl ) {
 	return content.replace( oldUrl, newUrl );
 }
 
+function replaceSiteTitleInContent( content, oldTitle, newTitle ) {
+	if ( oldTitle && content.indexOf( oldTitle ) !== -1 ) {
+		return content.replace( oldTitle, newTitle );
+	}
+	return `<h1 class="sphene-site-title">${ newTitle }</h1>${ content }`;
+}
+
 export function blockReducer( state = {}, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_SET_CONTENT':
@@ -42,8 +49,24 @@ export function blockReducer( state = {}, action ) {
 				imageUrl: action.imageUrl,
 				content: replaceUrlInContent( state.content, state.imageUrl, action.imageUrl ),
 			} );
+		case 'SITE_TITLE_SET':
+			return Object.assign( {}, state, {
+				siteTitle: action.siteTitle,
+				content: replaceSiteTitleInContent( state.content, state.siteTitle, action.siteTitle ),
+			} );
 	}
 	return state;
+}
+
+export function blockReducerOnAllBlocksMatching( allBlocks, matcher, action ) {
+	return Object.keys( allBlocks ).reduce( ( newState, blockId ) => {
+		if ( matcher( allBlocks[ blockId ] ) ) {
+			newState[ blockId ] = blockReducer( allBlocks[ blockId ], action );
+		} else {
+			newState[ blockId ] = allBlocks[ blockId ];
+		}
+		return newState;
+	}, {} );
 }
 
 export default function blocks( state = {}, action ) {
@@ -60,6 +83,8 @@ export default function blocks( state = {}, action ) {
 			return removeBlock( action.id, state );
 		case 'BLOCK_REPLACED':
 			return addBlock( action.page, removeBlock( action.id, state ) );
+		case 'SITE_TITLE_SET':
+			return blockReducerOnAllBlocksMatching( state, block => block.blockType === 'header', action );
 	}
 	return state;
 }

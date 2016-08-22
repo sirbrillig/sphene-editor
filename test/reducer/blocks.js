@@ -93,4 +93,19 @@ describe( 'blocks reducer', function() {
 		const newState = blocks( initial, { type: 'BLOCK_SET_HEADER', id: page.id, imageUrl: 'new.url' } );
 		expect( newState[ 4 ].content ).to.eql( '<p><img src="new.url"></p>' );
 	} );
+
+	it( 'updates the text inside the content of a header block when the site title has been set for the first time', function() {
+		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url' };
+		const initial = { 4: page };
+		const newState = blocks( initial, { type: 'SITE_TITLE_SET', siteTitle: 'hello' } );
+		expect( newState[ 4 ].content ).to.include( 'hello' );
+	} );
+
+	it( 'updates the text inside the content of a header block when the site title has been changed', function() {
+		const page = { id: 4, content: '<h1 class="sphene-site-title">hello</h1><p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url', siteTitle: 'hello' };
+		const initial = { 4: page };
+		const newState = blocks( initial, { type: 'SITE_TITLE_SET', siteTitle: 'bye' } );
+		expect( newState[ 4 ].content ).not.to.include( 'hello' );
+		expect( newState[ 4 ].content ).to.include( 'bye' );
+	} );
 } );
