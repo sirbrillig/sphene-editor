@@ -41,9 +41,14 @@ class BlockImagePicker extends React.Component {
 			this.props.deactivateOverlay();
 		};
 		const classNames = classnames( 'sphene-editor__block-image-picker', { 'is-active': this.props.isActive } );
+		const labels = {
+			header: 'Choose a header image',
+			image: 'Choose an image for this block',
+		};
+		const label = labels[ this.props.currentBlockType ] || 'Choose an image';
 		return (
 			<div className={ classNames }>
-				<p>Choose an image</p>
+				<p>{ label }</p>
 				<ImageList images={ this.props.images } onClick={ createImageBlock } />
 			</div>
 		);
