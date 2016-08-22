@@ -1,7 +1,7 @@
 function buildImage( imageData ) {
 	return {
 		id: imageData.id,
-		url: imageData.media_details.sizes.medium.source_url,
+		url: imageData.media_details.sizes.full.source_url,
 		thumbnailUrl: imageData.media_details.sizes.thumbnail.source_url,
 	};
 }
