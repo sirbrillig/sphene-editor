@@ -28,8 +28,11 @@ const BlockOptions = ( props ) => {
 		props.activateOverlay( 'block-type-picker' );
 	};
 	const onEditBlock = () => {
-		if ( props.blockType === 'image' || props.blockType === 'header' ) {
+		if ( props.blockType === 'image' ) {
 			return props.activateOverlay( 'block-image-picker' );
+		}
+		if ( props.blockType === 'header' ) {
+			return props.activateOverlay( 'header-options' );
 		}
 		props.editBlock( props.blockId );
 	};

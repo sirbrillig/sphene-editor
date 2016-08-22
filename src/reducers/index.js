@@ -55,6 +55,14 @@ export function newBlockOptions( state = {}, action ) {
 	return state;
 }
 
+export function siteTitle( state = '', action ) {
+	switch ( action.type ) {
+		case 'SITE_TITLE_SET':
+			return action.siteTitle;
+	}
+	return state;
+}
+
 const rootReducer = combineReducers( {
 	ui,
 	currentPageId,
@@ -65,6 +73,7 @@ const rootReducer = combineReducers( {
 	isUnsaved,
 	headerImageUrl,
 	newBlockOptions,
+	siteTitle,
 } );
 
 export default rootReducer;

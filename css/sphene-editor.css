@@ -156,6 +156,7 @@ body.sphene-page-body:not(.custom-background-image):after {
 
 .sphene-editor__block-type-picker,
 .sphene-editor__block-image-picker,
+.sphene-editor__header-options,
 .sphene-editor__block-options {
   border: 1px solid #000;
   background: #eee;
@@ -171,6 +172,7 @@ body.sphene-page-body:not(.custom-background-image):after {
   z-index: 100002;
 }
 
+.sphene-editor__header-options,
 .sphene-editor__block-type-picker {
   display: block;
   text-align: center;
@@ -180,6 +182,7 @@ body.sphene-page-body:not(.custom-background-image):after {
   justify-content: center;
 }
 
+.sphene-editor__header-options.is-active,
 .sphene-editor__block-type-picker.is-active,
 .sphene-editor__block-image-picker.is-active,
 .sphene-editor__block-options.is-active {

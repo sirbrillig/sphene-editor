@@ -325,3 +325,10 @@ export function fetchMediaAsync() {
 		getMediaFromApi().then( image => dispatch( mediaReceived( image ) ) );
 	};
 }
+
+export function setSiteTitle( siteTitle ) {
+	return {
+		type: 'SITE_TITLE_SET',
+		siteTitle,
+	};
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import SpheneRow from './sphene-row';
 import EmptyEditor from './empty-editor';
 import BlockOptions from './block-options';
+import HeaderOptions from './header-options';
 import Overlay from './overlay';
 import BlockEditor from './block-editor';
 import BlockTypePicker from './block-type-picker';
@@ -25,7 +26,7 @@ const SpheneEditor = React.createClass( {
 		rows: React.PropTypes.array,
 		currentPageId: React.PropTypes.number.isRequired,
 		currentBlockId: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
-		currentOverlay: React.PropTypes.oneOf( [ 'block-editor', 'block-options', 'block-type-picker', 'block-image-picker' ] ),
+		currentOverlay: React.PropTypes.string,
 		isUnsaved: React.PropTypes.bool,
 		fetchPage: React.PropTypes.func.isRequired,
 		setCurrentPageId: React.PropTypes.func.isRequired,
@@ -73,6 +74,7 @@ const SpheneEditor = React.createClass( {
 				<BlockTypePicker />
 				<BlockImagePicker />
 				<BlockOptions />
+				<HeaderOptions />
 				<Overlay isActive={ isOverlayActive } onClick={ onClickOverlay } />
 				<BlockEditor isActive={ this.props.currentOverlay === 'block-editor' } blockId={ this.props.currentBlockId } />
 			</div>
