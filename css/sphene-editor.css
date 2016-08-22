@@ -171,6 +171,15 @@ body.sphene-page-body:not(.custom-background-image):after {
   z-index: 100002;
 }
 
+.sphene-editor__block-type-picker {
+  display: block;
+  text-align: center;
+}
+
+.sphene-editor__block-options {
+  justify-content: center;
+}
+
 .sphene-editor__block-type-picker.is-active,
 .sphene-editor__block-image-picker.is-active,
 .sphene-editor__block-options.is-active {
@@ -261,4 +270,24 @@ body.sphene-page-body:not(.custom-background-image):after {
   min-width: 100px;
   min-height: 100px;
   border: 1px solid #ccc;
+}
+
+.sphene-editor__block-options__add-col-before {
+  position: absolute;
+  left: 0;
+}
+
+.sphene-editor__block-options__add-col-after {
+  position: absolute;
+  right: 0;
+}
+
+.sphene-editor__block-options__add-row-before {
+  position: absolute;
+  top: 0;
+}
+
+.sphene-editor__block-options__add-row-after {
+  position: absolute;
+  bottom: 0;
 }

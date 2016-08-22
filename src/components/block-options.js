@@ -37,12 +37,12 @@ const BlockOptions = ( props ) => {
 	const classNames = classnames( 'sphene-editor__block-options', { 'is-active': props.isActive } );
 	return (
 		<div className={ classNames }>
-			<button onClick={ onDeleteBlock }>Delete</button>
-			<button onClick={ onEditBlock }>Edit</button>
-			<button onClick={ addColumnBeforeBlock }>Add Column Before</button>
-			<button onClick={ addColumnAfterBlock }>Add Column After</button>
-			<button onClick={ addRowBefore }>Add Row Before</button>
-			<button onClick={ addRowAfter }>Add Row After</button>
+			<button className="sphene-editor__block-options__delete" onClick={ onDeleteBlock }>Delete</button>
+			<button className="sphene-editor__block-options__edit" onClick={ onEditBlock }>Edit</button>
+			<button className="sphene-editor__block-options__add-col-before" onClick={ addColumnBeforeBlock }>Add Column Before</button>
+			<button className="sphene-editor__block-options__add-col-after" onClick={ addColumnAfterBlock }>Add Column After</button>
+			<button className="sphene-editor__block-options__add-row-before" onClick={ addRowBefore }>Add Row Before</button>
+			<button className="sphene-editor__block-options__add-row-after" onClick={ addRowAfter }>Add Row After</button>
 		</div>
 	);
 };
