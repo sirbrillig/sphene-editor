@@ -118,3 +118,13 @@ export function getMediaFromApi() {
 		method: 'GET',
 	} );
 }
+
+export function renderBlockToString( block ) {
+	if ( block.blockType === 'text' ) {
+		return block.content;
+	}
+	if ( block.blockType === 'image' || block.blockType === 'header' ) {
+		const imageUrl = block.imageUrl || getImageUrlByBlockType( block.blockType );
+		return `<img src="${imageUrl}">`;
+	}
+}
