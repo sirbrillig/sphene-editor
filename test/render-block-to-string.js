@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
-import { renderBlockToString, buildUnsavedBlock } from '../src/helpers';
+import { renderBlockToString } from '../src/content-renderer';
+import { buildUnsavedBlock } from '../src/helpers';
 
 describe( 'renderBlockToString', function() {
 	it( 'returns the block content for blockType "text"', function() {
@@ -44,14 +45,14 @@ describe( 'renderBlockToString', function() {
 	} );
 
 	it( 'returns a string with header text when siteTitle is set for blockType "header"', function() {
-		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url', siteTitle: 'super cool' } );
-		const rendered = renderBlockToString( block );
-		expect( rendered ).to.include( `<h1>${block.siteTitle}</h1>` );
+		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+		const rendered = renderBlockToString( block, { siteTitle: 'super cool' } );
+		expect( rendered ).to.include( '<h1>super cool</h1>' );
 	} );
 
 	it( 'returns a string with an img tag when siteTitle is set for blockType "header"', function() {
-		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url', siteTitle: 'super cool' } );
-		const rendered = renderBlockToString( block );
+		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+		const rendered = renderBlockToString( block, { siteTitle: 'super cool' } );
 		expect( rendered ).to.include( '<img src="new.url">' );
 	} );
 } );

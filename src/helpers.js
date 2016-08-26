@@ -93,7 +93,7 @@ export function getSpheneData() {
 	return window.spheneData;
 }
 
-function getImageUrlByBlockType( blockType ) {
+export function getImageUrlByBlockType( blockType ) {
 	const imageUrlOptions = {
 		header: 'https://placehold.it/150x150',
 		image: 'https://placehold.it/150x150',
@@ -121,19 +121,4 @@ export function getMediaFromApi() {
 		url: getSpheneData().wpApiSettings.root + 'wp/v2/media',
 		method: 'GET',
 	} );
-}
-
-export function renderBlockToString( block ) {
-	if ( block.blockType === 'text' ) {
-		return block.content;
-	}
-	if ( block.blockType === 'image' ) {
-		const imageUrl = block.imageUrl || getImageUrlByBlockType( block.blockType );
-		return `<img src="${imageUrl}">`;
-	}
-	if ( block.blockType === 'header' ) {
-		const imageUrl = block.imageUrl || getImageUrlByBlockType( block.blockType );
-		const headerText = block.siteTitle ? `<h1>${block.siteTitle}</h1>` : '';
-		return `${headerText}<img src="${imageUrl}">`;
-	}
 }

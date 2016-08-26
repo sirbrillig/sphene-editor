@@ -37,10 +37,6 @@ export function blockReducer( state = {}, action ) {
 			return assign( state, {
 				imageUrl: action.imageUrl,
 			} );
-		case 'SITE_TITLE_SET':
-			return assign( state, {
-				siteTitle: action.siteTitle,
-			} );
 	}
 	return state;
 }

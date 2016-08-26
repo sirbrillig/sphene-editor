@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getBlock } from '../selectors';
 import { fetchBlockAsync, selectBlock, activateOverlay, updateBlockHeaders } from '../actions';
 import SpheneBlock from './sphene-block';
-import { renderBlockToString } from '../helpers';
+import { renderBlockToString } from '../content-renderer';
 
 const mapStateToProps = ( state, props ) => {
 	const block = getBlock( props.postId, state );
@@ -11,7 +11,7 @@ const mapStateToProps = ( state, props ) => {
 		return {};
 	}
 	return {
-		content: renderBlockToString( block ),
+		content: renderBlockToString( block, state ),
 		isSelected: state.currentBlockId === props.postId,
 		isUnsaved: block.unsaved,
 		blockType: block.blockType,
