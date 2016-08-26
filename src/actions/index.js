@@ -7,11 +7,13 @@ import {
 	createBlockInApi,
 	sendBlockToApi,
 	getBlockFromApi,
-	buildUnsavedBlock,
-	buildRowWithBlock,
 	removeBlockFromApi,
 	getHeaderDataFromApi,
 	getMediaFromApi,
+} from '../api';
+import {
+	buildUnsavedBlock,
+	buildRowWithBlock,
 } from '../helpers';
 import {
 	getCurrentPageId,
