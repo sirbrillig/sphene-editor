@@ -20,8 +20,10 @@ class SpheneEditor {
 	}
 
 	public function __construct( $options = array() ) {
+		require_once( plugin_dir_path( __FILE__  ) . 'SpheneEditor/src/SiteTitleController.php' );
 		require_once( plugin_dir_path( __FILE__  ) . 'SpheneEditor/src/HeaderImageController.php' );
 		$this->header_image_controller = isset( $options['header_image_controller'] ) ? $options['header_image_controller'] : new SpheneEditor\HeaderImageController();
+		$this->site_title_controller = isset( $options['site_title_controller'] ) ? $options['site_title_controller'] : new SpheneEditor\SiteTitleController();
 	}
 
 	public function add_hooks() {
@@ -51,6 +53,7 @@ class SpheneEditor {
 			'update_callback' => array( $this, 'set_block_image_url' ),
 		) );
 		$this->header_image_controller->register_routes();
+		$this->site_title_controller->register_routes();
 	}
 
 	public function set_block_image_url( $value, $object ) {
