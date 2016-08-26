@@ -11,6 +11,7 @@ import {
 	getHeaderDataFromApi,
 	getMediaFromApi,
 	getSiteTitleFromApi,
+	sendSiteTitleToApi,
 } from '../api';
 import {
 	buildUnsavedBlock,
@@ -25,6 +26,7 @@ import {
 	getUnsavedBlocks,
 	getDeletedBlocks,
 	getHeaderImageUrl,
+	getSiteTitle,
 } from '../selectors';
 
 export function fetchPage( id ) {
@@ -223,6 +225,9 @@ export function savePageAsync( id ) {
 		const state = getState();
 		dispatch( savePage( id ) );
 		const page = getPage( id, state );
+		const siteTitle = getSiteTitle( state );
+		// Update the site title
+		const setSiteTitlePromise = sendSiteTitleToApi( siteTitle );
 		// Update the blocks
 		const updateBlocksPromises = getModifiedBlocks( page, state ).map( block => sendBlockToApi( block ) );
 		// Create new blocks
@@ -237,7 +242,7 @@ export function savePageAsync( id ) {
 		Promise.all( saveNewBlocksPromises )
 		.then( () => sendPageToApi( getPageWithFullContent( id, getState() ) ) )
 		.then( () => sendHeaderToApi( getHeaderImageUrl( getState() ) ) )
-		.then( () => Promise.all( updateBlocksPromises.concat( deleteBlocksPromises ) ) )
+		.then( () => Promise.all( updateBlocksPromises.concat( deleteBlocksPromises ).concat( setSiteTitlePromise ) ) )
 		.then( () => dispatch( pageSaved( id ) ) );
 	};
 }

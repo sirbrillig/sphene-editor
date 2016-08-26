@@ -78,3 +78,11 @@ export function getSiteTitleFromApi() {
 		method: 'GET',
 	} );
 }
+
+export function sendSiteTitleToApi( siteTitle ) {
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'sphene-editor/v1/settings/site-title',
+		method: 'POST',
+		data: { 'site-title': siteTitle },
+	} );
+}

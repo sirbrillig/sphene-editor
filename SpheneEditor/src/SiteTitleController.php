@@ -19,7 +19,8 @@ class SiteTitleController extends \WP_REST_Controller {
 		return \get_bloginfo( 'name' );
 	}
 
-	public function set_site_title( $title ) {
+	public function set_site_title( $request ) {
+		$title = $request[ 'site-title' ];
 		\update_option( 'blogname', $title );
 		return $this->get_site_title();
 	}
