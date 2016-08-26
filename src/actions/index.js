@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 
+import { renderBlockToString } from '../content-renderer';
 import {
 	getPageFromApi,
 	sendPageToApi,
@@ -229,9 +230,13 @@ export function savePageAsync( id ) {
 		// Update the site title
 		const setSiteTitlePromise = sendSiteTitleToApi( siteTitle );
 		// Update the blocks
-		const updateBlocksPromises = getModifiedBlocks( page, state ).map( block => sendBlockToApi( block ) );
+		const updateBlocksPromises = getModifiedBlocks( page, state ).map( block => {
+			block.content = renderBlockToString( block, state );
+			return sendBlockToApi( block );
+		} );
 		// Create new blocks
 		const saveNewBlocksPromises = getUnsavedBlocks( page, state ).map( block => {
+			block.content = renderBlockToString( block, state );
 			return createBlockInApi( block ).then( data => dispatch( savedBlockReceived( block.id, data ) ) );
 		} );
 		// Remove deleted blocks

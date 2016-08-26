@@ -25,6 +25,7 @@ export function currentBlockId( state = 0, action ) {
 export function isUnsaved( state = false, action ) {
 	switch ( action.type ) {
 		case 'BLOCK_SET_CONTENT':
+		case 'SITE_TITLE_SET':
 		case 'BLOCK_DELETE':
 		case 'BLOCK_RECEIVED':
 		case 'PAGE_ADD_ROW':

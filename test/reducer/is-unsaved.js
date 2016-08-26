@@ -33,6 +33,11 @@ describe( 'isUnsaved reducer', function() {
 		expect( newState ).to.be.true;
 	} );
 
+	it( 'is true when the site title is changed', function() {
+		const newState = isUnsaved( undefined, { type: 'SITE_TITLE_SET' } );
+		expect( newState ).to.be.true;
+	} );
+
 	it( 'is reset to false when a page is saved', function() {
 		const newState = isUnsaved( true, { type: 'PAGE_SAVED' } );
 		expect( newState ).to.be.false;
