@@ -44,6 +44,12 @@ describe( 'renderBlockToString', function() {
 		expect( rendered ).to.not.include( 'h1' );
 	} );
 
+	it( 'returns a string without header text when siteTitle is an empty string for blockType "header"', function() {
+		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+		const rendered = renderBlockToString( block, { siteTitle: '' } );
+		expect( rendered ).to.not.include( 'h1' );
+	} );
+
 	it( 'returns a string with header text when siteTitle is set for blockType "header"', function() {
 		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
 		const rendered = renderBlockToString( block, { siteTitle: 'super cool' } );
