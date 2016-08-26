@@ -20,12 +20,6 @@ describe( 'blocks reducer', function() {
 		expect( newState[ 4 ].imageUrl ).to.eql( 'http://new.url' );
 	} );
 
-	it( 'replaces image src in block content with featuredImageUrl when an image block is received', function() {
-		const page = { id: 4, content: '<p><img src="http://old.url"></p>', blockType: 'image', unsaved: false, imageUrl: 'http://old.url', featuredImageUrl: 'http://new.url' };
-		const newState = blocks( undefined, { type: 'BLOCK_RECEIVED', page } );
-		expect( newState[ 4 ].content ).to.eql( '<p><img src="http://new.url"></p>' );
-	} );
-
 	it( 'marks a saved block as deleted when the block is deleted', function() {
 		const page = { id: 4, content: 'hello', blockType: 'text', unsaved: false };
 		const initial = { 4: page };
@@ -72,14 +66,6 @@ describe( 'blocks reducer', function() {
 		expect( newState[ 4 ].imageId ).to.equal( newPage.imageId );
 	} );
 
-	it( 'updates the image url in the content of an image block when the image data has been changed', function() {
-		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'image', unsaved: false, imageUrl: 'old.url', imageId: 1 };
-		const initial = { 4: page };
-		const newPage = Object.assign( {}, page, { imageUrl: 'new.url', imageId: 4 } );
-		const newState = blocks( initial, { type: 'BLOCK_SET_IMAGE', id: page.id, imageUrl: newPage.imageUrl, imageId: newPage.imageId } );
-		expect( newState[ 4 ].content ).to.include( 'new.url' );
-	} );
-
 	it( 'updates the header image of a header block when the image has been changed', function() {
 		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url' };
 		const initial = { 4: page };
@@ -87,25 +73,18 @@ describe( 'blocks reducer', function() {
 		expect( newState[ 4 ].imageUrl ).to.eql( 'new.url' );
 	} );
 
-	it( 'updates the image inside the content of a header block when the image has been changed', function() {
-		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url' };
-		const initial = { 4: page };
-		const newState = blocks( initial, { type: 'BLOCK_SET_HEADER', id: page.id, imageUrl: 'new.url' } );
-		expect( newState[ 4 ].content ).to.eql( '<p><img src="new.url"></p>' );
-	} );
-
-	it( 'updates the text inside the content of a header block when the site title has been set for the first time', function() {
+	it( 'updates the text inside the siteTitle of a header block when the site title has been set for the first time', function() {
 		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url' };
 		const initial = { 4: page };
 		const newState = blocks( initial, { type: 'SITE_TITLE_SET', siteTitle: 'hello' } );
-		expect( newState[ 4 ].content ).to.include( 'hello' );
+		expect( newState[ 4 ].siteTitle ).to.include( 'hello' );
 	} );
 
-	it( 'updates the text inside the content of a header block when the site title has been changed', function() {
+	it( 'updates the text inside the siteTitle of a header block when the site title has been changed', function() {
 		const page = { id: 4, content: '<h1 class="sphene-site-title">hello</h1><p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url', siteTitle: 'hello' };
 		const initial = { 4: page };
 		const newState = blocks( initial, { type: 'SITE_TITLE_SET', siteTitle: 'bye' } );
-		expect( newState[ 4 ].content ).not.to.include( 'hello' );
-		expect( newState[ 4 ].content ).to.include( 'bye' );
+		expect( newState[ 4 ].siteTitle ).not.to.include( 'hello' );
+		expect( newState[ 4 ].siteTitle ).to.include( 'bye' );
 	} );
 } );

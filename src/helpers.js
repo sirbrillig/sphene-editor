@@ -1,5 +1,9 @@
 import shortid from 'shortid';
 
+export function assign( obj, newObj = {} ) {
+	return Object.assign( {}, obj, newObj );
+}
+
 export function getHeaderDataFromApi() {
 	return ajax( {
 		url: getSpheneData().wpApiSettings.root + 'sphene-editor/v1/settings/header',

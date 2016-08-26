@@ -1,8 +1,5 @@
 import { generate as generateId } from 'shortid';
-
-function assign( obj, newObj ) {
-	return Object.assign( {}, obj, newObj );
-}
+import { assign } from '../helpers';
 
 function ensureRowIds( page ) {
 	return assign( page, {
