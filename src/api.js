@@ -71,3 +71,10 @@ export function getMediaFromApi() {
 		method: 'GET',
 	} );
 }
+
+export function getSiteTitleFromApi() {
+	return ajax( {
+		url: getSpheneData().wpApiSettings.root + 'sphene-editor/v1/settings/site-title',
+		method: 'GET',
+	} );
+}

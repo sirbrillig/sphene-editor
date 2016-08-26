@@ -10,6 +10,7 @@ import {
 	removeBlockFromApi,
 	getHeaderDataFromApi,
 	getMediaFromApi,
+	getSiteTitleFromApi,
 } from '../api';
 import {
 	buildUnsavedBlock,
@@ -332,5 +333,11 @@ export function setSiteTitle( siteTitle ) {
 	return {
 		type: 'SITE_TITLE_SET',
 		siteTitle,
+	};
+}
+
+export function fetchSiteTitleAsync() {
+	return dispatch => {
+		getSiteTitleFromApi().then( title => dispatch( setSiteTitle( title ) ) );
 	};
 }

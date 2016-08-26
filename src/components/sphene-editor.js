@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import {
 	fetchPageAsync,
 	fetchHeaderAsync,
+	fetchSiteTitleAsync,
 	setCurrentPageId,
 	doneEditing,
 	deleteRow,
@@ -35,6 +36,7 @@ const SpheneEditor = React.createClass( {
 		savePage: React.PropTypes.func.isRequired,
 		deleteRow: React.PropTypes.func.isRequired,
 		fetchHeader: React.PropTypes.func.isRequired,
+		fetchSiteTitle: React.PropTypes.func.isRequired,
 	},
 
 	componentWillMount() {
@@ -46,6 +48,7 @@ const SpheneEditor = React.createClass( {
 			this.props.fetchPage( id );
 		}
 		this.props.fetchHeader();
+		this.props.fetchSiteTitle();
 	},
 
 	render() {
@@ -101,6 +104,7 @@ const mapStateToProps = state => {
 const actions = {
 	fetchPage: fetchPageAsync,
 	fetchHeader: fetchHeaderAsync,
+	fetchSiteTitle: fetchSiteTitleAsync,
 	setCurrentPageId,
 	doneEditing,
 	deleteRow,
