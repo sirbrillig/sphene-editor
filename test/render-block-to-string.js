@@ -36,4 +36,22 @@ describe( 'renderBlockToString', function() {
 		const rendered = renderBlockToString( block );
 		expect( rendered ).to.equal( '<img src="https://placehold.it/150x150">' );
 	} );
+
+	it( 'returns a string without header text when siteTitle is null for blockType "header"', function() {
+		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+		const rendered = renderBlockToString( block );
+		expect( rendered ).to.not.include( 'h1' );
+	} );
+
+	it( 'returns a string with header text when siteTitle is set for blockType "header"', function() {
+		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url', siteTitle: 'super cool' } );
+		const rendered = renderBlockToString( block );
+		expect( rendered ).to.include( `<h1>${block.siteTitle}</h1>` );
+	} );
+
+	it( 'returns a string with an img tag when siteTitle is set for blockType "header"', function() {
+		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url', siteTitle: 'super cool' } );
+		const rendered = renderBlockToString( block );
+		expect( rendered ).to.include( '<img src="new.url">' );
+	} );
 } );
