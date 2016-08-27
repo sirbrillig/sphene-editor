@@ -65,11 +65,4 @@ describe( 'blocks reducer', function() {
 		expect( newState[ 4 ].imageUrl ).to.equal( newPage.imageUrl );
 		expect( newState[ 4 ].imageId ).to.equal( newPage.imageId );
 	} );
-
-	it( 'updates the header image of a header block when the image has been changed', function() {
-		const page = { id: 4, content: '<p><img src="old.url"></p>', blockType: 'header', unsaved: false, imageUrl: 'old.url' };
-		const initial = { 4: page };
-		const newState = blocks( initial, { type: 'BLOCK_SET_HEADER', id: page.id, imageUrl: 'new.url' } );
-		expect( newState[ 4 ].imageUrl ).to.eql( 'new.url' );
-	} );
 } );

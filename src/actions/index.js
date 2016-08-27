@@ -23,7 +23,6 @@ import {
 	getPage,
 	getPageWithFullContent,
 	getModifiedBlocks,
-	getHeaderBlocks,
 	getUnsavedBlocks,
 	getDeletedBlocks,
 	getHeaderImageUrl,
@@ -269,7 +268,6 @@ export function deactivateOverlay() {
 export function setHeaderImage( imageUrl ) {
 	return dispatch => {
 		dispatch( headerImageRecieved( imageUrl ) );
-		dispatch( updateBlockHeaders() );
 	};
 }
 
@@ -291,16 +289,6 @@ export function headerImageRecieved( imageUrl ) {
 	return {
 		type: 'HEADER_IMAGE_RECEIVED',
 		imageUrl,
-	};
-}
-
-export function updateBlockHeaders() {
-	return ( dispatch, getState ) => {
-		const state = getState();
-		const currentPageId = getCurrentPageId( state );
-		const page = getPage( currentPageId, state );
-		const imageUrl = getHeaderImageUrl( state );
-		getHeaderBlocks( page, state ).map( block => dispatch( setBlockHeader( block.id, imageUrl ) ) );
 	};
 }
 
