@@ -24,14 +24,14 @@ describe( 'renderBlockToString', function() {
 		expect( rendered ).to.equal( '<img src="https://placehold.it/150x150">' );
 	} );
 
-	it( 'returns a string with an img tag set to the imageUrl for blockType "header"', function() {
-		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+	it( 'returns a string with an img tag set to the header image for blockType "header"', function() {
+		const block = buildUnsavedBlock( { blockType: 'header' } );
 		block.content = '';
-		const rendered = renderBlockToString( block );
+		const rendered = renderBlockToString( block, { headerImageUrl: 'new.url' } );
 		expect( rendered ).to.equal( '<img src="new.url">' );
 	} );
 
-	it( 'returns a string with an img tag set to a placeholder when imageUrl is null for blockType "header"', function() {
+	it( 'returns a string with an img tag set to a placeholder when header image is null for blockType "header"', function() {
 		const block = buildUnsavedBlock( { blockType: 'header' } );
 		block.content = '';
 		const rendered = renderBlockToString( block );
@@ -39,26 +39,26 @@ describe( 'renderBlockToString', function() {
 	} );
 
 	it( 'returns a string without header text when siteTitle is null for blockType "header"', function() {
-		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+		const block = buildUnsavedBlock( { blockType: 'header' } );
 		const rendered = renderBlockToString( block );
 		expect( rendered ).to.not.include( 'h1' );
 	} );
 
 	it( 'returns a string without header text when siteTitle is an empty string for blockType "header"', function() {
-		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+		const block = buildUnsavedBlock( { blockType: 'header' } );
 		const rendered = renderBlockToString( block, { siteTitle: '' } );
 		expect( rendered ).to.not.include( 'h1' );
 	} );
 
 	it( 'returns a string with header text when siteTitle is set for blockType "header"', function() {
-		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
+		const block = buildUnsavedBlock( { blockType: 'header' } );
 		const rendered = renderBlockToString( block, { siteTitle: 'super cool' } );
 		expect( rendered ).to.include( '<h1>super cool</h1>' );
 	} );
 
 	it( 'returns a string with an img tag when siteTitle is set for blockType "header"', function() {
-		const block = buildUnsavedBlock( { blockType: 'header', imageUrl: 'new.url' } );
-		const rendered = renderBlockToString( block, { siteTitle: 'super cool' } );
+		const block = buildUnsavedBlock( { blockType: 'header' } );
+		const rendered = renderBlockToString( block, { siteTitle: 'super cool', headerImageUrl: 'new.url' } );
 		expect( rendered ).to.include( '<img src="new.url">' );
 	} );
 } );

@@ -1,4 +1,4 @@
-import { getSiteTitle } from './selectors';
+import { getSiteTitle, getHeaderImageUrl } from './selectors';
 import { getImageUrlByBlockType } from './helpers';
 
 export function renderBlockToString( block, state = {} ) {
@@ -11,7 +11,7 @@ export function renderBlockToString( block, state = {} ) {
 		return `<img src="${imageUrl}">`;
 	}
 	if ( block.blockType === 'header' ) {
-		const imageUrl = block.imageUrl || getImageUrlByBlockType( block.blockType );
+		const imageUrl = getHeaderImageUrl( state ) || getImageUrlByBlockType( block.blockType );
 		const headerText = siteTitle ? `<h1>${siteTitle}</h1>` : '';
 		return `${headerText}<img src="${imageUrl}">`;
 	}
