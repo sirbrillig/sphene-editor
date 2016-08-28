@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import TextEditor from './text-editor';
+import BlockTextEditor from './block-text-editor';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setBlockContent, doneEditing } from '../actions';
@@ -16,9 +16,9 @@ const BlockEditor = React.createClass( {
 	render() {
 		const { isActive, blockId } = this.props;
 		const onDone = () => this.props.doneEditing();
-		const onChange = evt => this.props.setBlockContent( blockId, evt.target.value );
+		const onChange = value => this.props.setBlockContent( blockId, value );
 		const classNames = classnames( 'sphene-editor__block-editor', { 'is-active': isActive } );
-		const content = isActive ? <TextEditor blockId={ blockId } onChange={ onChange } /> : null;
+		const content = isActive ? <BlockTextEditor blockId={ blockId } onChange={ onChange } /> : null;
 		const actions = isActive ? <button onClick={ onDone }>Done</button> : null;
 		return (
 			<div className={ classNames }>
