@@ -266,8 +266,9 @@ export function deactivateOverlay() {
 }
 
 export function setHeaderImage( imageUrl ) {
-	return dispatch => {
-		dispatch( headerImageRecieved( imageUrl ) );
+	return {
+		type: 'HEADER_IMAGE_RECEIVED',
+		imageUrl,
 	};
 }
 
@@ -282,13 +283,6 @@ export function setBlockHeader( id, imageUrl ) {
 export function fetchHeader() {
 	return {
 		type: 'HEADER_FETCH'
-	};
-}
-
-export function headerImageRecieved( imageUrl ) {
-	return {
-		type: 'HEADER_IMAGE_RECEIVED',
-		imageUrl,
 	};
 }
 
