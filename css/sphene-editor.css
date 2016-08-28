@@ -1,5 +1,5 @@
 .sphene-edit-button,
-.sphene-editor button {
+.sphene-editor .sphene-button {
   color: #ffffff;
   background: #3498db;
   padding: 10px 20px 10px 20px;
@@ -13,14 +13,14 @@
 }
 
 .sphene-edit-button:hover,
-.sphene-editor button:hover {
+.sphene-editor .sphene-button:hover {
   background: #3cb0fd;
   text-decoration: none;
   padding: 10px 20px 10px 20px;
 }
 
 .sphene-edit-button[disabled]:hover,
-.sphene-editor button[disabled]:hover {
+.sphene-editor .sphene-button[disabled]:hover {
   background: #1a1a1a;
   border: 0;
   border-radius: 0;
@@ -28,7 +28,7 @@
 }
 
 .sphene-edit-button[disabled],
-.sphene-editor button[disabled] {
+.sphene-editor .sphene-button[disabled] {
   background: #1a1a1a;
   opacity: 0.5;
   cursor: default;
@@ -293,4 +293,22 @@ body.sphene-page-body:not(.custom-background-image):after {
 .sphene-editor__block-options__add-row-after {
   position: absolute;
   bottom: 0;
+}
+
+.sphene-editor .block-text-editor {
+  border-top: 1px solid #ddd;
+  cursor: text;
+  font-size: 16px;
+}
+
+.sphene-editor .DraftEditor-root {
+  background: #fff;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  padding: 15px;
+}
+
+.sphene-editor .public-DraftEditor-content {
+  padding: 15px;
+  min-height: 100px;
 }
